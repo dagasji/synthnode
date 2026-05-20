@@ -216,7 +216,7 @@ TypeScript, JavaScript, Python, Go, Rust, Java, C#, PHP, Ruby, C, C++, Swift, Ko
 El roadmap incluye soporte para más lenguajes, integración con más editores y herramientas avanzadas de análisis estático. Ya hay PRs de la comunidad añadiendo nuevos frameworks y lenguajes.
 
 Si trabajas con Claude Code, Cursor, Codex u OpenCode y te toca explicar "cómo se engancha este módulo" todos los días, CodeGraph es una mejora obligatoria: menos tokens, más velocidad y conversaciones que van al grano.`,
-    image: "/news/codegraph.jpg",
+    image: "/news/codegraph.png",
     category: "programming",
     tags: ["CodeGraph", "MCP", "Claude Code", "OpenCode", "Semantic Search", "Code Intelligence"],
     author: authors.dax,
@@ -224,7 +224,7 @@ Si trabajas con Claude Code, Cursor, Codex u OpenCode y te toca explicar "cómo 
     readingMinutes: 8,
     views: 1250,
     likes: 89,
-    featured: false,
+    featured: true,
     trending: true,
   },
   {
