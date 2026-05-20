@@ -1,0 +1,109 @@
+{
+  "common": {
+    "navigation": {
+      "home": "Inicio",
+      "search": "Buscar",
+      "categories": {
+        "ai": "Inteligencia Artificial",
+        "programming": "Programación",
+        "webDev": "Web Development",
+        "devops": "DevOps",
+        "startups": "Startups",
+        "openSource": "Open Source",
+        "security": "Ciberseguridad"
+      }
+    },
+    "actions": {
+      "backToHome": "Volver al inicio",
+      "retry": "Reintentar",
+      "exploreAll": "Explorar todo",
+      "filterBy": "FILTER BY:",
+      "filterAll": "Todos",
+      "searchPlaceholder": "Buscar noticias…"
+    },
+    "errors": {
+      "notFound": "Página no encontrada",
+      "notFoundDescription": "La ruta que buscas no existe o ha sido movida.",
+      "generic": "Algo ha ido mal",
+      "genericDescription": "Error inesperado. Por favor, inténtalo de nuevo."
+    },
+    "footer": {
+      "tagline": "Publicación independiente sobre IA, programación y la próxima infraestructura.",
+      "copyright": "© 2026 SYNTHNODE",
+      "sectionsLabel": "SECCIONES"
+    },
+    "meta": {
+      "siteName": "SYNTHNODE",
+      "siteDescription": "Publicación independiente sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas."
+    },
+    "theme": {
+      "toggle": "Cambiar tema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "SYNTHNODE — Noticias de IA, programación y la próxima infraestructura",
+      "description": "El portal independiente de noticias sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas."
+    },
+    "latestTitle": "ÚLTIMAS NOTICIAS",
+    "moreTitle": "MÁS ARTÍCULOS",
+    "sections": {
+      "recentLabel": "// RECENT",
+      "recentTitle": "Últimas noticias",
+      "categoriesLabel": "// SECCIONES"
+    }
+  },
+  "article": {
+    "meta": {
+      "titleSuffix": "— SYNTHNODE"
+    },
+    "labels": {
+      "minRead": "min read",
+      "views": "vistas",
+      "likes": "likes",
+      "tags": "TAGS",
+      "category": "CATEGORÍA"
+    }
+  },
+  "category": {
+    "label": "// CATEGORÍA",
+    "articles": "{count, plural, one {# artículo} other {# artículos}}",
+    "filter": "FILTRAR:",
+    "filterAll": "Todos",
+    "noArticles": "No hay artículos en esta categoría todavía.",
+    "otherTagsLabel": "// OTROS TAGS POPULARES"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "subtitle": "Análisis técnico directo. Sin ruido.",
+    "emailPlaceholder": "tu@email.com",
+    "submit": "Suscribirme",
+    "success": "¡Suscrito! Revisa tu bandeja de entrada.",
+    "error": "Algo ha ido mal. Inténtalo de nuevo."
+  },
+  "search": {
+    "meta": {
+      "title": "Buscar — SYNTHNODE",
+      "description": "Búsqueda en tiempo real sobre todo el archivo de SYNTHNODE."
+    },
+    "label": "// SEARCH",
+    "title": "Explora el archivo",
+    "subtitle": "Búsqueda fuzzy en tiempo real sobre títulos, descripciones y tags.",
+    "placeholder": "Buscar noticias, tags, autores…",
+    "results": "{count, plural, one {# resultado} other {# resultados}}",
+    "noResults": "Sin resultados. Prueba a quitar filtros o cambiar la búsqueda.",
+    "filters": {
+      "category": "CATEGORÍA",
+      "allCategories": "Todas",
+      "tags": "TAGS",
+      "allTags": "todos",
+      "date": "FECHA",
+      "anyTime": "Cualquier momento",
+      "last7Days": "Últimos 7 días",
+      "last30Days": "Últimos 30 días",
+      "last90Days": "Últimos 90 días"
+    }
+  }
+}
