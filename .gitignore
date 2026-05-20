@@ -16,7 +16,7 @@ dist-ssr
 .nitro
 *.local
 .next
-
+token.txt
 
 # Wrangler / Cloudflare
 .wrangler/
