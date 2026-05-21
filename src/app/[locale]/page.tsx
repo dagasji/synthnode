@@ -14,11 +14,11 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home.meta" });
   const canonical = locale === "es" ? `${BASE_URL}/` : `${BASE_URL}/${locale}`;
   return {
-    title: "SYNTHNODE — Noticias de IA, programación y la próxima infraestructura",
-    description:
-      "Publicación independiente sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas.",
+    title: t("title"),
+    description: t("description"),
     alternates: {
       canonical,
       languages: {
@@ -28,9 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: "SYNTHNODE",
-      description:
-        "Publicación independiente sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas.",
+      title: t("title"),
+      description: t("description"),
       url: canonical,
       siteName: "SYNTHNODE",
       type: "website",

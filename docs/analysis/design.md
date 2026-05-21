@@ -35,22 +35,22 @@
 
 ## 3. Stack Tecnológico
 
-| Tecnología | Versión actual | Estado |
-|---|---|---|
-| Next.js | ^15.0.0 (App Router) | Sin cambio |
-| React | ^19.2.0 | Sin cambio |
-| TypeScript | ^5.8.3 | Sin cambio |
-| next-intl | ^3.26.5 | Sin cambio — completar uso |
-| next-themes | ^0.4.6 | Sin cambio |
-| framer-motion | ^12.38.0 | Sin cambio |
-| fuse.js | ^7.3.0 | Sin cambio |
-| react-markdown | ^10.1.0 | Sin cambio |
-| react-hook-form | ^7.71.2 | Instalado — activar en NewsletterForm |
-| zod | ^3.24.2 | Instalado — activar en NewsletterForm |
-| sonner | ^2.0.7 | Instalado — activar en NewsletterForm |
-| date-fns | ^4.1.0 | Instalado — activar para locale-aware dates |
-| Tailwind CSS | ^3.4.19 | Sin cambio |
-| shadcn/ui (`rsc: false`) | componentes ui/ | Sin cambio |
+| Tecnología               | Versión actual       | Estado                                      |
+| ------------------------ | -------------------- | ------------------------------------------- |
+| Next.js                  | ^15.0.0 (App Router) | Sin cambio                                  |
+| React                    | ^19.2.0              | Sin cambio                                  |
+| TypeScript               | ^5.8.3               | Sin cambio                                  |
+| next-intl                | ^3.26.5              | Sin cambio — completar uso                  |
+| next-themes              | ^0.4.6               | Sin cambio                                  |
+| framer-motion            | ^12.38.0             | Sin cambio                                  |
+| fuse.js                  | ^7.3.0               | Sin cambio                                  |
+| react-markdown           | ^10.1.0              | Sin cambio                                  |
+| react-hook-form          | ^7.71.2              | Instalado — activar en NewsletterForm       |
+| zod                      | ^3.24.2              | Instalado — activar en NewsletterForm       |
+| sonner                   | ^2.0.7               | Instalado — activar en NewsletterForm       |
+| date-fns                 | ^4.1.0               | Instalado — activar para locale-aware dates |
+| Tailwind CSS             | ^3.4.19              | Sin cambio                                  |
+| shadcn/ui (`rsc: false`) | componentes ui/      | Sin cambio                                  |
 
 **No se añaden dependencias nuevas.** Todo lo necesario ya está instalado.
 
@@ -62,13 +62,13 @@
 
 ### 4.1 Locales
 
-| Locale | Idioma | Estado | URL base |
-|---|---|---|---|
-| `es` | Español | Default activo | `/` |
-| `en` | English | Secundario activo | `/en` |
+| Locale  | Idioma       | Estado                        | URL base |
+| ------- | ------------ | ----------------------------- | -------- |
+| `es`    | Español      | Default activo                | `/`      |
+| `en`    | English      | Secundario activo             | `/en`    |
 | `pt-BR` | Portugués BR | Scaffolded (out of scope MVP) | `/pt-BR` |
-| `ja` | Japonés | Scaffolded (out of scope MVP) | `/ja` |
-| `ko` | Coreano | Scaffolded (out of scope MVP) | `/ko` |
+| `ja`    | Japonés      | Scaffolded (out of scope MVP) | `/ja`    |
+| `ko`    | Coreano      | Scaffolded (out of scope MVP) | `/ko`    |
 
 Locales pt-BR, ja, ko: no implementar contenido. Scaffoldear únicamente `messages/` vacíos y añadirlos al array de locales en middleware para no bloquear futuras implementaciones.
 
@@ -82,7 +82,7 @@ createMiddleware({
   locales: ["es", "en", "pt-BR", "ja", "ko"],
   defaultLocale: "es",
   localePrefix: "as-needed",
-})
+});
 ```
 
 ### 4.3 Estructura de Traducciones
@@ -154,6 +154,7 @@ Las siguientes claves NO existen actualmente y deben añadirse a `es.json` y `en
 ```
 
 **Claves existentes sin usar** (ya están definidas, solo falta consumirlas):
+
 - `common.theme.toggle` → `ThemeToggle` aria-label
 - `article.labels.minRead` → `FeaturedHero`, `NewsCard`
 - `newsletter.*` → `NewsletterForm` todos los textos
@@ -167,12 +168,12 @@ Las siguientes claves NO existen actualmente y deben añadirse a `es.json` y `en
 
 ### 4.5 Rutas Localizadas (sin cambios)
 
-| Página | ES | EN |
-|---|---|---|
-| Home | `/` | `/en` |
-| Artículo | `/news/[slug]` | `/en/news/[slug]` |
+| Página    | ES                 | EN                    |
+| --------- | ------------------ | --------------------- |
+| Home      | `/`                | `/en`                 |
+| Artículo  | `/news/[slug]`     | `/en/news/[slug]`     |
 | Categoría | `/category/[slug]` | `/en/category/[slug]` |
-| Búsqueda | `/search` | `/en/search` |
+| Búsqueda  | `/search`          | `/en/search`          |
 
 ### 4.6 Metadata SEO — locale-aware
 
@@ -194,12 +195,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 
 ### 5.1 Rendering por Página (sin cambios)
 
-| Página | Estrategia | Estado |
-|---|---|---|
-| `/[locale]` | SSG | Sin cambio |
-| `/[locale]/news/[slug]` | SSG + generateStaticParams | Sin cambio |
+| Página                      | Estrategia                 | Estado     |
+| --------------------------- | -------------------------- | ---------- |
+| `/[locale]`                 | SSG                        | Sin cambio |
+| `/[locale]/news/[slug]`     | SSG + generateStaticParams | Sin cambio |
 | `/[locale]/category/[slug]` | SSG + generateStaticParams | Sin cambio |
-| `/[locale]/search` | CSR shell + `SearchClient` | Sin cambio |
+| `/[locale]/search`          | CSR shell + `SearchClient` | Sin cambio |
 
 ### 5.2 Flujo de Datos (sin cambios)
 
@@ -271,34 +272,41 @@ src/
 
 ### 7.1 Mapa de Rutas (sin cambios estructurales)
 
-| Ruta ES | Ruta EN | Archivo | Tipo | Auth | Indexable |
-|---|---|---|---|---|---|
-| `/` | `/en` | `app/[locale]/page.tsx` | SSG | No | Sí |
-| `/news/[slug]` | `/en/news/[slug]` | `app/[locale]/news/[slug]/page.tsx` | SSG | No | Sí |
-| `/category/[slug]` | `/en/category/[slug]` | `app/[locale]/category/[slug]/page.tsx` | SSG | No | Sí |
-| `/search` | `/en/search` | `app/[locale]/search/page.tsx` | CSR | No | No |
+| Ruta ES            | Ruta EN               | Archivo                                 | Tipo | Auth | Indexable |
+| ------------------ | --------------------- | --------------------------------------- | ---- | ---- | --------- |
+| `/`                | `/en`                 | `app/[locale]/page.tsx`                 | SSG  | No   | Sí        |
+| `/news/[slug]`     | `/en/news/[slug]`     | `app/[locale]/news/[slug]/page.tsx`     | SSG  | No   | Sí        |
+| `/category/[slug]` | `/en/category/[slug]` | `app/[locale]/category/[slug]/page.tsx` | SSG  | No   | Sí        |
+| `/search`          | `/en/search`          | `app/[locale]/search/page.tsx`          | CSR  | No   | No        |
 
 ### 7.2 Cambios por Página
 
 #### `app/[locale]/page.tsx` (Home)
+
 **Cambio**: `generateMetadata` → usar `getTranslations({ locale, namespace: "home.meta" })` en lugar de strings hardcodeados.
 
 #### `app/[locale]/layout.tsx`
+
 **Cambio**: Inyectar JSON-LD WebSite via `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />` en el `<body>` del layout, no solo exportarlo como variable.
 
 #### `app/[locale]/error.tsx`
+
 **Cambio**: Añadir `"use client"`. Usar `useTranslations("common.errors")` para todos los textos. Usar `t("generic")` y `t("genericDescription")` y `t("retry")`.
 
 #### `app/not-found.tsx`
+
 **Cambio**: Archivo global sin contexto de locale. Usar texto español hardcoded con comentario explicativo, O mover a `app/[locale]/not-found.tsx`. Decisión: mover a `[locale]` para poder usar i18n. Eliminar el global `not-found.tsx` o dejarlo como fallback mínimo.
 
 #### `app/[locale]/search/page.tsx`
+
 **Cambio**:
+
 1. `generateMetadata` → usar `getTranslations({ locale, namespace: "search.meta" })`.
 2. Pasar `initialSince` prop (parseado de `searchParams.since`) a `SearchClient`.
 3. Fallback de Suspense → usar clave i18n `search.loadingFallback`.
 
 #### `app/[locale]/category/[slug]/page.tsx`
+
 **Cambio**: Delegar renderizado de artículos a `<CategoryClient articles={articles} />` para habilitar filtrado client-side de tags.
 
 ---
@@ -306,18 +314,22 @@ src/
 ## 8. Catálogo de Componentes — Cambios
 
 ### `<Navbar />`
+
 **Archivo**: `src/components/layout/navbar.tsx`
 **Tipo**: Client Component
 **Cambios**:
+
 - Añadir `web-dev` y `security` a `NAV_ITEMS` → 7 categorías total.
 - `aria-label` del botón mobile menu → `t("common.navigation.openMenu")` / `t("common.navigation.closeMenu")` según estado.
 
 **Claves i18n añadidas**: `common.navigation.openMenu`, `common.navigation.closeMenu`
 
 ### `<Footer />`
+
 **Archivo**: `src/components/layout/footer.tsx`
 **Tipo**: Server Component
 **Cambios**:
+
 - "Plataforma" → `t("common.footer.platformLabel")`
 - "Conecta" → `t("common.footer.connectLabel")`
 - Links newsletter/RSS/social → usar claves `common.footer.newsletterLink`, `common.footer.rssLink`, etc.
@@ -325,21 +337,25 @@ src/
 **Claves i18n añadidas**: `common.footer.platformLabel`, `common.footer.connectLabel`, `common.footer.newsletterLink`, `common.footer.rssLink`, `common.footer.twitterLink`, `common.footer.githubLink`
 
 ### `<ThemeToggle />`
+
 **Archivo**: `src/components/layout/theme-toggle.tsx`
 **Tipo**: Client Component
 **Cambio**: `aria-label="Cambiar tema"` → `t("common.theme.toggle")` (clave ya existe, solo falta usarla).
 
 ### `<FeaturedHero />`
+
 **Archivo**: `src/components/news/featured-hero.tsx`
 **Tipo**: Client Component
 **Cambio**: "MIN READ" → `t("article.labels.minRead")` (clave existe).
 
 ### `<NewsCard />`
+
 **Archivo**: `src/components/news/news-card.tsx`
 **Tipo**: Client Component
 **Cambio**: "min" → `t("article.labels.minRead")` (clave existe).
 
 ### `<ArticleContent />`
+
 **Archivo**: `src/components/news/article-content.tsx`
 **Tipo**: Server Component
 **Cambio**: Añadir `rehypeAutolinkHeadings` al array de `rehypePlugins` junto a `rehypeSlug`. Plugin ya instalado.
@@ -350,6 +366,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 ```
 
 ### `<TableOfContents />`
+
 **Archivo**: `src/components/news/table-of-contents.tsx`
 **Tipo**: Client Component
 **Cambio**: "EN ESTE ARTÍCULO" → `t("article.toc.title")`.
@@ -357,6 +374,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 **Clave nueva**: `article.toc.title`
 
 ### `<ShareBar />`
+
 **Archivo**: `src/components/news/share-bar.tsx`
 **Tipo**: Client Component
 **Cambio**: Todos los textos y aria-labels → `useTranslations("article.share")`.
@@ -364,6 +382,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 **Claves nuevas**: `article.share.label`, `article.share.twitter`, `article.share.linkedin`, `article.share.copyLink`, `article.share.copied`
 
 ### `<RelatedArticles />`
+
 **Archivo**: `src/components/news/related-articles.tsx`
 **Tipo**: Server Component
 **Cambio**: "// RELACIONADOS" → `t("article.related.title")` via `getTranslations`.
@@ -371,15 +390,18 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 **Clave nueva**: `article.related.title`
 
 ### `<TrendingList />`
+
 **Archivo**: `src/components/news/trending-list.tsx`
 **Tipo**: Server Component
 **Cambio**:
+
 - "// TRENDING_NOW" → `t("trending.title")`
 - "reads" → `t("trending.reads")`
 
 **Claves nuevas**: `trending.title`, `trending.reads`
 
 ### `<NewsletterForm />`
+
 **Archivo**: `src/components/sidebar/newsletter-form.tsx`
 **Tipo**: Client Component
 **Reescritura completa**:
@@ -433,6 +455,7 @@ export function NewsletterForm() {
 **Verificar**: `@hookform/resolvers` instalado. Si no → `npm install @hookform/resolvers`.
 
 ### `<AIToolsList />`
+
 **Archivo**: `src/components/sidebar/ai-tools-list.tsx`
 **Tipo**: Server Component
 **Cambio**: "// IA TOOLBENCH" → `t("sidebar.toolbench.title")`.
@@ -440,6 +463,7 @@ export function NewsletterForm() {
 **Clave nueva**: `sidebar.toolbench.title`
 
 ### `<PopularTags />`
+
 **Archivo**: `src/components/sidebar/popular-tags.tsx`
 **Tipo**: Server Component
 **Cambio**: "// CORE TAGS" → `t("sidebar.tags.title")`.
@@ -447,9 +471,11 @@ export function NewsletterForm() {
 **Clave nueva**: `sidebar.tags.title`
 
 ### `<SearchClient />`
+
 **Archivo**: `src/components/search/search-client.tsx`
 **Tipo**: Client Component
 **Cambios**:
+
 1. Input placeholder: `t("search.placeholder")` (existe, sin usar).
 2. "Todas" button: `t("common.actions.filterAll")` (existe, sin usar).
 3. Resultados count: `t("search.results", { count })` (existe, sin usar).
@@ -460,23 +486,26 @@ export function NewsletterForm() {
 8. Pasar `sinceDays` a `searchNews()`.
 
 **Props actualizadas**:
+
 ```typescript
 interface SearchClientProps {
   initialQuery?: string;
   initialCategory?: string;
   initialTag?: string;
-  initialSince?: number;        // NUEVO
+  initialSince?: number; // NUEVO
 }
 ```
 
 **Claves usadas**: `search.filters.date`, `search.filters.anyTime`, `search.filters.last7Days`, `search.filters.last30Days`, `search.filters.last90Days` (todas existen en messages).
 
 ### `<CategoryClient />` (NUEVO)
+
 **Archivo**: `src/components/category/category-client.tsx`
 **Tipo**: Client Component
 **Responsabilidad**: Recibe todos los artículos de una categoría. Permite filtrar por tag. Renderiza paginación simple (opcional para MVP).
 
 **Props**:
+
 ```typescript
 interface CategoryClientProps {
   articles: NewsArticle[];
@@ -484,10 +513,12 @@ interface CategoryClientProps {
 ```
 
 **Estado**:
+
 - `selectedTag: string | null` — tag activo
 - `currentPage: number` — página actual (opcional)
 
 **Comportamiento**:
+
 1. Extraer tags únicos de `articles`.
 2. Mostrar chips de tags clickeables.
 3. Filtrar `articles` por `selectedTag` si hay uno seleccionado.
@@ -497,6 +528,7 @@ interface CategoryClientProps {
 **Claves usadas**: `category.filter`, `category.filterAll`, `category.otherTagsLabel`
 
 ### `formatDate` y `relativeTime` (lib/format.ts)
+
 **Cambio**: Añadir parámetro `locale: string` a ambas funciones.
 
 ```typescript
@@ -522,13 +554,13 @@ Para `relativeTime`: misma firma, pasar `locale` a llamada interna de `formatDat
 
 ## 9. Gestión de Estado
 
-| Estado | Alcance | Tecnología | Ubicación |
-|---|---|---|---|
-| Locale activo | Global | next-intl auto | middleware |
-| Tema | Global persistido | next-themes | `ThemeProvider` |
-| Search query/filters | URL + local | `useState` + `router.replace` | `SearchClient` |
-| Category tag filter | Local | `useState` | `CategoryClient` |
-| Newsletter form | Local | react-hook-form | `NewsletterForm` |
+| Estado               | Alcance           | Tecnología                    | Ubicación        |
+| -------------------- | ----------------- | ----------------------------- | ---------------- |
+| Locale activo        | Global            | next-intl auto                | middleware       |
+| Tema                 | Global persistido | next-themes                   | `ThemeProvider`  |
+| Search query/filters | URL + local       | `useState` + `router.replace` | `SearchClient`   |
+| Category tag filter  | Local             | `useState`                    | `CategoryClient` |
+| Newsletter form      | Local             | react-hook-form               | `NewsletterForm` |
 
 Sin cambios de arquitectura de estado. Sin stores globales nuevos.
 
@@ -547,6 +579,7 @@ const formattedDate = formatDate(article.publishedAt, locale);
 ```
 
 En Client Components donde se usan fechas:
+
 ```typescript
 const locale = useLocale(); // next-intl
 const formattedDate = formatDate(article.publishedAt, locale);
@@ -558,18 +591,19 @@ const formattedDate = formatDate(article.publishedAt, locale);
 
 ### 11.1 Metadata por Página — Estado Objetivo
 
-| Página | Cambio |
-|---|---|
-| Home | `generateMetadata` usa `home.meta.title`, `home.meta.description` |
-| Search | `generateMetadata` usa `search.meta.title`, `search.meta.description` |
+| Página   | Cambio                                                                                   |
+| -------- | ---------------------------------------------------------------------------------------- |
+| Home     | `generateMetadata` usa `home.meta.title`, `home.meta.description`                        |
+| Search   | `generateMetadata` usa `search.meta.title`, `search.meta.description`                    |
 | Category | Nombres de categorías → siempre en español (mock-data constraint) — sin cambio funcional |
-| Article | Sin cambio — ya correcto |
+| Article  | Sin cambio — ya correcto                                                                 |
 
 ### 11.2 JSON-LD WebSite — Corrección
 
 Estado actual: `websiteSchema` definido en `layout.tsx` pero no inyectado en JSX.
 
 Estado objetivo:
+
 ```typescript
 // app/[locale]/layout.tsx — en el return JSX
 <body>
@@ -609,12 +643,12 @@ Ya implementado correctamente via `alternates.languages` en `generateMetadata` d
 
 ### 15.1 Métricas Objetivo
 
-| Métrica | Target |
-|---|---|
-| LCP | < 2.5s |
-| CLS | < 0.1 |
-| Lighthouse Performance | > 90 |
-| Lighthouse SEO | > 95 (mantener) |
+| Métrica                | Target          |
+| ---------------------- | --------------- |
+| LCP                    | < 2.5s          |
+| CLS                    | < 0.1           |
+| Lighthouse Performance | > 90            |
+| Lighthouse SEO         | > 95 (mantener) |
 
 ### 15.2 Impacto de Cambios
 
@@ -628,6 +662,7 @@ Ya implementado correctamente via `alternates.languages` en `generateMetadata` d
 ## 16. Estilos
 
 Sin cambios en sistema de estilos. Tailwind CSS + shadcn CSS variables en `src/styles.css`. Convenciones de `cod_style.md`:
+
 - PascalCase para componentes.
 - camelCase para variables/funciones.
 - Clases Tailwind directamente en JSX — sin CSS modules adicionales.
@@ -639,13 +674,13 @@ Sin cambios en sistema de estilos. Tailwind CSS + shadcn CSS variables en `src/s
 
 ## 17. Accesibilidad
 
-| Componente | Cambio A11y |
-|---|---|
-| `<Navbar />` | aria-label mobile button → locale-aware |
-| `<ThemeToggle />` | aria-label → `t("common.theme.toggle")` |
-| `<ShareBar />` | aria-labels → i18n |
-| `<NewsletterForm />` | `aria-invalid`, `role="alert"` en error, noValidate |
-| `<SearchClient />` | date filter → `role="radiogroup"` o `<select>` con label i18n |
+| Componente           | Cambio A11y                                                   |
+| -------------------- | ------------------------------------------------------------- |
+| `<Navbar />`         | aria-label mobile button → locale-aware                       |
+| `<ThemeToggle />`    | aria-label → `t("common.theme.toggle")`                       |
+| `<ShareBar />`       | aria-labels → i18n                                            |
+| `<NewsletterForm />` | `aria-invalid`, `role="alert"` en error, noValidate           |
+| `<SearchClient />`   | date filter → `role="radiogroup"` o `<select>` con label i18n |
 
 WCAG 2.1 AA — mantener nivel actual.
 
@@ -663,11 +698,11 @@ app/layout.tsx (root)
 
 ### 18.2 Tipos de Error
 
-| Tipo | Componente | Cambio |
-|---|---|---|
-| 404 | `app/[locale]/not-found.tsx` | Mover a locale context, usar i18n |
-| Crítico | `app/[locale]/error.tsx` | Usar `useTranslations("common.errors")` |
-| Form validation | `NewsletterForm` | `react-hook-form` errors + `role="alert"` |
+| Tipo            | Componente                   | Cambio                                    |
+| --------------- | ---------------------------- | ----------------------------------------- |
+| 404             | `app/[locale]/not-found.tsx` | Mover a locale context, usar i18n         |
+| Crítico         | `app/[locale]/error.tsx`     | Usar `useTranslations("common.errors")`   |
+| Form validation | `NewsletterForm`             | `react-hook-form` errors + `role="alert"` |
 
 ---
 
@@ -681,15 +716,16 @@ Sin cambios. Toda la data es mock estático.
 
 ### 20.1 Estrategia
 
-| Nivel | Tool | Cambios necesarios |
-|---|---|---|
-| Unit | Vitest | Actualizar tests de `format.ts` para nuevo parámetro `locale` |
+| Nivel     | Tool            | Cambios necesarios                                                                           |
+| --------- | --------------- | -------------------------------------------------------------------------------------------- |
+| Unit      | Vitest          | Actualizar tests de `format.ts` para nuevo parámetro `locale`                                |
 | Component | Testing Library | Añadir tests para `NewsletterForm` (rhf+zod), `CategoryClient`, `SearchClient` (date filter) |
-| E2E | Playwright | Añadir `@playwright/test` a package.json devDependencies |
+| E2E       | Playwright      | Añadir `@playwright/test` a package.json devDependencies                                     |
 
 ### 20.2 Tests Nuevos Requeridos
 
 **Unit: `format.test.ts`** — añadir casos para locale `"en"`:
+
 ```typescript
 it("formatDate en locale en retorna formato en-US", () => {
   const result = formatDate("2024-01-15T00:00:00Z", "en");
@@ -698,6 +734,7 @@ it("formatDate en locale en retorna formato en-US", () => {
 ```
 
 **Component: `newsletter-form.test.tsx`**:
+
 ```
 Given: NewsletterForm renderizado con locale es
 When: submit con email inválido
@@ -707,6 +744,7 @@ Then: llama toast.success con t("newsletter.success")
 ```
 
 **Component: `category-client.test.tsx`**:
+
 ```
 Given: CategoryClient con 3 artículos de 2 tags distintos
 When: click en tag X
@@ -718,6 +756,7 @@ Then: muestra todos los artículos
 ### 20.3 Tests E2E Existentes
 
 No deben romperse. Verificar tras cada cambio:
+
 - `e2e/navigation.spec.ts` — sin cambios esperados
 - `e2e/search.spec.ts` — verificar que filtro de fecha no rompe tests actuales
 - `e2e/seo.spec.ts` — verificar JSON-LD WebSite test pasa correctamente tras corrección
@@ -735,12 +774,12 @@ ADS_TXT_CONTENT=
 
 ## 22. Decisiones Técnicas
 
-| Decisión | Alternativas | Elegida | Por qué |
-|---|---|---|---|
-| Locale en formatDate | date-fns completo, Intl.DateTimeFormat | `toLocaleDateString` con locale mapeado + date-fns solo para relativeTime | date-fns ya instalado; `toLocaleDateString` suficiente para formatDate |
-| not-found.tsx | Mantener global hardcoded, mover a [locale] | Mover a `[locale]/not-found.tsx` | Permite i18n real; elimina texto hardcoded |
-| CategoryClient pagination | Paginación real SSG, infinite scroll, simple | Filtro de tags únicamente (sin paginación) | KISS — máx 13 artículos por categoría actualmente |
-| pt-BR/ja/ko | No añadir, añadir vacíos | Scaffold vacíos + añadir a locales | No bloquear futura impl.; costo mínimo |
+| Decisión                  | Alternativas                                 | Elegida                                                                   | Por qué                                                                |
+| ------------------------- | -------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Locale en formatDate      | date-fns completo, Intl.DateTimeFormat       | `toLocaleDateString` con locale mapeado + date-fns solo para relativeTime | date-fns ya instalado; `toLocaleDateString` suficiente para formatDate |
+| not-found.tsx             | Mantener global hardcoded, mover a [locale]  | Mover a `[locale]/not-found.tsx`                                          | Permite i18n real; elimina texto hardcoded                             |
+| CategoryClient pagination | Paginación real SSG, infinite scroll, simple | Filtro de tags únicamente (sin paginación)                                | KISS — máx 13 artículos por categoría actualmente                      |
+| pt-BR/ja/ko               | No añadir, añadir vacíos                     | Scaffold vacíos + añadir a locales                                        | No bloquear futura impl.; costo mínimo                                 |
 
 ---
 

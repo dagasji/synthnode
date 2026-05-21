@@ -1,10 +1,12 @@
 import { ArrowUpRight } from "lucide-react";
 import { aiTools } from "@/lib/mock-data";
+import { getTranslations } from "next-intl/server";
 
-export function AIToolsList() {
+export async function AIToolsList() {
+  const t = await getTranslations("sidebar.toolbench");
   return (
     <div>
-      <h3 className="label-mono text-muted-foreground mb-4">// IA TOOLBENCH</h3>
+      <h3 className="label-mono text-muted-foreground mb-4">// {t("title")}</h3>
       <div className="space-y-1">
         {aiTools.map((t) => (
           <a

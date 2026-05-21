@@ -1,11 +1,13 @@
 import Link from "next/link";
 import type { NewsArticle } from "@/lib/types";
 import { formatViews } from "@/lib/format";
+import { getTranslations } from "next-intl/server";
 
-export function TrendingList({ items }: { items: NewsArticle[] }) {
+export async function TrendingList({ items }: { items: NewsArticle[] }) {
+  const t = await getTranslations("trending");
   return (
     <div>
-      <h3 className="label-mono text-muted-foreground mb-5">// TRENDING_NOW</h3>
+      <h3 className="label-mono text-muted-foreground mb-5">// {t("title")}</h3>
       <ol className="space-y-6">
         {items.map((a, i) => (
           <li key={a.slug} className="flex gap-4 group">
@@ -17,7 +19,7 @@ export function TrendingList({ items }: { items: NewsArticle[] }) {
                 {a.title}
               </p>
               <p className="text-xs text-muted-foreground mt-1 font-mono">
-                {formatViews(a.views)} reads
+                {formatViews(a.views)} {t("reads")}
               </p>
             </Link>
           </li>

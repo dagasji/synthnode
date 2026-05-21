@@ -3,11 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
 import type { NewsArticle } from "@/lib/types";
 import { CategoryBadge } from "./category-badge";
 import { formatDate } from "@/lib/format";
 
 export function FeaturedHero({ article }: { article: NewsArticle }) {
+  const locale = useLocale();
+  const t = useTranslations("article.labels");
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
@@ -32,11 +35,11 @@ export function FeaturedHero({ article }: { article: NewsArticle }) {
           <CategoryBadge slug={article.category} asLink={false} />
           <span className="text-muted-foreground">/</span>
           <span className="label-mono text-muted-foreground">
-            {article.readingMinutes} MIN READ
+            {article.readingMinutes} {t("minRead")}
           </span>
           <span className="text-muted-foreground">/</span>
           <span className="label-mono text-muted-foreground">
-            {formatDate(article.publishedAt)}
+            {formatDate(article.publishedAt, locale)}
           </span>
         </div>
         <Link href={`/news/${article.slug}`}>

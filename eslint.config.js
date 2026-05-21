@@ -8,7 +8,7 @@ import next from "@next/eslint-plugin-next";
 export default tseslint.config(
   { ignores: ["dist", ".next", ".output"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, ...next.configs.recommended],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2022,

@@ -3,13 +3,16 @@
     "navigation": {
       "home": "Home",
       "search": "Search",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "allCategories": "All categories",
       "categories": {
         "ai": "Artificial Intelligence",
         "programming": "Programming",
-        "webDev": "Web Development",
+        "web-dev": "Web Development",
         "devops": "DevOps",
         "startups": "Startups",
-        "openSource": "Open Source",
+        "open-source": "Open Source",
         "security": "Cybersecurity"
       }
     },
@@ -30,7 +33,13 @@
     "footer": {
       "tagline": "Independent publication on AI, programming and the next infrastructure.",
       "copyright": "© 2026 SYNTHNODE",
-      "sectionsLabel": "SECTIONS"
+      "sectionsLabel": "SECTIONS",
+      "platformLabel": "Platform",
+      "connectLabel": "Connect",
+      "newsletterLink": "Newsletter",
+      "rssLink": "RSS Feed",
+      "twitterLink": "Twitter",
+      "githubLink": "GitHub"
     },
     "meta": {
       "siteName": "SYNTHNODE",
@@ -65,6 +74,19 @@
       "likes": "likes",
       "tags": "TAGS",
       "category": "CATEGORY"
+    },
+    "toc": {
+      "title": "In this article"
+    },
+    "share": {
+      "label": "Share",
+      "twitter": "Share on X",
+      "linkedin": "Share on LinkedIn",
+      "copyLink": "Copy link",
+      "copied": "Link copied"
+    },
+    "related": {
+      "title": "Related"
     }
   },
   "category": {
@@ -83,6 +105,18 @@
     "success": "Subscribed! Check your inbox.",
     "error": "Something went wrong. Please try again."
   },
+  "trending": {
+    "title": "Trending",
+    "reads": "reads"
+  },
+  "sidebar": {
+    "toolbench": {
+      "title": "IA Toolbench"
+    },
+    "tags": {
+      "title": "Core Tags"
+    }
+  },
   "search": {
     "meta": {
       "title": "Search — SYNTHNODE",
@@ -94,6 +128,7 @@
     "placeholder": "Search news, tags, authors…",
     "results": "{count, plural, one {# result} other {# results}}",
     "noResults": "No results. Try removing filters or changing your search.",
+    "loadingFallback": "Loading…",
     "filters": {
       "category": "CATEGORY",
       "allCategories": "All",

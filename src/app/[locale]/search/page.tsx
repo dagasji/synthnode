@@ -3,18 +3,23 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SearchClient } from "@/components/search/search-client";
 
-export const metadata: Metadata = {
-  title: "Buscar — SYNTHNODE",
-  description: "Búsqueda en tiempo real sobre todo el archivo de SYNTHNODE.",
-  robots: { index: false, follow: false },
-};
-
 interface Props {
-  searchParams: Promise<{ q?: string; category?: string; tag?: string }>;
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ q?: string; category?: string; tag?: string; since?: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "search.meta" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function SearchPage({ searchParams }: Props) {
-  const { q = "", category = "all", tag = "" } = await searchParams;
+  const { q = "", category = "all", tag = "", since = "all" } = await searchParams;
   const t = await getTranslations("search");
 
   return (
@@ -25,8 +30,15 @@ export default async function SearchPage({ searchParams }: Props) {
         <p className="text-muted-foreground">{t("subtitle")}</p>
       </header>
 
-      <Suspense fallback={<div className="label-mono text-muted-foreground">Cargando…</div>}>
-        <SearchClient initialQuery={q} initialCategory={category} initialTag={tag} />
+      <Suspense
+        fallback={<div className="label-mono text-muted-foreground">{t("loadingFallback")}</div>}
+      >
+        <SearchClient
+          initialQuery={q}
+          initialCategory={category}
+          initialTag={tag}
+          initialSince={since}
+        />
       </Suspense>
     </div>
   );

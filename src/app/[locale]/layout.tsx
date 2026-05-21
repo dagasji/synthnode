@@ -8,15 +8,6 @@ import { Footer } from "@/components/layout/footer";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
 
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "SYNTHNODE",
-  description:
-    "Noticias e investigación sobre IA, programación, DevOps, ciberseguridad y startups técnicas.",
-  url: BASE_URL,
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
@@ -36,9 +27,22 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const { locale } = await params;
   const messages = await getMessages();
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "SYNTHNODE",
+    description:
+      "Noticias e investigación sobre IA, programación, DevOps, ciberseguridad y startups técnicas.",
+    url: BASE_URL,
+  };
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-1">{children}</main>
@@ -48,5 +52,3 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     </NextIntlClientProvider>
   );
 }
-
-export { websiteSchema };

@@ -15,6 +15,16 @@ describe("formatDate", () => {
   it("returns a string for any valid ISO date", () => {
     expect(typeof formatDate("2020-01-01T00:00:00Z")).toBe("string");
   });
+
+  it("formats date in English locale", () => {
+    const result = formatDate("2024-01-15T00:00:00Z", "en");
+    expect(result).toMatch(/Jan/);
+  });
+
+  it("formats date in Spanish locale", () => {
+    const result = formatDate("2024-01-15T00:00:00Z", "es");
+    expect(result).toMatch(/ene/);
+  });
 });
 
 describe("formatViews", () => {
@@ -42,5 +52,11 @@ describe("relativeTime", () => {
     const result = relativeTime(oldDate);
     // Should fall back to formatDate — contains a year
     expect(result).toMatch(/\d{4}/);
+  });
+
+  it("returns English relative time with 'ago' suffix", () => {
+    const recentDate = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+    const result = relativeTime(recentDate, "en");
+    expect(result).toContain("ago");
   });
 });

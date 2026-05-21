@@ -126,7 +126,7 @@ export default async function ArticlePage({ params }: Props) {
                 <span className="font-medium text-foreground">{article.author.name}</span>
               </div>
               <span>·</span>
-              <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+              <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, locale)}</time>
               <span>·</span>
               <span className="font-mono">
                 {article.views.toLocaleString()} {t("labels.views")}

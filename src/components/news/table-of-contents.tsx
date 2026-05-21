@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface TocItem {
   id: string;
@@ -30,6 +31,7 @@ export function buildToc(markdown: string): TocItem[] {
 }
 
 export function TableOfContents({ markdown }: { markdown: string }) {
+  const t = useTranslations("article.toc");
   const items = buildToc(markdown);
   const [active, setActive] = useState<string | null>(items[0]?.id ?? null);
 
@@ -53,7 +55,7 @@ export function TableOfContents({ markdown }: { markdown: string }) {
 
   return (
     <nav>
-      <h5 className="label-mono text-brand mb-3">EN ESTE ARTÍCULO</h5>
+      <h5 className="label-mono text-brand mb-3">{t("title")}</h5>
       <ul className="space-y-2 text-sm border-l border-border">
         {items.map((it) => (
           <li key={it.id} className={it.level === 3 ? "pl-4" : ""}>

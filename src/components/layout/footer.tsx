@@ -35,7 +35,7 @@ export async function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="label-mono text-foreground mb-3">Plataforma</h4>
+            <h4 className="label-mono text-foreground mb-3">{t("footer.platformLabel")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/search" className="hover:text-foreground">
@@ -44,27 +44,27 @@ export async function Footer() {
               </li>
               <li>
                 <a className="hover:text-foreground" href="#">
-                  Newsletter
+                  {t("footer.newsletterLink")}
                 </a>
               </li>
               <li>
                 <a className="hover:text-foreground" href="#">
-                  RSS
+                  {t("footer.rssLink")}
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="label-mono text-foreground mb-3">Conecta</h4>
+            <h4 className="label-mono text-foreground mb-3">{t("footer.connectLabel")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <a className="hover:text-foreground" href="#">
-                  X / Twitter
+                  {t("footer.twitterLink")}
                 </a>
               </li>
               <li>
                 <a className="hover:text-foreground" href="#">
-                  GitHub
+                  {t("footer.githubLink")}
                 </a>
               </li>
               <li>

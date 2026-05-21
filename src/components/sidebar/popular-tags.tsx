@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { getAllTags } from "@/lib/mock-data";
+import { getTranslations } from "next-intl/server";
 
-export function PopularTags() {
+export async function PopularTags() {
   const tags = getAllTags().slice(0, 12);
+  const t = await getTranslations("sidebar.tags");
   return (
     <div>
-      <h3 className="label-mono text-muted-foreground mb-4">// CORE TAGS</h3>
+      <h3 className="label-mono text-muted-foreground mb-4">// {t("title")}</h3>
       <div className="flex flex-wrap gap-2">
         {tags.map(({ tag }) => (
           <Link

@@ -109,7 +109,8 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
 export const news: NewsArticle[] = [
   {
     slug: "codegraph-grafo-conocimiento-94-menos-tool-calls",
-    title: "CodeGraph: El grafo de conocimiento que reduce en un 92% las llamadas de herramientas en agentes de código",
+    title:
+      "CodeGraph: El grafo de conocimiento que reduce en un 92% las llamadas de herramientas en agentes de código",
     excerpt:
       "Pre-indexa tu codebase con un grafo semántico local. Claude Code, Cursor, Codex y OpenCode ganan 71% de velocidad en exploración.",
     content: `Explorar un codebase con OpenCode, Windsurf o Claude Code puede convertirse muy rápido en una pequeña búsqueda del tesoro: el agente va probando con grep, glob y Read mientras consume tokens en cada paso. Antes de llegar a la parte útil, primero toca encontrar dónde vive cada cosa.

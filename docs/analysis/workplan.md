@@ -22,6 +22,7 @@
 **Objetivo**: Añadir todas las claves faltantes a `es.json` y `en.json` antes de modificar componentes.
 
 **Entregables**:
+
 - `messages/es.json` con todas las claves nuevas
 - `messages/en.json` con todas las claves nuevas (traducidas al inglés)
 - `messages/pt-BR.json`, `messages/ja.json`, `messages/ko.json` scaffolded vacíos
@@ -68,6 +69,7 @@
   - `→ design.md §4.2`
 
 **Verificación Fase 1**:
+
 - `node -e "require('./src/messages/es.json')"` → OK
 - `node -e "require('./src/messages/en.json')"` → OK
 - `diff <(jq -Sr 'paths(scalars) as $p | $p | join(".")' src/messages/es.json | sort) <(jq -Sr 'paths(scalars) as $p | $p | join(".")' src/messages/en.json | sort)` → sin diferencias
@@ -79,6 +81,7 @@
 **Objetivo**: `formatDate` y `relativeTime` aceptan parámetro `locale` y formatean correctamente para es/en.
 
 **Entregables**:
+
 - `src/lib/format.ts` actualizado
 - Todos los call sites actualizados para pasar locale
 - Tests unitarios de `format.ts` actualizados y pasando
@@ -245,6 +248,7 @@
   - `→ design.md §8 (TrendingList)`
 
 **Verificación Fase 5**:
+
 - `npm run dev` → artículo en `/en/news/[slug]` muestra todos los textos en inglés
 - `npm run lint` → sin errores
 - `npm run type-check` → sin errores
@@ -440,12 +444,14 @@ Fases 3, 4 y 5 son ejecutables en paralelo una vez completada Fase 1 (y Fase 2 p
 ## Checklist Final
 
 **i18n**
+
 - [ ] Cero texto hardcoded: `grep -r "aria-label=\"[^{]" src/components/` → solo valores dinámicos
 - [ ] `diff <(jq -Sr 'paths(scalars) as $p | $p | join(".")' src/messages/es.json | sort) <(jq -Sr 'paths(scalars) as $p | $p | join(".")' src/messages/en.json | sort)` → sin diferencias
 - [ ] `/en` muestra contenido de UI en inglés
 - [ ] Fechas en `/en/news/[slug]` en formato inglés
 
 **SEO y archivos críticos**
+
 - [ ] `curl http://localhost:3000/robots.txt` → 200, contiene "User-agent" y "Sitemap"
 - [ ] `curl http://localhost:3000/sitemap.xml` → 200, XML válido con URLs
 - [ ] `curl http://localhost:3000/ads.txt` → 200
@@ -453,6 +459,7 @@ Fases 3, 4 y 5 son ejecutables en paralelo una vez completada Fase 1 (y Fase 2 p
 - [ ] `curl -s http://localhost:3000/en/news/[slug] | grep 'NewsArticle'` → presente (JSON-LD)
 
 **Funcionalidad**
+
 - [ ] Nav muestra 7 categorías (incluye web-dev y security)
 - [ ] Filtro de fecha en `/search` funciona
 - [ ] Filtro de tags en `/category/[slug]` funciona
@@ -460,6 +467,7 @@ Fases 3, 4 y 5 son ejecutables en paralelo una vez completada Fase 1 (y Fase 2 p
 - [ ] Headings de artículos tienen links anchor (`rehype-autolink-headings`)
 
 **Calidad**
+
 - [ ] `npm run type-check` → 0 errores
 - [ ] `npm run lint` → 0 warnings
 - [ ] `npm test` → todos pasan

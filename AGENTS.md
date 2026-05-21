@@ -73,16 +73,17 @@ e2e/                      # Playwright E2E tests
 
 ## Environment Variables
 
-| Variable | Purpose | Default |
-|---|---|---|
+| Variable               | Purpose                                  | Default                 |
+| ---------------------- | ---------------------------------------- | ----------------------- |
 | `NEXT_PUBLIC_BASE_URL` | Absolute URL for sitemap/robots/metadata | `http://localhost:3000` |
-| `ADS_TXT_CONTENT` | Content served at `/ads.txt` | (empty) |
+| `ADS_TXT_CONTENT`      | Content served at `/ads.txt`             | (empty)                 |
 
 `.env.local` is committed with safe localhost defaults. No env setup needed for local dev.
 
 ## Style Conventions
 
 Defined in `cod_style.md` (Spanish):
+
 - SOLID / DRY / KISS / YAGNI
 - Prefer local state; avoid Redux
 - Always handle loading, error, and empty states

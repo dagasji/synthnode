@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
 import type { NewsArticle } from "@/lib/types";
 import { CategoryBadge } from "./category-badge";
 import { formatDate } from "@/lib/format";
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export function NewsCard({ article, size = "md", index = 0 }: Props) {
+  const locale = useLocale();
+  const t = useTranslations("article.labels");
   return (
     <motion.article
       initial={{ opacity: 0, y: 12 }}
@@ -40,7 +43,9 @@ export function NewsCard({ article, size = "md", index = 0 }: Props) {
         <div className="flex items-center gap-3">
           <CategoryBadge slug={article.category} />
           <span className="label-mono text-muted-foreground">·</span>
-          <span className="label-mono text-muted-foreground">{article.readingMinutes} min</span>
+          <span className="label-mono text-muted-foreground">
+            {article.readingMinutes} {t("minRead")}
+          </span>
         </div>
         <Link href={`/news/${article.slug}`}>
           <h3
@@ -62,7 +67,7 @@ export function NewsCard({ article, size = "md", index = 0 }: Props) {
             style={{ background: article.author.avatarColor }}
           />
           <span className="text-xs text-muted-foreground">
-            {article.author.name} · {formatDate(article.publishedAt)}
+            {article.author.name} · {formatDate(article.publishedAt, locale)}
           </span>
         </div>
       </div>

@@ -10,9 +10,11 @@ import { ThemeToggle } from "./theme-toggle";
 const NAV_ITEMS = [
   { labelKey: "ai", href: "/category/ai" },
   { labelKey: "programming", href: "/category/programming" },
+  { labelKey: "web-dev", href: "/category/web-dev" },
   { labelKey: "devops", href: "/category/devops" },
   { labelKey: "startups", href: "/category/startups" },
-  { labelKey: "openSource", href: "/category/open-source" },
+  { labelKey: "open-source", href: "/category/open-source" },
+  { labelKey: "security", href: "/category/security" },
 ] as const;
 
 export function Navbar() {
@@ -65,7 +67,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             className="lg:hidden size-9 inline-flex items-center justify-center rounded-md border border-border"
-            aria-label="Abrir menú"
+            aria-label={mobileOpen ? t("navigation.closeMenu") : t("navigation.openMenu")}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
           >
