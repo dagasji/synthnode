@@ -1,875 +1,607 @@
-# Diseño Técnico Frontend — SYNTHNODE (Migración Next.js)
+# Diseño Técnico Frontend — SYNTHNODE
 
 > Versión: 1.0
-> Fecha: 2026-05-19
-> Basado en: `docs/specs/00 - Migrate nextjs/requirements_nextjs.md` + `cod_style.md`
+> Fecha: 2026-05-21
+> Basado en: análisis funcional del módulo actual + cod_style.md + generate-design.md
 
 ---
 
 ## 1. Resumen del Proyecto
 
-**Problema**: SYNTHNODE corre sobre TanStack Start + Cloudflare Workers. El stack es no estándar, complejo de mantener y dificulta incorporar nuevos desarrolladores.
+**Problema**: Portal de noticias tecnológicas con i18n incompleta — ~60% de componentes tiene texto hardcoded en español. Fechas siempre en locale `es-ES`. Filtros incompletos. Dead code de migración previa. Formulario newsletter sin validación robusta.
 
-**Solución**: Migrar a Next.js 15 App Router. Mismo producto, mismo contenido, mismo diseño visual. Zero feature regression.
+**Solución**: Completar i18n en todos los componentes, implementar locale-aware date formatting, añadir filtro de fecha en búsqueda, filtros en página de categoría, newsletter con react-hook-form+zod+sonner, eliminar dead code, añadir categorías faltantes en nav, e inyectar correctamente JSON-LD WebSite.
 
-**Alcance**: Migración 1:1 de las 4 rutas existentes (`/`, `/news/[slug]`, `/category/[slug]`, `/search`) al App Router de Next.js. Incluye i18n (es/en), robots.txt, sitemap.xml y ads.txt. No incluye backend ni base de datos.
+**Alcance**: Refactoring y completado del módulo existente. Sin cambio de stack. Sin nuevas páginas. Sin migración de contenido a otro idioma (contenido de mock-data permanece en español — out of scope).
 
 ---
 
 ## 2. Objetivos del Frontend
 
-1. `next build` sin errores ni warnings críticos.
-2. TTFB < 200ms en páginas SSG.
-3. Lighthouse SEO > 95 en todas las rutas públicas.
-4. Lighthouse Performance > 90.
-5. WCAG 2.1 AA — navbar y toggle de tema accesibles por teclado.
-6. i18n ES (default) + EN desde día 1. Añadir locales sin refactoring.
-7. Zero texto hardcoded en componentes.
-8. `npm run type-check` → 0 errores. TypeScript strict.
+1. Cero texto hardcoded en cualquier componente — 100% vía i18n
+2. Fechas y tiempos relativos locale-aware (es/en)
+3. Formulario newsletter con react-hook-form + zod + sonner
+4. Filtro de fecha en SearchClient
+5. Filtro de tags en CategoryClient (client-side)
+6. Nav muestra las 7 categorías completas
+7. JSON-LD WebSite inyectado correctamente en locale layout
+8. Dead code eliminado (error-capture.ts, error-page.ts)
+9. `@playwright/test` en package.json devDependencies
+10. `rehype-autolink-headings` activo en ArticleContent
+11. Lighthouse SEO > 95 mantenido
+12. `npm run type-check` + `npm run lint` sin errores tras cambios
 
 ---
 
 ## 3. Stack Tecnológico
 
-| Tecnología                  | Versión           | Por qué                                              |
-| --------------------------- | ----------------- | ---------------------------------------------------- |
-| Next.js                     | 15.x (App Router) | SSG/SSR nativos, generateMetadata, Server Components |
-| React                       | 19.x              | Versión ya usada en el proyecto                      |
-| TypeScript                  | 5.8 strict        | Ya configurado; mantener consistencia                |
-| next-intl                   | 3.x               | i18n con App Router, SSR/SSG, tipos estrictos        |
-| Tailwind CSS                | 4.x               | Ya configurado; CSS-first, sin tailwind.config.js    |
-| shadcn/ui                   | latest            | Ya presente (46 componentes); actualizar rsc: true   |
-| Framer Motion               | 12.x              | Ya usado en NewsCard y FeaturedHero; mantener        |
-| Fuse.js                     | 7.x               | Búsqueda fuzzy client-side; mantener                 |
-| next-themes                 | 0.4.x             | Ya en el proyecto; compatible con Next.js App Router |
-| react-markdown + remark-gfm | latest            | Renderizado de artículos en markdown; mantener       |
-| zod                         | 3.x               | Validación de search params; mantener                |
-| react-hook-form             | 7.x               | Newsletter form; mantener                            |
-| Vitest + Testing Library    | latest            | Tests unitarios y de componentes                     |
-| Playwright                  | latest            | Tests E2E                                            |
+| Tecnología | Versión actual | Estado |
+|---|---|---|
+| Next.js | ^15.0.0 (App Router) | Sin cambio |
+| React | ^19.2.0 | Sin cambio |
+| TypeScript | ^5.8.3 | Sin cambio |
+| next-intl | ^3.26.5 | Sin cambio — completar uso |
+| next-themes | ^0.4.6 | Sin cambio |
+| framer-motion | ^12.38.0 | Sin cambio |
+| fuse.js | ^7.3.0 | Sin cambio |
+| react-markdown | ^10.1.0 | Sin cambio |
+| react-hook-form | ^7.71.2 | Instalado — activar en NewsletterForm |
+| zod | ^3.24.2 | Instalado — activar en NewsletterForm |
+| sonner | ^2.0.7 | Instalado — activar en NewsletterForm |
+| date-fns | ^4.1.0 | Instalado — activar para locale-aware dates |
+| Tailwind CSS | ^3.4.19 | Sin cambio |
+| shadcn/ui (`rsc: false`) | componentes ui/ | Sin cambio |
 
-**Dependencias eliminadas**: `@tanstack/react-start`, `@tanstack/react-router`, `@tanstack/react-query`, `@tanstack/router-plugin`, `@cloudflare/vite-plugin`, `@lovable.dev/vite-tanstack-config`, `vite`, `wrangler`.
+**No se añaden dependencias nuevas.** Todo lo necesario ya está instalado.
 
 ---
 
 ## 4. Internacionalización (i18n)
 
+> Obligatorio. Cero hardcoded.
+
 ### 4.1 Locales
 
-| Locale  | Idioma             | Estado     | URL base          |
-| ------- | ------------------ | ---------- | ----------------- |
-| `es`    | Español            | Default    | `/` (sin prefijo) |
-| `en`    | English            | Secundario | `/en`             |
-| `pt-BR` | Portugués (Brasil) | Preparado  | `/pt-BR`          |
-| `ja`    | Japonés            | Preparado  | `/ja`             |
-| `ko`    | Coreano            | Preparado  | `/ko`             |
+| Locale | Idioma | Estado | URL base |
+|---|---|---|---|
+| `es` | Español | Default activo | `/` |
+| `en` | English | Secundario activo | `/en` |
+| `pt-BR` | Portugués BR | Scaffolded (out of scope MVP) | `/pt-BR` |
+| `ja` | Japonés | Scaffolded (out of scope MVP) | `/ja` |
+| `ko` | Coreano | Scaffolded (out of scope MVP) | `/ko` |
 
-MVP implementa `es` + `en`. Los demás locales se añaden sin refactoring (solo mensajes + entrada en config).
+Locales pt-BR, ja, ko: no implementar contenido. Scaffoldear únicamente `messages/` vacíos y añadirlos al array de locales en middleware para no bloquear futuras implementaciones.
 
 ### 4.2 Routing i18n
 
-**Librería**: `next-intl@3`
+Sin cambios en `src/middleware.ts` para es/en. Añadir pt-BR, ja, ko al array.
 
 ```typescript
-// src/middleware.ts
-import createMiddleware from "next-intl/middleware";
-
-export default createMiddleware({
+// src/middleware.ts — locales actualizados
+createMiddleware({
   locales: ["es", "en", "pt-BR", "ja", "ko"],
   defaultLocale: "es",
-  localePrefix: "as-needed", // /es sin prefijo, /en con prefijo
-});
-
-export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
-};
+  localePrefix: "as-needed",
+})
 ```
 
 ### 4.3 Estructura de Traducciones
 
 ```
-messages/
-├── es.json   # idioma base — siempre completo
-├── en.json
-├── pt-BR.json
-├── ja.json
-└── ko.json
+src/messages/
+├── es.json     # Completo — idioma base
+├── en.json     # Completo — traducción
+├── pt-BR.json  # Scaffold vacío: {}
+├── ja.json     # Scaffold vacío: {}
+└── ko.json     # Scaffold vacío: {}
 ```
 
-**Formato de claves**:
+### 4.4 Claves Nuevas Requeridas
+
+Las siguientes claves NO existen actualmente y deben añadirse a `es.json` y `en.json`:
 
 ```json
 {
   "common": {
     "navigation": {
-      "home": "Inicio",
-      "search": "Buscar",
-      "categories": {
-        "ai": "Inteligencia Artificial",
-        "programming": "Programación",
-        "webDev": "Web Development",
-        "devops": "DevOps",
-        "startups": "Startups",
-        "openSource": "Open Source",
-        "security": "Ciberseguridad"
-      }
+      "openMenu": "Abrir menú",
+      "closeMenu": "Cerrar menú",
+      "allCategories": "Todas las categorías"
     },
-    "actions": {
-      "backToHome": "Volver al inicio",
-      "retry": "Reintentar",
-      "exploreAll": "Explorar todo",
-      "filterBy": "FILTER BY:",
-      "filterAll": "Todos"
-    },
-    "errors": {
-      "notFound": "Página no encontrada",
-      "notFoundDescription": "La ruta que buscas no existe o ha sido movida.",
-      "generic": "Algo ha ido mal",
-      "genericDescription": "Error inesperado."
+    "theme": {
+      "toggle": "Cambiar tema"
     },
     "footer": {
-      "tagline": "Publicación independiente sobre IA, programación y la próxima infraestructura.",
-      "copyright": "© 2026 SYNTHNODE"
-    },
-    "meta": {
-      "siteName": "SYNTHNODE",
-      "siteDescription": "Publicación independiente sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas."
-    }
-  },
-  "home": {
-    "meta": {
-      "title": "SYNTHNODE — Noticias de IA, programación y la próxima infraestructura",
-      "description": "El portal independiente de noticias sobre IA, machine learning, DevOps, ciberseguridad, open source y startups técnicas."
-    },
-    "sections": {
-      "recentLabel": "// RECENT",
-      "recentTitle": "Últimas noticias",
-      "categoriesLabel": "// SECCIONES"
+      "platformLabel": "Plataforma",
+      "connectLabel": "Conecta",
+      "newsletterLink": "Newsletter",
+      "rssLink": "RSS Feed",
+      "twitterLink": "Twitter",
+      "githubLink": "GitHub"
     }
   },
   "article": {
-    "meta": {
-      "titleSuffix": "— SYNTHNODE"
+    "toc": {
+      "title": "En este artículo"
     },
-    "labels": {
-      "minRead": "min read",
-      "views": "vistas",
-      "likes": "likes",
-      "tags": "TAGS",
-      "category": "CATEGORÍA"
+    "share": {
+      "label": "Compartir",
+      "twitter": "Compartir en X",
+      "linkedin": "Compartir en LinkedIn",
+      "copyLink": "Copiar enlace",
+      "copied": "Enlace copiado"
+    },
+    "related": {
+      "title": "Relacionados"
     }
   },
-  "category": {
-    "label": "// CATEGORÍA",
-    "articles": "{count, plural, one {# artículo} other {# artículos}}",
-    "filter": "FILTRAR:",
-    "filterAll": "Todos",
-    "noArticles": "No hay artículos en esta categoría todavía.",
-    "otherTagsLabel": "// OTROS TAGS POPULARES"
+  "trending": {
+    "title": "Trending",
+    "reads": "lecturas"
+  },
+  "sidebar": {
+    "toolbench": {
+      "title": "IA Toolbench"
+    },
+    "tags": {
+      "title": "Core Tags"
+    }
   },
   "search": {
-    "meta": {
-      "title": "Buscar — SYNTHNODE",
-      "description": "Búsqueda en tiempo real sobre todo el archivo de SYNTHNODE."
-    },
-    "label": "// SEARCH",
-    "title": "Explora el archivo",
-    "subtitle": "Búsqueda fuzzy en tiempo real sobre títulos, descripciones y tags.",
-    "placeholder": "Buscar noticias, tags, autores…",
-    "results": "{count, plural, one {# resultado} other {# resultados}}",
-    "noResults": "Sin resultados. Prueba a quitar filtros o cambiar la búsqueda.",
-    "filters": {
-      "category": "CATEGORÍA",
-      "allCategories": "Todas",
-      "tags": "TAGS",
-      "allTags": "todos",
-      "date": "FECHA",
-      "anyTime": "Cualquier momento",
-      "last7Days": "Últimos 7 días",
-      "last30Days": "Últimos 30 días",
-      "last90Days": "Últimos 90 días"
-    }
+    "loadingFallback": "Cargando…"
   }
 }
 ```
 
-**Reglas de claves:**
+**Claves existentes sin usar** (ya están definidas, solo falta consumirlas):
+- `common.theme.toggle` → `ThemeToggle` aria-label
+- `article.labels.minRead` → `FeaturedHero`, `NewsCard`
+- `newsletter.*` → `NewsletterForm` todos los textos
+- `search.placeholder` → `SearchClient` input
+- `search.results` → `SearchClient` contador
+- `search.noResults` → `SearchClient` mensaje vacío
+- `home.meta.title`, `home.meta.description` → `generateMetadata` en home/page.tsx
+- `search.meta.title`, `search.meta.description` → `generateMetadata` en search/page.tsx
+- `common.errors.*` → `error.tsx` y `not-found.tsx`
+- `category.articles` (ICU plural) → `category/[slug]/page.tsx`
 
-- `camelCase`
-- Máx 3 niveles: `[página].[sección].[elemento]`
-- Variables: `{variableName}`
-- Plurales: `{count, plural, one {# item} other {# items}}`
+### 4.5 Rutas Localizadas (sin cambios)
 
-### 4.4 Uso en Componentes
-
-**Server Component:**
-
-```typescript
-import { getTranslations } from 'next-intl/server';
-
-export default async function HomePage() {
-  const t = await getTranslations('home');
-  return <h1>{t('sections.recentTitle')}</h1>;
-}
-```
-
-**Client Component:**
-
-```typescript
-'use client';
-import { useTranslations } from 'next-intl';
-
-export function SearchInput() {
-  const t = useTranslations('search');
-  return <input placeholder={t('placeholder')} />;
-}
-```
-
-### 4.5 Rutas Localizadas
-
-| Página    | ES                 | EN                    |
-| --------- | ------------------ | --------------------- |
-| Home      | `/`                | `/en`                 |
-| Artículo  | `/news/[slug]`     | `/en/news/[slug]`     |
+| Página | ES | EN |
+|---|---|---|
+| Home | `/` | `/en` |
+| Artículo | `/news/[slug]` | `/en/news/[slug]` |
 | Categoría | `/category/[slug]` | `/en/category/[slug]` |
-| Búsqueda  | `/search`          | `/en/search`          |
+| Búsqueda | `/search` | `/en/search` |
 
-Los slugs de artículos y categorías no se localizan (son técnicos/kebab-case). Los slugs de categorías son constantes en todos los locales.
-
-### 4.6 Metadata SEO con i18n
+### 4.6 Metadata SEO — locale-aware
 
 ```typescript
+// Patrón para todas las páginas con metadata hardcodeada
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations({ locale: params.locale, namespace: "home.meta" });
   return {
     title: t("title"),
     description: t("description"),
-    alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}${params.locale === "es" ? "/" : `/${params.locale}`}`,
-      languages: {
-        es: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
-        en: `${process.env.NEXT_PUBLIC_BASE_URL}/en`,
-      },
-    },
+    // ... alternates sin cambios
   };
 }
-```
-
-### 4.7 Hreflang
-
-En `app/[locale]/layout.tsx`:
-
-```tsx
-<link rel="alternate" hrefLang="es" href={`${baseUrl}/`} />
-<link rel="alternate" hrefLang="en" href={`${baseUrl}/en`} />
-<link rel="alternate" hrefLang="x-default" href={`${baseUrl}/`} />
 ```
 
 ---
 
 ## 5. Arquitectura
 
-### 5.1 Rendering por Página
+### 5.1 Rendering por Página (sin cambios)
 
-| Página                      | Estrategia                          | Por qué                                                             |
-| --------------------------- | ----------------------------------- | ------------------------------------------------------------------- |
-| `/[locale]` (Home)          | SSG                                 | Contenido estático (mock-data); sin revalidación necesaria          |
-| `/[locale]/news/[slug]`     | SSG + `generateStaticParams`        | SEO crítico; todos los slugs conocidos en build time                |
-| `/[locale]/category/[slug]` | SSG + `generateStaticParams`        | SEO; categorías finitas y estáticas                                 |
-| `/[locale]/search`          | Client-side (sin SSR de resultados) | Búsqueda fuzzy en tiempo real con Fuse.js; no indexable (`noindex`) |
+| Página | Estrategia | Estado |
+|---|---|---|
+| `/[locale]` | SSG | Sin cambio |
+| `/[locale]/news/[slug]` | SSG + generateStaticParams | Sin cambio |
+| `/[locale]/category/[slug]` | SSG + generateStaticParams | Sin cambio |
+| `/[locale]/search` | CSR shell + `SearchClient` | Sin cambio |
 
-### 5.2 Flujo de Datos
+### 5.2 Flujo de Datos (sin cambios)
 
 ```
-Build time → src/lib/mock-data.ts → generateStaticParams → HTML estático
-Runtime   → Client Component Search → Fuse.js (in-memory) → resultados
+Usuario → Next.js → mock-data.ts (SSG) / Fuse.js (CSR)
 ```
 
-No hay API externa. Toda la data viene de `src/lib/mock-data.ts` (in-memory).
+### 5.3 Patrones de Cambio
 
-### 5.3 Patrones
-
-- **Server Components por defecto**: Solo añadir `"use client"` cuando sea estrictamente necesario (estado, eventos, hooks de browser).
-- **Separación UI/lógica**: Lógica de búsqueda en `src/lib/search.ts`. Componentes solo consumen.
-- **Composition pattern**: `SearchPage` = Server Component shell + `SearchClient` Client Component hijo.
-- **Error boundaries**: `app/[locale]/error.tsx` + `app/not-found.tsx`.
+- **i18n propagation**: Pasar `locale` a `formatDate` / `relativeTime` desde Server Components; en Client Components usar `useLocale()` de next-intl.
+- **Form pattern**: `react-hook-form` + `zod` schema → `resolver(zodSchema)` → `sonner.toast` en submit.
+- **Client filter pattern**: `useState` local en `CategoryClient` para tag seleccionado y página activa.
 
 ---
 
 ## 6. Estructura de Carpetas
 
+Cambios respecto al estado actual:
+
 ```
 src/
-├── app/
-│   ├── [locale]/
-│   │   ├── layout.tsx              # Layout por locale: next-intl, ThemeProvider, Navbar, Footer
-│   │   ├── page.tsx                # Home (SSG, Server Component)
-│   │   ├── news/
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx        # Artículo (SSG + generateStaticParams)
-│   │   ├── category/
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx        # Categoría (SSG + generateStaticParams)
-│   │   └── search/
-│   │       └── page.tsx            # Búsqueda (shell Server + SearchClient)
-│   ├── sitemap.ts                  # OBLIGATORIO — dinámico, multilocale
-│   ├── robots.ts                   # OBLIGATORIO
-│   ├── ads.txt/
-│   │   └── route.ts                # OBLIGATORIO — dinámico vía env
-│   ├── layout.tsx                  # Root layout (solo html/body/head base)
-│   ├── not-found.tsx               # 404 global
-│   └── globals.css                 # Tailwind v4 + tokens (de src/styles.css)
+├── hooks/                          # CREAR — actualmente vacío/inexistente
+│   └── use-mobile.tsx              # Hook para detectar breakpoint mobile
+├── lib/
+│   ├── format.ts                   # MODIFICAR — añadir locale param
+│   ├── error-capture.ts            # ELIMINAR — dead code
+│   └── error-page.ts               # ELIMINAR — dead code
 ├── components/
 │   ├── layout/
-│   │   ├── navbar.tsx              # "use client" — useState menú móvil, usePathname
-│   │   ├── footer.tsx              # Server Component
-│   │   └── theme-toggle.tsx        # "use client" — useTheme
+│   │   ├── navbar.tsx              # MODIFICAR — i18n completo, 7 cats
+│   │   ├── footer.tsx              # MODIFICAR — i18n completo
+│   │   └── theme-toggle.tsx        # MODIFICAR — i18n aria-label
 │   ├── news/
-│   │   ├── featured-hero.tsx       # "use client" — framer-motion
-│   │   ├── news-card.tsx           # "use client" — framer-motion (motion.article)
-│   │   ├── article-content.tsx     # Server Component (react-markdown)
-│   │   ├── table-of-contents.tsx   # Server Component (parse markdown)
-│   │   ├── share-bar.tsx           # "use client" — navigator.share / clipboard
-│   │   ├── related-articles.tsx    # Server Component
-│   │   ├── author-card.tsx         # Server Component
-│   │   ├── category-badge.tsx      # Server Component
-│   │   └── trending-list.tsx       # Server Component
+│   │   ├── featured-hero.tsx       # MODIFICAR — i18n minRead
+│   │   ├── news-card.tsx           # MODIFICAR — i18n minRead
+│   │   ├── article-content.tsx     # MODIFICAR — activar rehype-autolink-headings
+│   │   ├── table-of-contents.tsx   # MODIFICAR — i18n "EN ESTE ARTÍCULO"
+│   │   ├── share-bar.tsx           # MODIFICAR — i18n todos los textos
+│   │   ├── related-articles.tsx    # MODIFICAR — i18n "RELACIONADOS"
+│   │   └── trending-list.tsx       # MODIFICAR — i18n "TRENDING_NOW", "reads"
 │   ├── sidebar/
-│   │   ├── sidebar.tsx             # Server Component (contenedor)
-│   │   └── newsletter-form.tsx     # "use client" — react-hook-form
+│   │   ├── newsletter-form.tsx     # REESCRIBIR — react-hook-form+zod+sonner+i18n
+│   │   ├── ai-tools-list.tsx       # MODIFICAR — i18n "IA TOOLBENCH"
+│   │   └── popular-tags.tsx        # MODIFICAR — i18n "CORE TAGS"
 │   ├── search/
-│   │   └── search-client.tsx       # "use client" — Fuse.js, useSearchParams, useState
-│   ├── theme-provider.tsx          # "use client" — ThemeProvider next-themes
-│   └── ui/                         # shadcn/ui (sin cambios de código)
-├── hooks/
-│   └── use-mobile.tsx              # "use client" — useEffect + window
-├── lib/
-│   ├── types.ts                    # Sin cambios
-│   ├── mock-data.ts                # Actualizar: imports de imágenes → rutas /news/*
-│   ├── search.ts                   # Sin cambios
-│   ├── format.ts                   # Sin cambios
-│   └── utils.ts                    # Sin cambios
-├── middleware.ts                   # next-intl routing
+│   │   └── search-client.tsx       # MODIFICAR — i18n completo + date filter
+│   └── category/                   # CREAR directorio
+│       └── category-client.tsx     # CREAR — tag filter + pagination
+├── app/
+│   ├── not-found.tsx               # MODIFICAR — usar i18n (con fallback)
+│   └── [locale]/
+│       ├── layout.tsx              # MODIFICAR — inyectar JSON-LD WebSite correctamente
+│       ├── page.tsx                # MODIFICAR — generateMetadata con i18n
+│       ├── error.tsx               # MODIFICAR — usar useTranslations
+│       ├── search/page.tsx         # MODIFICAR — generateMetadata con i18n
+│       └── category/[slug]/
+│           └── page.tsx            # MODIFICAR — usar CategoryClient
 └── messages/
-    ├── es.json
-    ├── en.json
-    ├── pt-BR.json
-    ├── ja.json
-    └── ko.json
-
-public/
-└── news/
-    ├── hero-ai.jpg
-    ├── rust.jpg
-    ├── security.jpg
-    ├── startup.jpg
-    ├── neural.jpg
-    └── devops.jpg
+    ├── es.json                     # MODIFICAR — añadir claves nuevas
+    ├── en.json                     # MODIFICAR — añadir claves nuevas (traducidas)
+    ├── pt-BR.json                  # CREAR — scaffold {}
+    ├── ja.json                     # CREAR — scaffold {}
+    └── ko.json                     # CREAR — scaffold {}
 ```
 
 ---
 
 ## 7. Routing y Páginas
 
-### 7.1 Mapa de Rutas
+### 7.1 Mapa de Rutas (sin cambios estructurales)
 
-| Ruta ES            | Ruta EN               | Archivo                                 | Tipo   | Indexable      |
-| ------------------ | --------------------- | --------------------------------------- | ------ | -------------- |
-| `/`                | `/en`                 | `app/[locale]/page.tsx`                 | SSG    | Sí             |
-| `/news/[slug]`     | `/en/news/[slug]`     | `app/[locale]/news/[slug]/page.tsx`     | SSG    | Sí             |
-| `/category/[slug]` | `/en/category/[slug]` | `app/[locale]/category/[slug]/page.tsx` | SSG    | Sí             |
-| `/search`          | `/en/search`          | `app/[locale]/search/page.tsx`          | Client | No (`noindex`) |
+| Ruta ES | Ruta EN | Archivo | Tipo | Auth | Indexable |
+|---|---|---|---|---|---|
+| `/` | `/en` | `app/[locale]/page.tsx` | SSG | No | Sí |
+| `/news/[slug]` | `/en/news/[slug]` | `app/[locale]/news/[slug]/page.tsx` | SSG | No | Sí |
+| `/category/[slug]` | `/en/category/[slug]` | `app/[locale]/category/[slug]/page.tsx` | SSG | No | Sí |
+| `/search` | `/en/search` | `app/[locale]/search/page.tsx` | CSR | No | No |
 
-### 7.2 Especificación por Página
+### 7.2 Cambios por Página
 
-#### `/[locale]` (Home)
+#### `app/[locale]/page.tsx` (Home)
+**Cambio**: `generateMetadata` → usar `getTranslations({ locale, namespace: "home.meta" })` en lugar de strings hardcodeados.
 
-**Propósito**: Portada del portal. Muestra artículo destacado, grid de recientes, filtros por categoría y sidebar.
+#### `app/[locale]/layout.tsx`
+**Cambio**: Inyectar JSON-LD WebSite via `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />` en el `<body>` del layout, no solo exportarlo como variable.
 
-**Componentes**:
+#### `app/[locale]/error.tsx`
+**Cambio**: Añadir `"use client"`. Usar `useTranslations("common.errors")` para todos los textos. Usar `t("generic")` y `t("genericDescription")` y `t("retry")`.
 
-- `<FeaturedHero article={featured} />` — Client (framer-motion)
-- `<NewsCard article={a} index={i} />` — Client (framer-motion)
-- `<TrendingList items={trending} />` — Server
-- `<Sidebar />` — Server (contenedor; `<NewsletterForm />` es Client)
+#### `app/not-found.tsx`
+**Cambio**: Archivo global sin contexto de locale. Usar texto español hardcoded con comentario explicativo, O mover a `app/[locale]/not-found.tsx`. Decisión: mover a `[locale]` para poder usar i18n. Eliminar el global `not-found.tsx` o dejarlo como fallback mínimo.
 
-**Datos**:
+#### `app/[locale]/search/page.tsx`
+**Cambio**:
+1. `generateMetadata` → usar `getTranslations({ locale, namespace: "search.meta" })`.
+2. Pasar `initialSince` prop (parseado de `searchParams.since`) a `SearchClient`.
+3. Fallback de Suspense → usar clave i18n `search.loadingFallback`.
 
-```typescript
-// En page.tsx (Server Component async)
-const featured = getFeatured();
-const all = getAllNews();
-const recent = all.filter((n) => n.slug !== featured.slug).slice(0, 6);
-const trending = getTrending(5);
-```
-
-**Metadata SEO**:
-
-```typescript
-export async function generateMetadata({ params }: Props) {
-  const t = await getTranslations({ locale: params.locale, namespace: "home.meta" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    openGraph: { title: t("title"), description: t("description"), url: "/" },
-    twitter: { card: "summary_large_image" },
-    alternates: {
-      canonical: `${BASE_URL}/`,
-      languages: { es: `${BASE_URL}/`, en: `${BASE_URL}/en` },
-    },
-  };
-}
-```
-
-**JSON-LD**: `WebSite` + `SearchAction` — inyectado en `app/[locale]/layout.tsx`.
+#### `app/[locale]/category/[slug]/page.tsx`
+**Cambio**: Delegar renderizado de artículos a `<CategoryClient articles={articles} />` para habilitar filtrado client-side de tags.
 
 ---
 
-#### `/[locale]/news/[slug]`
-
-**Propósito**: Artículo completo con contenido markdown, autor, tags, TOC y artículos relacionados.
-
-**Componentes**:
-
-- `<CategoryBadge slug={article.category} />` — Server
-- `<ArticleContent markdown={article.content} />` — Server (react-markdown)
-- `<TableOfContents markdown={article.content} />` — Server
-- `<ShareBar title={article.title} />` — Client
-- `<RelatedArticles articles={related} />` — Server
-- `<AuthorCard author={article.author} />` — Server
-- `next/image` para imagen principal del artículo
-
-**Datos**:
-
-```typescript
-// generateStaticParams
-export async function generateStaticParams() {
-  return getAllNews().flatMap((article) =>
-    ["es", "en"].map((locale) => ({ locale, slug: article.slug })),
-  );
-}
-
-// page component
-const article = getNewsBySlug(params.slug);
-if (!article) notFound();
-const related = getRelated(article, 3);
-```
-
-**Metadata SEO**:
-
-```typescript
-export async function generateMetadata({ params }: Props) {
-  const article = getNewsBySlug(params.slug);
-  if (!article) return {};
-  const t = await getTranslations({ locale: params.locale, namespace: "article.meta" });
-  return {
-    title: `${article.title} ${t("titleSuffix")}`,
-    description: article.excerpt,
-    openGraph: {
-      title: article.title,
-      description: article.excerpt,
-      type: "article",
-      images: [{ url: `/news/${article.image.split("/").pop()}` }],
-    },
-    twitter: { card: "summary_large_image", images: [`/news/${article.image.split("/").pop()}`] },
-    alternates: {
-      canonical: `${BASE_URL}/news/${params.slug}`,
-      languages: {
-        es: `${BASE_URL}/news/${params.slug}`,
-        en: `${BASE_URL}/en/news/${params.slug}`,
-      },
-    },
-  };
-}
-```
-
-**JSON-LD**: `Article` schema — inyectado vía `<script type="application/ld+json">` en el componente de página.
-
----
-
-#### `/[locale]/category/[slug]`
-
-**Propósito**: Listado de artículos por categoría con filtro de tags y paginación.
-
-**Componentes**:
-
-- `<NewsCard />` — Client (framer-motion)
-- Filtros de tags y paginación: Client Component hijo (`<CategoryClient />`)
-
-**Datos**:
-
-```typescript
-export async function generateStaticParams() {
-  return categories.flatMap((cat) => ["es", "en"].map((locale) => ({ locale, slug: cat.slug })));
-}
-
-const category = getCategoryBySlug(params.slug);
-if (!category) notFound();
-const articles = getNewsByCategory(params.slug);
-```
-
-**Nota**: El estado de filtros (`tag`, `page`) es local a `CategoryClient` (Client Component). No se almacena en URL en esta migración. → `[DECISIÓN]` Mantener paridad con el comportamiento actual.
-
----
-
-#### `/[locale]/search`
-
-**Propósito**: Búsqueda fuzzy en tiempo real. No indexable.
-
-**Componentes**:
-
-- `<SearchClient />` — Client Component. Contiene: input, filtros de categoría/tag/fecha, resultados con `<NewsCard />`.
-
-**Datos**: Fuse.js sobre `getAllNews()` (in-memory). Toda la lógica en `src/lib/search.ts`.
-
-**Params URL** (leídos con `useSearchParams` en `SearchClient`):
-
-- `q` (string)
-- `category` (string, default `"all"`)
-- `tag` (string)
-- `since` (number | undefined)
-
-**Metadata**:
-
-```typescript
-export const metadata: Metadata = {
-  title: "Buscar — SYNTHNODE",
-  robots: { index: false, follow: false },
-};
-```
-
----
-
-## 8. Catálogo de Componentes
+## 8. Catálogo de Componentes — Cambios
 
 ### `<Navbar />`
-
-**Ubicación**: `src/components/layout/navbar.tsx`
+**Archivo**: `src/components/layout/navbar.tsx`
 **Tipo**: Client Component
-**Responsabilidad**: Navegación principal, buscador inline, menú móvil, ThemeToggle.
+**Cambios**:
+- Añadir `web-dev` y `security` a `NAV_ITEMS` → 7 categorías total.
+- `aria-label` del botón mobile menu → `t("common.navigation.openMenu")` / `t("common.navigation.closeMenu")` según estado.
 
-**Props**: ninguna
-
-**Textos i18n**: `common.navigation.categories.*`, `common.actions.search`
-
-**Comportamiento**:
-
-- Menú móvil togglable con `useState`.
-- Input de búsqueda: `useRouter` de `next/navigation` para navegar a `/search?q=…`.
-- `usePathname` para active links.
-
-**A11y**: `role="banner"`, `role="navigation"`, `aria-label="Menú principal"`, `aria-label="Abrir menú"`.
-
----
+**Claves i18n añadidas**: `common.navigation.openMenu`, `common.navigation.closeMenu`
 
 ### `<Footer />`
-
-**Ubicación**: `src/components/layout/footer.tsx`
+**Archivo**: `src/components/layout/footer.tsx`
 **Tipo**: Server Component
-**Responsabilidad**: Pie de página con links de categorías y tagline.
+**Cambios**:
+- "Plataforma" → `t("common.footer.platformLabel")`
+- "Conecta" → `t("common.footer.connectLabel")`
+- Links newsletter/RSS/social → usar claves `common.footer.newsletterLink`, `common.footer.rssLink`, etc.
 
-**Props**: ninguna
-
-**Textos i18n**: `common.footer.*`, `common.navigation.categories.*`
-
----
+**Claves i18n añadidas**: `common.footer.platformLabel`, `common.footer.connectLabel`, `common.footer.newsletterLink`, `common.footer.rssLink`, `common.footer.twitterLink`, `common.footer.githubLink`
 
 ### `<ThemeToggle />`
-
-**Ubicación**: `src/components/layout/theme-toggle.tsx`
+**Archivo**: `src/components/layout/theme-toggle.tsx`
 **Tipo**: Client Component
-**Responsabilidad**: Alternar tema claro/oscuro.
-
-**Props**: ninguna
-
-**Comportamiento**: `useTheme()` de `next-themes`. Renderiza icono Sol/Luna.
-
-**A11y**: `aria-label` con texto traducido.
-
----
+**Cambio**: `aria-label="Cambiar tema"` → `t("common.theme.toggle")` (clave ya existe, solo falta usarla).
 
 ### `<FeaturedHero />`
-
-**Ubicación**: `src/components/news/featured-hero.tsx`
-**Tipo**: Client Component (framer-motion)
-**Responsabilidad**: Artículo destacado con animación de entrada.
-
-**Props**:
-
-```typescript
-interface FeaturedHeroProps {
-  article: NewsArticle;
-}
-```
-
-**Textos i18n**: ninguno propio (datos del artículo).
-
----
+**Archivo**: `src/components/news/featured-hero.tsx`
+**Tipo**: Client Component
+**Cambio**: "MIN READ" → `t("article.labels.minRead")` (clave existe).
 
 ### `<NewsCard />`
-
-**Ubicación**: `src/components/news/news-card.tsx`
-**Tipo**: Client Component (framer-motion `motion.article`)
-**Responsabilidad**: Tarjeta de artículo con imagen, badge de categoría, título, excerpt y autor.
-
-**Props**:
-
-```typescript
-interface NewsCardProps {
-  article: NewsArticle;
-  size?: "sm" | "md"; // default: 'md'
-  index?: number; // default: 0, usado para delay de animación
-}
-```
-
-**Textos i18n**: `article.labels.minRead`
-
----
+**Archivo**: `src/components/news/news-card.tsx`
+**Tipo**: Client Component
+**Cambio**: "min" → `t("article.labels.minRead")` (clave existe).
 
 ### `<ArticleContent />`
-
-**Ubicación**: `src/components/news/article-content.tsx`
+**Archivo**: `src/components/news/article-content.tsx`
 **Tipo**: Server Component
-**Responsabilidad**: Renderizar contenido markdown del artículo.
-
-**Props**:
+**Cambio**: Añadir `rehypeAutolinkHeadings` al array de `rehypePlugins` junto a `rehypeSlug`. Plugin ya instalado.
 
 ```typescript
-interface ArticleContentProps {
-  markdown: string;
-}
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+// plugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]]
 ```
 
----
-
-### `<SearchClient />`
-
-**Ubicación**: `src/components/search/search-client.tsx`
+### `<TableOfContents />`
+**Archivo**: `src/components/news/table-of-contents.tsx`
 **Tipo**: Client Component
-**Responsabilidad**: Input de búsqueda, filtros (categoría, tag, fecha), listado de resultados.
+**Cambio**: "EN ESTE ARTÍCULO" → `t("article.toc.title")`.
 
-**Props**:
+**Clave nueva**: `article.toc.title`
 
-```typescript
-interface SearchClientProps {
-  initialQ?: string;
-  initialCategory?: string;
-  initialTag?: string;
-  initialSince?: number;
-}
-```
+### `<ShareBar />`
+**Archivo**: `src/components/news/share-bar.tsx`
+**Tipo**: Client Component
+**Cambio**: Todos los textos y aria-labels → `useTranslations("article.share")`.
 
-**Textos i18n**: `search.*`
+**Claves nuevas**: `article.share.label`, `article.share.twitter`, `article.share.linkedin`, `article.share.copyLink`, `article.share.copied`
 
-**Comportamiento**:
+### `<RelatedArticles />`
+**Archivo**: `src/components/news/related-articles.tsx`
+**Tipo**: Server Component
+**Cambio**: "// RELACIONADOS" → `t("article.related.title")` via `getTranslations`.
 
-- Lee params iniciales desde `useSearchParams`.
-- Debounce 200ms en input → actualiza URL con `router.replace`.
-- Fuse.js sobre `getAllNews()`.
+**Clave nueva**: `article.related.title`
 
----
+### `<TrendingList />`
+**Archivo**: `src/components/news/trending-list.tsx`
+**Tipo**: Server Component
+**Cambio**:
+- "// TRENDING_NOW" → `t("trending.title")`
+- "reads" → `t("trending.reads")`
+
+**Claves nuevas**: `trending.title`, `trending.reads`
 
 ### `<NewsletterForm />`
-
-**Ubicación**: `src/components/sidebar/newsletter-form.tsx`
+**Archivo**: `src/components/sidebar/newsletter-form.tsx`
 **Tipo**: Client Component
-**Responsabilidad**: Formulario de suscripción al newsletter.
+**Reescritura completa**:
+
+```typescript
+"use client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+
+const schema = z.object({
+  email: z.string().email(),
+});
+type FormData = z.infer<typeof schema>;
+
+export function NewsletterForm() {
+  const t = useTranslations("newsletter");
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  async function onSubmit(_data: FormData) {
+    // mock submit — no API
+    await new Promise((r) => setTimeout(r, 500));
+    toast.success(t("success"));
+    reset();
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <h3>{t("title")}</h3>
+      <p>{t("subtitle")}</p>
+      <input
+        type="email"
+        placeholder={t("emailPlaceholder")}
+        {...register("email")}
+        aria-invalid={!!errors.email}
+      />
+      {errors.email && <span role="alert">{t("error")}</span>}
+      <button type="submit" disabled={isSubmitting}>{t("submit")}</button>
+    </form>
+  );
+}
+```
 
 **Props**: ninguna
+**Dependencias**: `react-hook-form`, `@hookform/resolvers/zod`, `zod`, `sonner`
 
-**Textos i18n**: _(claves a definir en Fase 2)_
+**Verificar**: `@hookform/resolvers` instalado. Si no → `npm install @hookform/resolvers`.
 
-**Comportamiento**: `react-hook-form` + `zod`. Submit → toast de confirmación (sonner).
+### `<AIToolsList />`
+**Archivo**: `src/components/sidebar/ai-tools-list.tsx`
+**Tipo**: Server Component
+**Cambio**: "// IA TOOLBENCH" → `t("sidebar.toolbench.title")`.
 
----
+**Clave nueva**: `sidebar.toolbench.title`
 
-### `<CategoryClient />`
+### `<PopularTags />`
+**Archivo**: `src/components/sidebar/popular-tags.tsx`
+**Tipo**: Server Component
+**Cambio**: "// CORE TAGS" → `t("sidebar.tags.title")`.
 
-**Ubicación**: `src/components/news/category-client.tsx`
-**Tipo**: Client Component (nuevo — extraído de la lógica de filtros)
-**Responsabilidad**: Filtros de tags y paginación en la página de categoría.
+**Clave nueva**: `sidebar.tags.title`
+
+### `<SearchClient />`
+**Archivo**: `src/components/search/search-client.tsx`
+**Tipo**: Client Component
+**Cambios**:
+1. Input placeholder: `t("search.placeholder")` (existe, sin usar).
+2. "Todas" button: `t("common.actions.filterAll")` (existe, sin usar).
+3. Resultados count: `t("search.results", { count })` (existe, sin usar).
+4. Sin resultados: `t("search.noResults")` (existe, sin usar).
+5. Añadir `initialSince?: number` prop.
+6. Añadir `sinceDays` state con valor inicial desde prop.
+7. Añadir UI de filtro de fecha: radio/select con opciones `anyTime / last7Days / last30Days / last90Days`.
+8. Pasar `sinceDays` a `searchNews()`.
+
+**Props actualizadas**:
+```typescript
+interface SearchClientProps {
+  initialQuery?: string;
+  initialCategory?: string;
+  initialTag?: string;
+  initialSince?: number;        // NUEVO
+}
+```
+
+**Claves usadas**: `search.filters.date`, `search.filters.anyTime`, `search.filters.last7Days`, `search.filters.last30Days`, `search.filters.last90Days` (todas existen en messages).
+
+### `<CategoryClient />` (NUEVO)
+**Archivo**: `src/components/category/category-client.tsx`
+**Tipo**: Client Component
+**Responsabilidad**: Recibe todos los artículos de una categoría. Permite filtrar por tag. Renderiza paginación simple (opcional para MVP).
 
 **Props**:
-
 ```typescript
 interface CategoryClientProps {
   articles: NewsArticle[];
 }
 ```
 
-**Comportamiento**: Estado local para `tag` y `page`. Sin sincronización con URL (paridad con comportamiento actual).
+**Estado**:
+- `selectedTag: string | null` — tag activo
+- `currentPage: number` — página actual (opcional)
+
+**Comportamiento**:
+1. Extraer tags únicos de `articles`.
+2. Mostrar chips de tags clickeables.
+3. Filtrar `articles` por `selectedTag` si hay uno seleccionado.
+4. Renderizar `<NewsCard size="md" />` para cada artículo filtrado.
+5. "Todos los tags" chip para limpiar filtro → texto `t("category.filter")` / `t("category.filterAll")` (claves existen).
+
+**Claves usadas**: `category.filter`, `category.filterAll`, `category.otherTagsLabel`
+
+### `formatDate` y `relativeTime` (lib/format.ts)
+**Cambio**: Añadir parámetro `locale: string` a ambas funciones.
+
+```typescript
+// Antes
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("es-ES", { ... });
+}
+
+// Después
+export function formatDate(iso: string, locale = "es"): string {
+  const dateLocale = locale === "en" ? "en-US" : "es-ES";
+  return new Date(iso).toLocaleDateString(dateLocale, { ... });
+}
+```
+
+Para `relativeTime`: misma firma, pasar `locale` a llamada interna de `formatDate`. Strings de relativeTime también deben condicionarse por locale, o usar `date-fns` con locale explícito.
+
+**Opción elegida**: Usar `date-fns/locale` para `relativeTime` (package ya instalado). `formatDate` usa `toLocaleDateString` con locale mapeado.
+
+**Impacto**: Todos los call sites de `formatDate` y `relativeTime` deben pasar el locale. En Server Components: obtener locale de params. En Client Components: `useLocale()`.
 
 ---
 
 ## 9. Gestión de Estado
 
-| Estado                      | Alcance             | Tecnología                       | Ubicación                 |
-| --------------------------- | ------------------- | -------------------------------- | ------------------------- |
-| Locale activo               | Global              | next-intl auto                   | middleware                |
-| Tema claro/oscuro           | Global persistido   | next-themes                      | `ThemeProvider` en layout |
-| Menú móvil                  | Local               | useState                         | `Navbar`                  |
-| Búsqueda query              | URL params          | useSearchParams + router.replace | `SearchClient`            |
-| Filtros categoría/tag/fecha | URL params (search) | useSearchParams                  | `SearchClient`            |
-| Filtro tag categoría        | Local               | useState                         | `CategoryClient`          |
-| Paginación categoría        | Local               | useState                         | `CategoryClient`          |
-| Newsletter form             | Local               | react-hook-form                  | `NewsletterForm`          |
+| Estado | Alcance | Tecnología | Ubicación |
+|---|---|---|---|
+| Locale activo | Global | next-intl auto | middleware |
+| Tema | Global persistido | next-themes | `ThemeProvider` |
+| Search query/filters | URL + local | `useState` + `router.replace` | `SearchClient` |
+| Category tag filter | Local | `useState` | `CategoryClient` |
+| Newsletter form | Local | react-hook-form | `NewsletterForm` |
 
-No se usa Redux ni Zustand. Estado global mínimo. → `cod_style.md §4`: preferir estado local.
+Sin cambios de arquitectura de estado. Sin stores globales nuevos.
 
 ---
 
 ## 10. Fetching de Datos
 
-No hay fetch de red. Toda la data es síncrona desde `src/lib/mock-data.ts`.
+Sin cambios. Todo viene de `mock-data.ts` via funciones síncronas en Server Components.
 
-### 10.1 Funciones de datos (sin cambios)
+`formatDate` y `relativeTime` reciben `locale` del Server Component que los llama:
 
 ```typescript
-// src/lib/mock-data.ts — funciones existentes, sin modificar
-getFeatured(): NewsArticle
-getAllNews(): NewsArticle[]
-getNewsBySlug(slug: string): NewsArticle | undefined
-getNewsByCategory(slug: string): NewsArticle[]
-getCategoryBySlug(slug: string): Category | undefined
-getTrending(n: number): NewsArticle[]
-getAllTags(): { tag: string; count: number }[]
-getRelated(article: NewsArticle, n: number): NewsArticle[]
+// En Server Component
+const { locale } = await params;
+const formattedDate = formatDate(article.publishedAt, locale);
 ```
 
-### 10.2 Imágenes
-
-Las imágenes se mueven de `src/assets/news/*.jpg` a `public/news/*.jpg`.
-
-En `mock-data.ts`, cambiar imports estáticos de Vite por rutas absolutas:
-
+En Client Components donde se usan fechas:
 ```typescript
-// Antes (Vite)
-import heroAi from "@/assets/news/hero-ai.jpg";
-// image: heroAi,
-
-// Después (Next.js)
-// image: "/news/hero-ai.jpg",
+const locale = useLocale(); // next-intl
+const formattedDate = formatDate(article.publishedAt, locale);
 ```
 
 ---
 
 ## 11. SEO
 
-### 11.1 Metadata por Página
+### 11.1 Metadata por Página — Estado Objetivo
 
-| Página             | `title` (ES)                                                            | `robots`            |
-| ------------------ | ----------------------------------------------------------------------- | ------------------- |
-| `/`                | `SYNTHNODE — Noticias de IA, programación y la próxima infraestructura` | `index, follow`     |
-| `/news/[slug]`     | `{article.title} — SYNTHNODE`                                           | `index, follow`     |
-| `/category/[slug]` | `{category.name} — SYNTHNODE`                                           | `index, follow`     |
-| `/search`          | `Buscar — SYNTHNODE`                                                    | `noindex, nofollow` |
+| Página | Cambio |
+|---|---|
+| Home | `generateMetadata` usa `home.meta.title`, `home.meta.description` |
+| Search | `generateMetadata` usa `search.meta.title`, `search.meta.description` |
+| Category | Nombres de categorías → siempre en español (mock-data constraint) — sin cambio funcional |
+| Article | Sin cambio — ya correcto |
 
-### 11.2 JSON-LD
+### 11.2 JSON-LD WebSite — Corrección
 
-- `app/[locale]/layout.tsx` → `WebSite` schema (nombre, descripción del sitio)
-- `app/[locale]/news/[slug]/page.tsx` → `Article` schema (headline, description, image, datePublished, author)
+Estado actual: `websiteSchema` definido en `layout.tsx` pero no inyectado en JSX.
 
-### 11.3 Hreflang
-
-Todas las páginas públicas incluyen:
-
-```html
-<link rel="alternate" hreflang="es" href="https://[dominio]/[ruta-es]" />
-<link rel="alternate" hreflang="en" href="https://[dominio]/en/[ruta-en]" />
-<link rel="alternate" hreflang="x-default" href="https://[dominio]/[ruta-es]" />
+Estado objetivo:
+```typescript
+// app/[locale]/layout.tsx — en el return JSX
+<body>
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+  />
+  {/* resto del layout */}
+</body>
 ```
+
+### 11.3 Hreflang (sin cambios)
+
+Ya implementado correctamente via `alternates.languages` en `generateMetadata` de todas las páginas públicas.
 
 ---
 
-## 12. robots.txt
+## 12. robots.txt (sin cambios)
 
-```typescript
-// src/app/robots.ts
-import { MetadataRoute } from "next";
-
-export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
-  return {
-    rules: [
-      { userAgent: "*", allow: "/", disallow: ["/api/", "/_next/"] },
-      { userAgent: "Googlebot", allow: "/" },
-    ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
-  };
-}
-```
-
-**Test**: `curl localhost:3000/robots.txt` → 200, contiene `Sitemap:`.
+`app/robots.ts` — implementación correcta. Pasa E2E tests.
 
 ---
 
-## 13. sitemap.xml
+## 13. sitemap.xml (sin cambios)
 
-```typescript
-// src/app/sitemap.ts
-import { MetadataRoute } from "next";
-import { getAllNews, categories } from "@/lib/mock-data";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
-const LOCALES = ["es", "en"] as const;
-
-function localePath(locale: string, path: string) {
-  return `${BASE_URL}${locale === "es" ? "" : `/${locale}`}${path}`;
-}
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
-    { path: "/", priority: 1.0, changeFreq: "daily" as const },
-    { path: "/search", priority: 0.3, changeFreq: "monthly" as const },
-  ];
-
-  const categoryRoutes = categories.map((c) => ({
-    path: `/category/${c.slug}`,
-    priority: 0.7,
-    changeFreq: "weekly" as const,
-  }));
-
-  const articleRoutes = getAllNews().map((a) => ({
-    path: `/news/${a.slug}`,
-    priority: 0.8,
-    changeFreq: "monthly" as const,
-  }));
-
-  return [...staticRoutes, ...categoryRoutes, ...articleRoutes].flatMap((route) =>
-    LOCALES.map((locale) => ({
-      url: localePath(locale, route.path),
-      changeFrequency: route.changeFreq,
-      priority: route.priority,
-      alternates: {
-        languages: Object.fromEntries(LOCALES.map((l) => [l, localePath(l, route.path)])),
-      },
-    })),
-  );
-}
-```
-
-**Test**: `curl localhost:3000/sitemap.xml | grep -c "<url>"` → ≥ 34 (17 rutas × 2 locales).
+`app/sitemap.ts` — implementación correcta, multilocale, con alternates. Pasa E2E tests.
 
 ---
 
-## 14. ads.txt
+## 14. ads.txt (sin cambios)
 
-```typescript
-// src/app/ads.txt/route.ts
-import { NextResponse } from "next/server";
-
-export function GET() {
-  const content = process.env.ADS_TXT_CONTENT ?? "";
-  return new NextResponse(content, {
-    headers: { "Content-Type": "text/plain" },
-  });
-}
-```
-
-**Env var**: `ADS_TXT_CONTENT=` en `.env.local` y `.env.example`.
-
-**Test**: `curl localhost:3000/ads.txt` → 200.
+`app/ads.txt/route.ts` — implementación correcta. Pasa E2E tests.
 
 ---
 
@@ -877,100 +609,71 @@ export function GET() {
 
 ### 15.1 Métricas Objetivo
 
-| Métrica                | Target  |
-| ---------------------- | ------- |
-| LCP                    | < 2.5s  |
-| CLS                    | < 0.1   |
-| INP                    | < 100ms |
-| Lighthouse Performance | > 90    |
-| Lighthouse SEO         | > 95    |
+| Métrica | Target |
+|---|---|
+| LCP | < 2.5s |
+| CLS | < 0.1 |
+| Lighthouse Performance | > 90 |
+| Lighthouse SEO | > 95 (mantener) |
 
-### 15.2 Optimizaciones
+### 15.2 Impacto de Cambios
 
-| Técnica                                         | Aplicación                                             | Impacto esperado        |
-| ----------------------------------------------- | ------------------------------------------------------ | ----------------------- |
-| `next/image`                                    | `app/[locale]/news/[slug]/page.tsx` (imagen principal) | Reducir CLS + LCP       |
-| `loading="lazy"` en `<img>` de NewsCard         | Ya presente; mantener                                  | Reducir TTI             |
-| SSG para todas las páginas públicas             | Home, artículos, categorías                            | TTFB < 200ms            |
-| Bundle splitting                                | `SearchClient` solo carga en `/search`                 | Reducir bundle inicial  |
-| `next/font` para Space Grotesk + JetBrains Mono | `app/layout.tsx`                                       | Eliminar CLS de fuentes |
+- `rehype-autolink-headings`: impacto mínimo — solo añade `<a>` a headings en artículos.
+- `CategoryClient` (nuevo Client Component): hidratación solo al entrar en la categoría — OK.
+- `react-hook-form` en newsletter: bundle mínimo, ya instalado.
+- date-fns locales: importar solo `es` y `en` — tree-shakeable.
 
 ---
 
 ## 16. Estilos
 
-### 16.1 Configuración
+Sin cambios en sistema de estilos. Tailwind CSS + shadcn CSS variables en `src/styles.css`. Convenciones de `cod_style.md`:
+- PascalCase para componentes.
+- camelCase para variables/funciones.
+- Clases Tailwind directamente en JSX — sin CSS modules adicionales.
+- Sin estilos inline.
 
-Tailwind CSS v4 — CSS-first. No existe `tailwind.config.js`. Toda la configuración está en `globals.css` (migrado desde `src/styles.css`).
-
-```css
-/* src/app/globals.css */
-@import "tailwindcss";
-@source "../components/**/*.tsx";
-@source "../app/**/*.tsx";
-
-@theme inline {
-  /* tokens existentes de src/styles.css — sin cambios */
-}
-```
-
-### 16.2 Convenciones (`cod_style.md §2`)
-
-- Clases Tailwind directamente en JSX. Sin CSS inline. Sin CSS Modules (no necesarios con Tailwind v4).
-- Utilidad `cn()` de `src/lib/utils.ts` (clsx + tailwind-merge) para clases condicionales.
-- Variantes de componentes con `class-variance-authority` (CVA) cuando hay 3+ variantes.
+`CategoryClient` usa clases Tailwind existentes del proyecto (mismo patrón que `SearchClient`).
 
 ---
 
 ## 17. Accesibilidad
 
-### 17.1 Requisitos por Componente
+| Componente | Cambio A11y |
+|---|---|
+| `<Navbar />` | aria-label mobile button → locale-aware |
+| `<ThemeToggle />` | aria-label → `t("common.theme.toggle")` |
+| `<ShareBar />` | aria-labels → i18n |
+| `<NewsletterForm />` | `aria-invalid`, `role="alert"` en error, noValidate |
+| `<SearchClient />` | date filter → `role="radiogroup"` o `<select>` con label i18n |
 
-| Componente                    | Requisitos A11y                                                                                       |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `<Navbar />`                  | `role="banner"`, `<nav role="navigation" aria-label="Menú principal">`, `aria-expanded` en menú móvil |
-| `<ThemeToggle />`             | `aria-label="Cambiar tema"` actualizado por locale                                                    |
-| `<SearchClient />`            | `role="search"`, label visible, `aria-live="polite"` en contador de resultados                        |
-| `<NewsCard />`                | Imagen con `alt` descriptivo, link de título descriptivo                                              |
-| `<Navbar />` — input búsqueda | `aria-label="Buscar noticias"`                                                                        |
-
-### 17.2 Target
-
-WCAG 2.1 AA. Verificar con axe DevTools y teclado manual.
+WCAG 2.1 AA — mantener nivel actual.
 
 ---
 
 ## 18. Gestión de Errores
 
-### 18.1 Error Boundaries
+### 18.1 Error Boundaries (sin cambios estructurales)
 
 ```
 app/layout.tsx (root)
 └── app/[locale]/layout.tsx
-    ├── app/[locale]/error.tsx       # Error de renderizado en páginas
-    └── app/not-found.tsx            # 404 global
+    └── app/[locale]/error.tsx  ← MODIFICAR para usar i18n
 ```
 
 ### 18.2 Tipos de Error
 
-| Tipo                 | Componente                 | Acción                               |
-| -------------------- | -------------------------- | ------------------------------------ |
-| Ruta no encontrada   | `app/not-found.tsx`        | Mensaje i18n + link a home           |
-| Slug inválido        | `notFound()` en page.tsx   | Redirige a `not-found.tsx`           |
-| Error de renderizado | `app/[locale]/error.tsx`   | Botón "Reintentar" + mensaje i18n    |
-| Form validation      | Inline en `NewsletterForm` | Mensaje bajo campo (react-hook-form) |
-
-Todos los mensajes de error usan i18n. Sin texto hardcoded.
+| Tipo | Componente | Cambio |
+|---|---|---|
+| 404 | `app/[locale]/not-found.tsx` | Mover a locale context, usar i18n |
+| Crítico | `app/[locale]/error.tsx` | Usar `useTranslations("common.errors")` |
+| Form validation | `NewsletterForm` | `react-hook-form` errors + `role="alert"` |
 
 ---
 
-## 19. Variables de Entorno
+## 19. APIs
 
-```bash
-# .env.local y .env.example
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-ADS_TXT_CONTENT=
-```
+Sin cambios. Toda la data es mock estático.
 
 ---
 
@@ -978,67 +681,75 @@ ADS_TXT_CONTENT=
 
 ### 20.1 Estrategia
 
-| Nivel     | Tool                        | Target         | Qué testear                                     |
-| --------- | --------------------------- | -------------- | ----------------------------------------------- |
-| Unit      | Vitest                      | utils, lib     | `formatDate`, `searchNews`, `getFeatured`       |
-| Component | Testing Library + next-intl | > 70%          | Render correcto, textos i18n, interacciones     |
-| E2E       | Playwright                  | Rutas críticas | Navegación, búsqueda, cambio de tema, SEO files |
+| Nivel | Tool | Cambios necesarios |
+|---|---|---|
+| Unit | Vitest | Actualizar tests de `format.ts` para nuevo parámetro `locale` |
+| Component | Testing Library | Añadir tests para `NewsletterForm` (rhf+zod), `CategoryClient`, `SearchClient` (date filter) |
+| E2E | Playwright | Añadir `@playwright/test` a package.json devDependencies |
 
-### 20.2 Wrapper i18n para Tests
+### 20.2 Tests Nuevos Requeridos
 
+**Unit: `format.test.ts`** — añadir casos para locale `"en"`:
 ```typescript
-// tests/utils/intl-wrapper.tsx
-import { NextIntlClientProvider } from 'next-intl';
-import messages from '@/messages/es.json';
-
-export const IntlWrapper = ({ children }: { children: React.ReactNode }) => (
-  <NextIntlClientProvider locale="es" messages={messages}>
-    {children}
-  </NextIntlClientProvider>
-);
+it("formatDate en locale en retorna formato en-US", () => {
+  const result = formatDate("2024-01-15T00:00:00Z", "en");
+  expect(result).toMatch(/Jan/);
+});
 ```
 
-### 20.3 Tests SEO (Playwright)
+**Component: `newsletter-form.test.tsx`**:
+```
+Given: NewsletterForm renderizado con locale es
+When: submit con email inválido
+Then: muestra mensaje de error
+When: submit con email válido
+Then: llama toast.success con t("newsletter.success")
+```
 
-```typescript
-// e2e/seo.spec.ts
-test("robots.txt", async ({ page }) => {
-  const r = await page.goto("/robots.txt");
-  expect(r?.status()).toBe(200);
-  expect(await page.textContent("body")).toContain("User-agent");
-});
-test("sitemap.xml", async ({ page }) => {
-  const r = await page.goto("/sitemap.xml");
-  expect(r?.status()).toBe(200);
-  expect(await page.textContent("body")).toContain("<url>");
-});
-test("ads.txt", async ({ page }) => {
-  const r = await page.goto("/ads.txt");
-  expect(r?.status()).toBe(200);
-});
+**Component: `category-client.test.tsx`**:
+```
+Given: CategoryClient con 3 artículos de 2 tags distintos
+When: click en tag X
+Then: solo muestra artículos con tag X
+When: click en "filterAll"
+Then: muestra todos los artículos
+```
+
+### 20.3 Tests E2E Existentes
+
+No deben romperse. Verificar tras cada cambio:
+- `e2e/navigation.spec.ts` — sin cambios esperados
+- `e2e/search.spec.ts` — verificar que filtro de fecha no rompe tests actuales
+- `e2e/seo.spec.ts` — verificar JSON-LD WebSite test pasa correctamente tras corrección
+
+---
+
+## 21. Variables de Entorno (sin cambios)
+
+```bash
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+ADS_TXT_CONTENT=
 ```
 
 ---
 
-## 21. Decisiones Técnicas
+## 22. Decisiones Técnicas
 
-| Decisión                     | Alternativas               | Elegida                        | Por qué                                                        |
-| ---------------------------- | -------------------------- | ------------------------------ | -------------------------------------------------------------- |
-| i18n                         | react-i18next, lingui      | next-intl                      | Integración nativa App Router; SSR/SSG; tipos estrictos        |
-| Deploy                       | Cloudflare, AWS            | Vercel                         | `cod_style.md §9`; zero config con Next.js                     |
-| Estado global                | Redux, Zustand, Context    | ninguno                        | Toda la data es estática; estado local suficiente              |
-| Slugs localizados            | `/es/noticias/[slug]`      | `/news/[slug]` (sin localizar) | Slugs son técnicos; paridad con URLs actuales; evita redirects |
-| CategoryClient vs URL params | Sincronizar filtros en URL | Estado local                   | Paridad con comportamiento actual; `search` ya usa URL         |
-| Framer Motion en NewsCard    | CSS animations             | Mantener framer-motion         | Ya integrado; paridad visual                                   |
+| Decisión | Alternativas | Elegida | Por qué |
+|---|---|---|---|
+| Locale en formatDate | date-fns completo, Intl.DateTimeFormat | `toLocaleDateString` con locale mapeado + date-fns solo para relativeTime | date-fns ya instalado; `toLocaleDateString` suficiente para formatDate |
+| not-found.tsx | Mantener global hardcoded, mover a [locale] | Mover a `[locale]/not-found.tsx` | Permite i18n real; elimina texto hardcoded |
+| CategoryClient pagination | Paginación real SSG, infinite scroll, simple | Filtro de tags únicamente (sin paginación) | KISS — máx 13 artículos por categoría actualmente |
+| pt-BR/ja/ko | No añadir, añadir vacíos | Scaffold vacíos + añadir a locales | No bloquear futura impl.; costo mínimo |
 
 ---
 
-## 22. Fuera de Alcance
+## 23. Fuera de Alcance
 
-- Backend API / base de datos — el proyecto usa mock-data; no se introduce persistencia.
-- CMS — `[OUT OF SCOPE]`
-- Autenticación — `[OUT OF SCOPE]`
-- Dashboard de administración — `[OUT OF SCOPE]`
-- Despliegue en Cloudflare Workers — se migra a Vercel; Cloudflare queda fuera.
-- Locales pt-BR, ja, ko — estructura lista desde día 1; traducción del contenido fuera del MVP.
-- Monetización real (ads) — `ads.txt` preparado vía env var; integración real fuera de alcance.
+- Traducción de contenido de artículos/categorías/autores a inglés — razón: mock-data es single-language by design.
+- Implementación real de newsletter API — razón: proyecto es mock/demo, sin backend.
+- Links sociales/newsletter/RSS reales — razón: son placeholders de diseño.
+- Localización de slugs de artículos y categorías — razón: requeriría duplicar todo el mock-data.
+- Implementar locales pt-BR, ja, ko — razón: solo scaffolding; sin traducciones disponibles.
+- Autenticación, dashboard privado — razón: no existe en el proyecto.
+- `use-mobile.tsx` hook complejo — razón: no hay componente que lo necesite actualmente.
