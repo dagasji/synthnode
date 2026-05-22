@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllNews, categories } from "@/lib/mock-data";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
+import { BASE_URL } from "@/lib/constants/site";
+
 const LOCALES = ["es", "en"] as const;
 
 function localePath(locale: string, path: string): string {

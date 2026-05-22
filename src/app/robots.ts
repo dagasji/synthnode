@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/constants/site";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: ["/api/", "/_next/"] },
       { userAgent: "Googlebot", allow: "/" },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: `${BASE_URL}sitemap.xml`,
+    host: BASE_URL.replace(/\/$/, ""),
   };
 }

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
+import { BASE_URL } from "@/lib/constants/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

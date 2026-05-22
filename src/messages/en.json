@@ -49,6 +49,9 @@
       "toggle": "Toggle theme",
       "light": "Light",
       "dark": "Dark"
+    },
+    "language": {
+      "switch": "Switch language"
     }
   },
   "home": {

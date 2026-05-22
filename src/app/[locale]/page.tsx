@@ -6,7 +6,7 @@ import { NewsCard } from "@/components/news/news-card";
 import { TrendingList } from "@/components/news/trending-list";
 import { Sidebar } from "@/components/sidebar/sidebar";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
+import { BASE_URL } from "@/lib/constants/site";
 
 interface Props {
   params: Promise<{ locale: string }>;

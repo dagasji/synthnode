@@ -16,7 +16,7 @@ export async function generateStaticParams() {
   return locales.flatMap((locale) => categories.map((c) => ({ locale, slug: c.slug })));
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://synthnode.dev";
+import { BASE_URL } from "@/lib/constants/site";
 
 function localePath(locale: string, path: string): string {
   return `${BASE_URL}${locale === "es" ? "" : `/${locale}`}${path}`;

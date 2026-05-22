@@ -49,6 +49,9 @@
       "toggle": "Cambiar tema",
       "light": "Claro",
       "dark": "Oscuro"
+    },
+    "language": {
+      "switch": "Cambiar idioma"
     }
   },
   "home": {

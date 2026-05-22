@@ -6,15 +6,14 @@ import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "./theme-toggle";
+import { LanguageSwitcher } from "./language-switcher";
 
 const NAV_ITEMS = [
   { labelKey: "ai", href: "/category/ai" },
   { labelKey: "programming", href: "/category/programming" },
-  { labelKey: "web-dev", href: "/category/web-dev" },
   { labelKey: "devops", href: "/category/devops" },
   { labelKey: "startups", href: "/category/startups" },
   { labelKey: "open-source", href: "/category/open-source" },
-  { labelKey: "security", href: "/category/security" },
 ] as const;
 
 export function Navbar() {
@@ -64,6 +63,7 @@ export function Navbar() {
               className="bg-surface border border-border rounded-md py-1.5 pl-9 pr-3 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
             />
           </form>
+          <LanguageSwitcher />
           <ThemeToggle />
           <button
             className="lg:hidden size-9 inline-flex items-center justify-center rounded-md border border-border"
