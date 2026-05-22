@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/", disallow: ["/api/", "/_next/"] },
       { userAgent: "Googlebot", allow: "/" },
     ],
-    sitemap: `${BASE_URL}sitemap.xml`,
-    host: BASE_URL.replace(/\/$/, ""),
+    sitemap: `${BASE_URL}/sitemap.xml`,
+    host: BASE_URL,
   };
 }
