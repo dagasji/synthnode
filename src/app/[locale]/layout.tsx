@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     default: "SYNTHNODE",
     template: "%s",
   },
+  icons: {
+    icon: "/icon.png",
+  },
   openGraph: { siteName: "SYNTHNODE", type: "website" },
   twitter: { card: "summary_large_image" },
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -32,7 +33,8 @@ export function Navbar() {
     <header role="banner" className="sticky top-0 z-50 frosted border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-xl font-bold tracking-tighter">
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-tighter">
+            <Image src="/icon.png" alt="SYNTHNODE" width={32} height={32} />
             SYNTH<span className="text-brand">NODE</span>
           </Link>
           <nav
