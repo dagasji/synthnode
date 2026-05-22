@@ -105,6 +105,7 @@
     "subtitle": "Análisis técnico directo. Sin ruido.",
     "emailPlaceholder": "tu@email.com",
     "submit": "Suscribirme",
+    "submitting": "Enviando…",
     "success": "¡Suscrito! Revisa tu bandeja de entrada.",
     "error": "Algo ha ido mal. Inténtalo de nuevo."
   },
