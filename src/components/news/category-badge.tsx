@@ -5,16 +5,10 @@ import { getCategoryBySlug } from "@/lib/mock-data";
 import type { CategorySlug } from "@/lib/types";
 import { useTranslations } from "next-intl";
 
-export function CategoryBadge({
-  slug,
-  asLink = true,
-}: {
-  slug: CategorySlug;
-  asLink?: boolean;
-}) {
+export function CategoryBadge({ slug, asLink = true }: { slug: CategorySlug; asLink?: boolean }) {
+  const t = useTranslations("common.navigation.categories");
   const cat = getCategoryBySlug(slug);
   if (!cat) return null;
-  const t = useTranslations("common.navigation.categories");
   const className = "label-mono text-brand hover:text-foreground transition-colors";
   if (!asLink) return <span className={className}>{t(slug)}</span>;
   return (

@@ -21,15 +21,15 @@ export function LanguageSwitcher() {
   const changeLocale = (newLocale: string) => {
     const segments = pathname.split("/");
     const currentLocale = segments[1];
-    
+
     if (currentLocale === newLocale) return;
-    
+
     if (currentLocale && LOCALES.some((l) => l.code === currentLocale)) {
       segments[1] = newLocale;
     } else {
       segments.splice(1, 0, newLocale);
     }
-    
+
     router.push(segments.join("/"));
   };
 
