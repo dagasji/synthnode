@@ -2,8 +2,7 @@ import type { ReactNode } from "react";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
-
+import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
