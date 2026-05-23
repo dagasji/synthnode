@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
+
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -23,7 +25,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
