@@ -66,48 +66,6 @@ const authors = {
   iria: { name: "Iria Castro", role: "Capital y Mercados", avatarColor: "oklch(0.7 0.15 320)" },
 };
 
-const longBody = (intro: string) => `${intro}
-
-## El contexto
-
-La industria atraviesa un punto de inflexión. Lo que hasta hace 18 meses era un campo dominado por publicaciones académicas hoy define la hoja de ruta de las plataformas más relevantes del mundo. Conviene mirar con cuidado qué está cambiando y qué se mantiene.
-
-> "Cada vez que el coste marginal de la inteligencia cae un orden de magnitud, la forma del software se reescribe."
-
-Los equipos están reorganizando su stack alrededor de tres principios claros: latencia baja, datos cerca del modelo y observabilidad de extremo a extremo.
-
-## Lo que hay debajo
-
-A nivel de infraestructura, varios patrones se repiten:
-
-- Inferencia desplegada con **autoscaling agresivo** y aceleradores compartidos por tenant.
-- Vector stores integrados directamente en la base de datos transaccional.
-- Capas de *guardrails* declarativas que permiten auditar cada llamada al modelo.
-- Migración progresiva de scripts de despliegue hacia *agentic workflows* parametrizados.
-
-\`\`\`ts
-// Ejemplo simplificado de una llamada con guardrails
-const result = await ai.generate({
-  model: "frontier-1",
-  input,
-  guardrails: ["pii-redact", "tool-allowlist"],
-});
-\`\`\`
-
-## Implicaciones para el producto
-
-El cambio no es solo técnico. Los equipos de producto están descubriendo que las funcionalidades más útiles aparecen cuando se elimina la fricción entre el dato y la decisión. Eso obliga a repensar UX, modelos mentales y, sobre todo, ciclos de feedback.
-
-### Tres preguntas para tu equipo
-
-1. ¿Dónde vive tu *source of truth* y a qué distancia está del modelo?
-2. ¿Cuántos saltos de red mete tu pipeline antes de devolver una respuesta?
-3. ¿Tienes una métrica clara de calidad por intención de usuario?
-
-## Qué viene
-
-Si la tendencia se mantiene, los próximos doce meses traerán consolidación de plataformas, una segunda ola de herramientas open source y, probablemente, regulación específica para el despliegue en sectores críticos. Conviene prepararse, no reaccionar.`;
-
 export const news: NewsArticle[] = [
   {
     slug: "codegraph-grafo-conocimiento-94-menos-tool-calls",
@@ -294,9 +252,39 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Por qué la memory safety se ha convertido en prioridad de seguridad nacional",
     excerpt:
       "Agencias federales empujan a la industria hacia lenguajes con garantías. Rust y los kernels modernos están en el centro.",
-    content: longBody(
-      "Cuando la CISA publica una hoja de ruta, las grandes plataformas escuchan. El último informe pone foco en el coste real de la corrupción de memoria.",
-    ),
+    content: `Cuando la CISA publica una hoja de ruta, las grandes plataformas escuchan. El último informe de la Cybersecurity and Infrastructure Security Agency dedica un capítulo entero a un problema que lleva décadas acumulándose en silencio: el coste real de la corrupción de memoria en software escrito en C y C++.
+
+![Memory safety Rust kernel](/news/rust.jpg)
+
+La cifra que más circula en el sector es que entre el 60 y el 70% de las vulnerabilidades críticas reportadas en los últimos años tienen su origen en errores de gestión de memoria. Buffer overflows, use-after-free, double frees. Bugs que un compilador moderno podría detectar antes de que el código llegara a producción.
+
+## Por qué ahora
+
+La pregunta razonable es: si este problema existe desde hace décadas, ¿por qué es una prioridad nacional ahora? La respuesta tiene varias capas.
+
+Primero, la superficie de ataque ha crecido exponencialmente. El software embebido en infraestructura crítica —redes eléctricas, sistemas de control industrial, dispositivos médicos— está escrito en gran medida en C. A medida que más de esa infraestructura se conecta a internet, los bugs de memoria que antes eran solo un problema de estabilidad se convierten en vectores de ataque reales.
+
+Segundo, la computación cuántica presiona a los equipos de seguridad a renovar stacks completos en los próximos años de todas formas. Si ya tienes que tocar el código, tiene sentido hacerlo con el lenguaje correcto.
+
+## Rust como respuesta técnica
+
+El informe de la CISA no menciona Rust por su nombre, pero la dirección es inequívoca: lenguajes con garantías de seguridad de memoria en tiempo de compilación. Rust es hoy el único candidato serio para sistemas de bajo nivel.
+
+\`\`\`rust
+// En Rust, el compilador detecta use-after-free antes de ejecutar
+let s = String::from("hello");
+let r = &s;
+drop(s); // Error: no puedes mover s mientras r tiene una referencia
+println!("{}", r);
+\`\`\`
+
+El kernel de Linux ya acepta drivers en Rust en mainline. Google lleva dos años reescribiendo partes de Android con Rust. Microsoft ha anunciado que nuevos componentes del sistema operativo se escribirán en Rust por defecto.
+
+## La realidad de la migración
+
+Reescribir código existente en C no es realista en la mayoría de casos. La estrategia que está funcionando es incremental: los módulos nuevos se escriben en Rust, los módulos críticos existentes se van reemplazando cuando se reescriben por otras razones, y los bindings de interoperabilidad permiten que ambos mundos coexistan.
+
+Para equipos que trabajan en infraestructura crítica, el mensaje del informe es claro: la pregunta no es si migrar, sino cuándo y con qué plan.`,
     image: rust,
     category: "programming",
     tags: ["Rust", "Security", "Kernel"],
@@ -312,9 +300,42 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Zero-day crítico encontrado en runtimes populares de WebAssembly",
     excerpt:
       "El bug afecta a aislamiento sandbox y ya tiene parches disponibles. Repasamos el alcance y el plan de mitigación.",
-    content: longBody(
-      "Un investigador independiente reportó la vulnerabilidad hace 72 horas. Hoy repasamos qué hace, a quién afecta y cómo mitigarlo.",
-    ),
+    content: `Un investigador independiente reportó la vulnerabilidad hace 72 horas a través del programa de divulgación responsable de Bytecode Alliance. Hoy, con el parche ya disponible, repasamos qué hace exactamente, a quién afecta y cómo mitigarlo si todavía no has actualizado.
+
+![WebAssembly zero-day sandbox](/news/security.jpg)
+
+El bug, registrado como CVE-2026-3179, afecta a Wasmtime en versiones anteriores a la 18.0.3 y a Wasmer antes de la 4.3.1. Ambos runtimes son ampliamente utilizados en entornos de servidor para ejecutar módulos WASM de forma aislada, y ese aislamiento es precisamente lo que este bug compromete.
+
+## Qué hace el bug
+
+El fallo está en la validación de índices de tabla durante la compilación JIT. Bajo ciertas condiciones con módulos WASM malformados, un atacante puede conseguir que el runtime escriba fuera de los límites del sandbox de memoria asignado al módulo.
+
+En la práctica, esto significa que un módulo WASM malicioso podría leer o escribir memoria del proceso anfitrión — rompiendo el aislamiento que es la promesa central de WebAssembly como plataforma de plugins y ejecución segura de código no confiable.
+
+\`\`\`bash
+# Verificar versión de Wasmtime
+wasmtime --version
+# wasmtime 18.0.3 es la versión segura mínima
+
+# Actualizar vía cargo
+cargo install wasmtime-cli
+\`\`\`
+
+## Quién está en riesgo
+
+El vector de ataque requiere que el runtime ejecute módulos WASM provenientes de fuentes no confiables. Los casos más expuestos son:
+
+- **Plataformas de plugins** que permiten a terceros subir módulos WASM
+- **CDNs y edge runtimes** que ejecutan código de usuario en WASM
+- **Sandboxes de evaluación** de código en entornos educativos o de CI
+
+Si usas Wasmtime o Wasmer exclusivamente para ejecutar tu propio código compilado, el riesgo es bajo pero la actualización sigue siendo recomendada.
+
+## Mitigación inmediata
+
+Actualizar a Wasmtime 18.0.3 o Wasmer 4.3.1 es la única mitigación completa. No hay workaround de configuración para este bug específico. El parche corrige la validación de índices en el compilador Cranelift que usa Wasmtime y en el motor Singlepass de Wasmer.
+
+Bytecode Alliance ha publicado un advisory completo con los hashes de commits afectados para quienes necesiten hacer backport a versiones antiguas por restricciones de entorno.`,
     image: security,
     category: "security",
     tags: ["WebAssembly", "CVE", "Sandbox"],
@@ -330,9 +351,29 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Y Combinator pivota de nuevo hacia hard-tech y robótica",
     excerpt:
       "La fatiga del SaaS es real. Una nueva generación de fundadores construye átomos, no solo bits.",
-    content: longBody(
-      "El último batch ha cambiado de composición. Más empresas con hardware, más equipos con doctorado, menos clones de productividad.",
-    ),
+    content: `El último batch de Y Combinator ha cambiado de composición de forma llamativa. Más empresas con hardware, más equipos con doctorado, notablemente menos clones de productividad con una capa de IA encima. Hablamos con tres partners de YC para entender qué está cambiando y por qué ahora.
+
+![Y Combinator hard tech batch](/news/startup.jpg)
+
+Durante varios años, la narrativa dominante en Silicon Valley fue que el software tenía ventajas estructurales sobre el hardware: márgenes mejores, escalado más rápido, menos capital inicial. Esa narrativa no ha desaparecido, pero se está matizando. Y YC, que siempre ha sido un barómetro razonablemente fiable de hacia dónde va el dinero, lo está reflejando.
+
+## Los números del giro
+
+En el batch de invierno 2026, alrededor del 28% de las empresas trabajan con componentes físicos de algún tipo: robótica, biotech, semiconductores, energía, manufactura avanzada. Hace cuatro años ese porcentaje rondaba el 12%. No es un movimiento brusco, pero la dirección es consistente batch tras batch.
+
+Lo que también llama la atención es la formación de los equipos fundadores. Los PhDs en ingeniería, física o biología son más frecuentes que en cualquier momento anterior de la historia de YC. Los fundadores que vienen directamente de laboratorios de investigación de Stanford, MIT o ETH están siendo aceptados con más regularidad.
+
+## La fatiga del SaaS de nicho
+
+> "Hay una generación de fundadores que no quieren construir otra herramienta de gestión de tareas con IA. Quieren construir cosas que existan en el mundo físico." — partner de YC en entrevista.
+
+El SaaS B2B sigue siendo un modelo perfectamente válido y seguirá siéndolo. Pero la percepción de que ese espacio está saturado en las categorías más accesibles está empujando a fundadores ambiciosos hacia problemas más difíciles y menos concurridos.
+
+## Por qué el capital está siguiendo el movimiento
+
+La otra cara del cambio es que el capital riesgo también ha rotado. Después de varios años de corrección de valoraciones en SaaS, los fondos generalistas están más abiertos a hard tech de lo que estaban en 2021. La tesis es que los ciclos de hardware son más largos pero los fosos competitivos son mucho más profundos una vez establecidos.
+
+Para los fundadores técnicos con formación en ingeniería, el momento actual puede ser una ventana interesante: más apetito inversor hacia problemas físicos complejos, y menos competencia directa que en el software puro.`,
     image: startup,
     category: "startups",
     tags: ["YC", "Hardware", "Capital"],
@@ -347,9 +388,31 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Open-Weights vs Open-Source: la guerra de definiciones se calienta",
     excerpt:
       "La OSI ultima un borrador final para definir IA abierta y los grandes labs presionan en sentido contrario.",
-    content: longBody(
-      "El debate ya no es semántico. Una definición restrictiva podría dejar fuera a buena parte del ecosistema actual.",
-    ),
+    content: `El debate sobre qué significa que un modelo de IA sea verdaderamente open source ya no es semántico. La OSI está a punto de publicar su borrador final para definir IA abierta, y la discusión ha llegado a un punto en el que una definición restrictiva podría dejar fuera a buena parte del ecosistema actual —incluyendo modelos que hoy se presentan como abiertos.
+
+![Open weights vs open source debate](/news/neural.jpg)
+
+El problema de fondo es que el término "open source" tiene una definición muy clara para el software: acceso al código fuente y libertad para modificarlo y distribuirlo. Pero los modelos de IA añaden una capa que el software tradicional no tiene: los datos de entrenamiento y el proceso de entrenamiento son tan importantes como el código.
+
+## La distinción que importa
+
+La OSI propone distinguir entre tres niveles de apertura:
+
+**Open weights**: el modelo entrenado está disponible para descargar y ejecutar, pero no el código de entrenamiento ni los datos. Es lo que ofrecen hoy Llama, Mistral y la mayoría de modelos "abiertos" populares.
+
+**Open training**: además de los pesos, el código de entrenamiento es público y reproducible. Pocos modelos llegan aquí.
+
+**Fully open source**: pesos, código de entrenamiento y datos de entrenamiento, todo bajo licencias que permiten uso, modificación y distribución sin restricciones. Prácticamente ningún modelo frontier llega a este nivel.
+
+## La presión de los grandes labs
+
+Meta, Mistral y Stability AI han presionado activamente para que la definición sea más laxa y permita que "open weights" cuente como open source. El argumento es pragmático: si la OSI adopta una definición muy estricta, casi nada en el ecosistema actual calificaría, lo que reduciría la relevancia de la certificación.
+
+El contragolpe de la comunidad más purista es igualmente directo: si la certificación no significa nada exigente, no sirve de nada tenerla.
+
+## Qué está en juego
+
+La decisión de la OSI importa más allá del debate académico. Reguladores en Europa y Estados Unidos están usando el término "modelo abierto" en textos legales. Si no hay una definición técnica clara, las empresas pueden hacer lobbying para que sus modelos semi-abiertos reciban el mismo trato regulatorio que el software verdaderamente libre. Eso tiene consecuencias reales en competencia, auditoría y rendición de cuentas.`,
     image: neural,
     category: "open-source",
     tags: ["OSI", "Foundation Models", "Licensing"],
@@ -364,9 +427,38 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Kubernetes se está convirtiendo en el substrato invisible de la inferencia IA",
     excerpt:
       "Los operadores específicos para GPU y los schedulers conscientes del modelo cambian la economía del despliegue.",
-    content: longBody(
-      "Lo que empezó como una pieza de infraestructura para microservicios web es hoy la pieza más estratégica de cualquier stack de IA serio.",
-    ),
+    content: `Lo que empezó como una pieza de infraestructura para microservicios web es hoy la pieza más estratégica de cualquier stack de IA serio. Kubernetes no fue diseñado pensando en GPUs ni en inferencia de modelos, pero la comunidad lo ha ido adaptando hasta convertirlo en el plano de control de facto para cargas de trabajo de IA a escala.
+
+![Kubernetes inferencia GPU](/news/devops.jpg)
+
+El cambio no es trivial. Orquestar contenedores de aplicaciones web y orquestar pods de inferencia con acceso a GPUs son problemas con características muy distintas: tiempos de arranque, afinidad de hardware, patrones de consumo de memoria, scheduling de lotes. Kubernetes ha tenido que evolucionar, y lo ha hecho a través de una capa de operadores y extensiones que en 2026 ya forman un ecosistema robusto.
+
+## Los operadores que están cambiando el juego
+
+**KEDA (Kubernetes Event-Driven Autoscaling)** se ha convertido en la pieza estándar para escalar réplicas de inferencia basándose en métricas de cola: número de requests pendientes, latencia p95, tokens por segundo. El autoscaler nativo de Kubernetes basado en CPU no era suficiente para este tipo de cargas.
+
+**GPU Operator de NVIDIA** automatiza todo lo que antes requería configuración manual: drivers, runtime de contenedor, exportador de métricas, time-slicing de GPUs. En clusters grandes, la diferencia entre gestionarlo a mano y usar el operador es de días de operaciones por semana.
+
+**Kueue** resuelve el scheduling de batch jobs de entrenamiento: prioridades, cuotas por equipo, gestión de la cola cuando no hay recursos disponibles. Es el pilar de los sistemas de entrenamiento distribuido sobre Kubernetes.
+
+\`\`\`yaml
+# Ejemplo de NodePool con afinidad de GPU
+apiVersion: karpenter.sh/v1
+kind: NodePool
+spec:
+  template:
+    spec:
+      requirements:
+        - key: karpenter.k8s.aws/instance-gpu-name
+          operator: In
+          values: ["h100", "a100"]
+\`\`\`
+
+## El problema del cold start
+
+El talón de Aquiles de la inferencia sobre Kubernetes sigue siendo el tiempo de arranque. Cargar un modelo de 70B en una GPU puede tardar varios minutos, lo que hace que el autoscaling reactivo sea poco práctico para endpoints con baja latencia. Las soluciones actuales van desde mantener réplicas mínimas calientes hasta sistemas de precarga predictiva basados en patrones de tráfico histórico.
+
+Knative Serving, combinado con técnicas de snapshot de memoria de GPU, está reduciendo esos tiempos en algunos entornos a menos de 30 segundos. Todavía lejos del ideal, pero la dirección es la correcta.`,
     image: devops,
     category: "devops",
     tags: ["Kubernetes", "GPU", "Inferencia"],
@@ -382,9 +474,45 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "React Server Components: la cola larga de la migración",
     excerpt:
       "Cómo los grandes equipos están abordando el cambio a arquitecturas streaming sin romper sus pipelines existentes.",
-    content: longBody(
-      "Migrar a RSC no es flip-the-switch. Es repensar dónde vive el estado, quién lo posee y cómo se serializa.",
-    ),
+    content: `Migrar a React Server Components no es flip-the-switch. Es repensar dónde vive el estado, quién lo posee y cómo se serializa. Los equipos que lo están haciendo bien están tardando meses, no semanas, y los que lo están haciendo mal están acumulando deuda técnica que tendrán que pagar más tarde.
+
+![React Server Components migración](/news/neural.jpg)
+
+Después de más de un año desde que RSC llegó a producción estable con Next.js App Router, el ecosistema tiene suficiente experiencia acumulada como para hablar de patrones que funcionan y antipatrones que se repiten. Eso es exactamente lo que hemos recopilado hablando con equipos de distintos tamaños.
+
+## El modelo mental que más ayuda
+
+La forma más práctica de pensar en la migración es separar el árbol de componentes en dos preguntas independientes:
+
+1. **¿Necesita este componente estado interactivo del usuario?** Si sí, es un Client Component. Si no, probablemente puede ser Server Component.
+2. **¿Necesita datos que solo están disponibles en el servidor?** Si sí, Server Component. Si esos datos vienen de una API externa que también tienes en el cliente, Client Component.
+
+El error más común es intentar convertir todo a Server Components de golpe. El resultado es inevitablemente una cadena de errores de "you cannot use hooks in a server component" que frustra al equipo y genera regresiones.
+
+## El patrón que funciona: composición
+
+\`\`\`tsx
+// Server Component — accede a la DB directamente
+async function ProductPage({ id }: { id: string }) {
+  const product = await db.products.findById(id); // Sin fetch, sin API
+  return (
+    <div>
+      <ProductDetails product={product} />
+      <AddToCartButton productId={id} /> {/* Client Component */}
+    </div>
+  );
+}
+\`\`\`
+
+El Server Component hace el trabajo pesado de datos; el Client Component solo gestiona la interactividad. La clave está en pasar datos serializables (objetos planos, strings, números) desde el servidor al cliente — no instancias de clases ni funciones.
+
+## Lo que más complica la migración
+
+- **Context API**: los contextos de React no funcionan en Server Components. Los datos globales que vivían en contexto tienen que subir a la URL, a cookies o a un store de servidor.
+- **Librerías de terceros**: muchas librerías de UI asumen que están en el cliente. Necesitan ser importadas desde Client Components o envueltas en wrappers.
+- **Suspense y streaming**: la ganancia real de RSC viene de streaming con Suspense, pero requiere refactorizar cómo se cargan los datos y cómo se muestran los estados de carga.
+
+La buena noticia es que la migración es incremental. Puedes tener un directorio con App Router y otro con Pages Router simultáneamente mientras migras rutas una a una.`,
     image: neural,
     category: "web-dev",
     tags: ["React", "RSC", "Streaming"],
@@ -399,9 +527,41 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "El roadmap de criptografía post-cuántica para DevOps empresarial",
     excerpt:
       "Los estándares nacionales están cambiando. Así puedes preparar tu infraestructura para la próxima década de amenazas.",
-    content: longBody(
-      "NIST ha cerrado los primeros estándares. Toca planificar la rotación de algoritmos como un proyecto de varios años.",
-    ),
+    content: `NIST ha cerrado los primeros estándares de criptografía post-cuántica y la pregunta que tenían aparcada los equipos de infraestructura ya no puede esperar: ¿cuándo empezamos la migración? La respuesta corta es que si no has empezado a inventariar, ya vas tarde.
+
+![Criptografía post-cuántica infraestructura](/news/security.jpg)
+
+Los tres algoritmos estandarizados —ML-KEM (antes Kyber), ML-DSA (antes Dilithium) y SLH-DSA (antes SPHINCS+)— tienen implementaciones maduras en todas las plataformas principales. El problema no es técnico. Es de escala y de planificación.
+
+## Por qué la urgencia
+
+El argumento para actuar ahora, incluso cuando los ordenadores cuánticos capaces de romper RSA-2048 están todavía a años vista, es la amenaza "harvest now, decrypt later". Actores adversariales con suficientes recursos ya están almacenando tráfico cifrado hoy con la intención de descifrarlo cuando tengan la capacidad cuántica para hacerlo.
+
+Para datos con vida útil larga —registros médicos, secretos comerciales, comunicaciones diplomáticas— eso significa que la ventana de riesgo ya está abierta.
+
+## El inventario como primer paso
+
+Antes de migrar nada, el paso obligatorio es saber qué tienes. En organizaciones de tamaño mediano, el número de lugares donde se usa criptografía asimétrica es sorprendentemente alto:
+
+- Certificados TLS en APIs, webs y microservicios
+- Claves SSH para acceso a infraestructura
+- Firmas de código y artefactos de CI/CD
+- Tokens JWT y cookies de sesión
+- Comunicación entre servicios (mTLS)
+- Almacenamiento de secretos (Vault, AWS KMS, etc.)
+
+\`\`\`bash
+# Auditar certificados TLS en tu infraestructura
+openssl s_client -connect tu-servicio.com:443 2>/dev/null \
+  | openssl x509 -noout -text \
+  | grep "Public Key Algorithm"
+\`\`\`
+
+## El roadmap práctico
+
+La estrategia que está funcionando en empresas que ya están en proceso es la hibridación: usar algoritmos clásicos y post-cuánticos en paralelo durante un período de transición. TLS 1.3 ya soporta cipher suites híbridas como \`X25519Kyber768\`.
+
+Para DevOps, el roadmap realista es de tres a cinco años, con las APIs públicas y los certificados de mayor visibilidad como primera prioridad, seguidos de la infraestructura interna y finalmente los sistemas legacy que requieren más esfuerzo de integración.`,
     image: security,
     category: "security",
     tags: ["PQC", "Criptografía", "DevOps"],
@@ -416,9 +576,38 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Los drivers Rust del kernel de Linux alcanzan estado estable en mainline",
     excerpt:
       "Tras años de discusión, los primeros subsystems escritos en Rust se integran de forma definitiva.",
-    content: longBody(
-      "Es un cambio simbólico tan importante como técnico. El kernel deja de ser exclusivamente C después de tres décadas.",
-    ),
+    content: `Es un cambio simbólico tan importante como técnico. Los primeros drivers Rust del kernel de Linux han alcanzado estado estable en mainline, lo que significa que el kernel deja de ser exclusivamente C después de más de tres décadas. Para quienes llevan siguiendo este proceso desde los primeros parches de Linus aceptando Rust en 2022, el momento tiene cierto peso histórico.
+
+![Rust kernel Linux mainline drivers](/news/rust.jpg)
+
+Los drivers que han llegado a stable son el driver para dispositivos de entrada NovaStar y el driver de red para Apple Silicon de Asahi Linux — este último especialmente significativo porque es un driver de producción que ya usa gente real en hardware real.
+
+## Qué ha tardado tanto
+
+El camino desde "Rust está en el árbol del kernel" hasta "los drivers Rust son estables" ha sido más largo de lo que muchos esperaban, y vale la pena entender por qué.
+
+El proceso de revisión del kernel de Linux es extremadamente riguroso, con razón. Un bug en un driver que corra en millones de máquinas tiene consecuencias muy reales. Los maintainers tuvieron que desarrollar no solo el soporte de Rust en sí, sino también abstracciones seguras sobre las APIs internas del kernel — que fueron diseñadas para C y no siempre tienen una traducción directa limpia a Rust.
+
+\`\`\`rust
+// Abstracción segura sobre una API del kernel en Rust
+use kernel::prelude::*;
+use kernel::net::{self, Device, Namespace};
+
+#[vtable]
+impl net::DeviceOperations for MyNetDevice {
+    fn open(dev: &Device) -> Result {
+        // El compilador garantiza que dev es válido aquí
+        dev.start_queue();
+        Ok(())
+    }
+}
+\`\`\`
+
+## El camino por delante
+
+Este hito abre la puerta a más contribuciones. Ahora que hay un precedente de drivers Rust en mainline stable, otros maintainers tienen más confianza para empezar nuevos drivers en Rust en lugar de C. El subsistema de drivers de GPU y el de almacenamiento son los que más interés están generando en la comunidad.
+
+Lo que no va a pasar es una migración masiva del código existente. Los drivers C funcionan y nadie va a reescribirlos solo por el placer de usar Rust. El cambio será gradual, dirigido por casos donde la seguridad de memoria sea especialmente crítica o donde los drivers sean nuevos de todas formas.`,
     image: rust,
     category: "open-source",
     tags: ["Rust", "Linux", "Kernel"],
@@ -433,9 +622,33 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Las ventanas de contexto LLM llegan a 10M de tokens vía sparse attention",
     excerpt:
       "Una técnica clásica vuelve a ser noticia: cómo se puede mantener calidad sin disparar el coste de cómputo.",
-    content: longBody(
-      "Sparse attention no es nuevo. Lo nuevo es la combinación con caché agresivo y hardware específico para reducir coste por token.",
-    ),
+    content: `Sparse attention no es nuevo. Lo nuevo es la combinación de sparse attention con caché agresivo de KV y hardware específico para gestionar ventanas de contexto de 10 millones de tokens a un coste que empieza a ser viable en producción. Esta semana varios labs publicaron simultáneamente benchmarks sobre esta combinación y los números merecen atención.
+
+![LLM contexto largo sparse attention](/news/neural.jpg)
+
+La ventana de contexto ha sido uno de los caballos de batalla de los LLMs desde el principio. Los primeros modelos GPT trabajaban con ventanas de 2.048 tokens. GPT-4 llegó a 128K. Claude 3 escaló a 200K. Y ahora varios modelos de investigación están demostrando 10 millones de tokens con calidad razonable en las tareas de recuperación de información.
+
+## El problema con los contextos largos clásicos
+
+El mecanismo de atención estándar ("full attention") tiene un coste cuadrático respecto al largo del contexto: doblar la longitud cuadruplica el cómputo. A 10 millones de tokens, eso es computacionalmente imposible con hardware actual incluso para inferencia de un solo usuario.
+
+Sparse attention resuelve esto haciendo que cada token solo atienda a un subconjunto del contexto — no a todos los demás tokens. El truco está en qué subconjunto elegir: si el sistema es bueno eligiendo qué partes son relevantes, la calidad no cae significativamente.
+
+## La combinación que está funcionando
+
+\`\`\`
+Contexto largo eficiente = Sparse Attention + KV Cache comprimido + Hardware consciente
+\`\`\`
+
+**Sparse Attention por bloques**: en lugar de atención completamente aleatoria, se usa una combinación de atención local (tokens cercanos), atención global (tokens especiales designados como "summary tokens") y atención aleatoria esparsa. Este patrón preserva la mayor parte de la calidad.
+
+**KV Cache comprimido**: almacenar el caché de claves y valores de todos los tokens de 10M en memoria GPU es inviable. Las técnicas de cuantización del caché a 4 bits y la paginación del caché con offloading a CPU permiten gestionar ventanas enormes con presupuestos de VRAM razonables.
+
+**Hardware específico**: los nuevos aceleradores de Cerebras y los últimos dies de NVIDIA incluyen unidades específicas para operaciones de sparse attention que reducen drásticamente el tiempo de procesamiento.
+
+## Para qué sirve realmente
+
+La aplicación más inmediata no es el chat, sino el análisis de documentos completos: repositorios de código enteros, datasets de investigación, libros, bases de conocimiento corporativas. Poder enviar un repo completo al contexto y preguntar sobre él sin chunking ni RAG es un cambio cualitativo en cómo se construyen las aplicaciones.`,
     image: neural,
     category: "ai",
     tags: ["Attention", "Long Context", "Eficiencia"],
@@ -450,9 +663,27 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Comparativa 2026 de edge runtimes: Workers, Deno Deploy y Vercel Functions",
     excerpt:
       "Latencias, límites, primitivas y precio real. Una guía práctica para decidir dónde correr tu backend.",
-    content: longBody(
-      "Hicimos pruebas reales en cinco regiones durante dos semanas. Los resultados desmontan algunos mitos persistentes.",
-    ),
+    content: `Hicimos pruebas reales en cinco regiones durante dos semanas comparando Cloudflare Workers, Deno Deploy y Vercel Functions en condiciones de carga similares a las de una API de producción. Los resultados desmontan algunos mitos persistentes y confirman otros. Aquí está lo que encontramos.
+
+![Edge runtimes comparativa 2026](/news/devops.jpg)
+
+La premisa del edge computing para aplicaciones web es atractiva: en lugar de tener tu API en us-east-1 y que usuarios de Tokyo paguen 200ms de latencia extra, el código corre cerca del usuario. Pero "cerca del usuario" tiene matices importantes dependiendo de la plataforma.
+
+## Metodología
+
+Probamos desde cinco regiones: Tokio, São Paulo, Frankfurt, Lagos y Chicago. Cada plataforma recibió el mismo código: un handler que lee de KV, hace una operación de transformación de datos y devuelve JSON. Medimos p50, p95 y p99 de latencia desde el cliente, tiempo de cold start y comportamiento bajo carga sostenida de 1.000 req/s.
+
+## Resultados por plataforma
+
+**Cloudflare Workers** ganó en latencia p50 en todas las regiones excepto Lagos, donde su cobertura es más escasa. El cold start es virtualmente inexistente (< 5ms) gracias a V8 Isolates. El límite de 128MB de memoria por worker es restrictivo para algunas cargas. El ecosistema de bindings (KV, R2, D1, Queues) es el más maduro.
+
+**Deno Deploy** sorprendió con la mejor latencia p99 en Frankfurt y Tokio. La integración con el ecosistema npm es más fluida de lo que esperábamos. El punto débil es la cobertura de regiones: 35 regiones frente a 310+ de Cloudflare. En Lagos, los números eran malos.
+
+**Vercel Functions** (Edge Runtime) tiene la integración más fluida si ya usas Next.js — el DX es difícil de batir. En latencia pura quedó tercero en la mayoría de escenarios, pero la diferencia práctica en p50 era de menos de 10ms en los mercados principales. Donde sí perdió claramente fue en p99 bajo carga alta.
+
+## El mito que más se repite
+
+La idea de que "edge siempre es más rápido" es falsa en muchos casos reales. Si tus datos viven en una base de datos centralizada en us-east-1, el edge solo mueve la latencia de red del cliente al servidor — pero luego el worker todavía tiene que ir a buscar los datos a us-east-1. Para cargas donde la mayor parte del tiempo es I/O a una DB centralizada, el edge puede ser incluso más lento que una región normal bien elegida.`,
     image: devops,
     category: "web-dev",
     tags: ["Edge", "Workers", "Deno"],
@@ -467,9 +698,31 @@ Si la tendencia se mantiene, los próximos doce meses traerán consolidación de
     title: "Founders técnicos: cómo está cambiando la ronda seed en 2026",
     excerpt:
       "Tickets más pequeños, expectativas más altas y una nueva generación de inversores con background ingeniero.",
-    content: longBody(
-      "El seed ha cambiado de forma. Menos teatro, más métricas. Hablamos con seis fondos para entender qué buscan hoy.",
-    ),
+    content: `El seed ha cambiado de forma. Menos teatro, más métricas. Los decks con slides de "visión" sin tracción ya no abren puertas en los fondos que importan. Hablamos con seis fondos de seed para entender exactamente qué están buscando en 2026 y qué ha dejado de funcionar.
+
+![Seed round founders técnicos 2026](/news/startup.jpg)
+
+La corrección del mercado de 2022-2023 dejó una cicatriz permanente en cómo los VCs piensan el riesgo en etapas tempranas. Los que sufrieron más fueron los fondos que apostaron a valuaciones infladas en pre-seed con poca más que una idea bien articulada. El resultado es que el listón para levantar seed se ha movido de forma estructural.
+
+## Lo que buscan hoy los fondos de seed
+
+**Evidencia de retención, no solo de adquisición.** El número de usuarios que se registran es fácil de hinchar con un poco de marketing. Lo que los fondos miran primero ahora es qué porcentaje de los usuarios que se registraron hace tres meses siguen activos. Una retención del 40% a 30 días en B2C o del 60% en B2B a 90 días es el tipo de señal que abre conversaciones.
+
+**Fundadores que conocen el problema desde dentro.** La narrativa del "outsider con perspectiva fresca" ha perdido atractivo. Los fondos prefieren fundadores que vengan del sector que quieren disrumpir —que hayan sentido el problema en su propio trabajo antes de decidir resolverlo.
+
+**Velocidad de iteración demostrable.** No "vamos a iterar rápido", sino evidencia de que ya lo estás haciendo: cuántas veces has cambiado el producto en los últimos 60 días basándote en feedback de usuarios reales.
+
+> "En 2021 invertíamos en la visión. En 2026 invertimos en la evidencia de que alguien está pagando por resolver este problema." — partner de un fondo de seed europeo.
+
+## Los tickets y las valoraciones
+
+El ticket promedio de seed en Europa se ha estabilizado entre 1,5M y 3M€ para rondas pre-producto con equipo sólido, y entre 3M y 7M€ para startups con primeros ingresos recurrentes. Las valoraciones han bajado respecto al pico de 2021 pero son más razonables y más sostenibles para las siguientes rondas.
+
+En Estados Unidos los números son el doble aproximadamente, pero la dinámica es similar: más exigencia de tracción, menor tolerancia a la falta de claridad sobre el modelo de negocio.
+
+## El consejo que más se repite
+
+Todos los fondos con los que hablamos dijeron alguna versión de lo mismo: construye algo que funcione aunque sea para diez personas, y que esas diez personas no puedan vivir sin ello. Eso es suficiente para una conversación de seed en 2026.`,
     image: startup,
     category: "startups",
     tags: ["Seed", "VC", "Founders"],
@@ -743,7 +996,8 @@ El ecosistema está listo: la gran mayoría de plugins de Vite populares ya tien
   },
   {
     slug: "baseline-2026-apis-web-sin-polyfills",
-    title: "Baseline 2026: las 12 APIs web que ya puedes usar sin polyfills en todos los navegadores",
+    title:
+      "Baseline 2026: las 12 APIs web que ya puedes usar sin polyfills en todos los navegadores",
     excerpt:
       "Desde View Transitions hasta la Temporal API. El resumen del proyecto Interop 2026 confirma qué ha aterrizado de forma segura en Chrome, Firefox y Safari.",
     content: `Una de las fricciones más persistentes del desarrollo web ha sido siempre la misma: encuentras una API que resuelve exactamente tu problema, compruebas el soporte en Can I Use, y te encuentras con ese amarillo angustiante que significa "sí, pero no en todos sitios". Baseline 2026 es el intento más organizado hasta la fecha de acabar con esa incertidumbre.
@@ -883,7 +1137,8 @@ El ecosistema de providers es esencialmente el mismo, los conocimientos de HCL s
   },
   {
     slug: "replit-200m-valoracion-2000m-desarrollador-no-tecnico",
-    title: "Replit levanta 200M$ a 2.000M$ de valoración: la apuesta por el creador de software no-técnico",
+    title:
+      "Replit levanta 200M$ a 2.000M$ de valoración: la apuesta por el creador de software no-técnico",
     excerpt:
       "La startup de coding asistido por IA acelera su expansión con foco en pequeñas empresas y educación. Desglosamos el modelo de negocio y si la valoración tiene sentido.",
     content: `Hay rondas de financiación que confirman una tendencia y hay rondas que la aceleran. La de Replit esta semana es de las segundas. 200 millones de dólares a una valoración de 2.000 millones —el doble que hace dieciocho meses— con un giro estratégico claro: dejar de competir con los IDEs de desarrolladores profesionales y apostar a fondo por el mercado de personas que quieren crear software pero no saben programar.
@@ -934,7 +1189,8 @@ El resultado de esta ronda no lo veremos en los próximos meses sino en los pró
   },
   {
     slug: "linux-foundation-openagent-estandares-agentes-ia",
-    title: "La Linux Foundation lanza OpenAgent: estándares abiertos para la interoperabilidad entre agentes IA",
+    title:
+      "La Linux Foundation lanza OpenAgent: estándares abiertos para la interoperabilidad entre agentes IA",
     excerpt:
       "Veinte empresas, incluyendo Microsoft, Red Hat y Hugging Face, firman el charter fundacional. Primer vistazo a la especificación técnica.",
     content: `El ecosistema de agentes de IA tiene hoy el mismo problema que tenía el ecosistema de contenedores en 2013: docenas de implementaciones incompatibles, cada proveedor con su propio formato, y los usuarios atrapados en el medio. La Linux Foundation ha decidido que ya es momento de repetir lo que hizo con la OCI (Open Container Initiative) para Docker, pero esta vez para los agentes IA.
@@ -995,7 +1251,8 @@ Si trabajas con agentes en producción, vale la pena seguir el repositorio de Op
   },
   {
     slug: "cve-ssh-kex-openssh-99-millones-servidores",
-    title: "CVE crítico en SSH: millones de servidores expuestos por un fallo en el handshake de intercambio de claves",
+    title:
+      "CVE crítico en SSH: millones de servidores expuestos por un fallo en el handshake de intercambio de claves",
     excerpt:
       "Un fallo en la implementación del KEX de OpenSSH anterior a la versión 9.9 permite a un atacante en posición de red forzar el uso de algoritmos débiles. Parche disponible, acción inmediata recomendada.",
     content: `Los CVEs críticos en SSH son raros precisamente porque el protocolo lleva décadas de auditorías y análisis. Cuando uno aparece, conviene tomárselo en serio. El CVE-2026-4821, publicado esta semana por el equipo de seguridad de OpenBSD con coordinación de CERT/CC, afecta al mecanismo de intercambio de claves (KEX) de OpenSSH en versiones anteriores a la 9.9 y tiene una ventana de explotación real bajo ciertas condiciones de red.
