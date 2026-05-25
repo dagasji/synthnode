@@ -10,7 +10,6 @@ const programming = "/news/rust.jpg";
 const openSource = "/news/neural.jpg";
 const cloudFreeTier = "/news/cloud-free-tier.png";
 
-
 export const categories: Category[] = [
   {
     slug: "ai",
