@@ -8,6 +8,8 @@ const neural = "/news/neural.jpg";
 const devops = "/news/devops.jpg";
 const programming = "/news/rust.jpg";
 const openSource = "/news/neural.jpg";
+const cloudFreeTier = "/news/cloud-free-tier.png";
+
 
 export const categories: Category[] = [
   {
@@ -1321,6 +1323,221 @@ La recomendación del equipo de OpenBSD, que van a implementar en futuras versio
     likes: 892,
     trending: true,
   },
+  {
+    slug: "free-tier-aws-gcp-azure-comparativa-2026",
+    title: "AWS, GCP o Azure gratis: qué puedes hacer de verdad con cada plan free tier en 2026",
+    excerpt:
+      "Las tres grandes clouds ofrecen capas gratuitas, pero no todas son iguales. Comparamos en detalle qué incluye cada una, para qué tipo de proyectos encaja mejor y dónde están los límites reales.",
+    content: `Cuando empiezas un proyecto nuevo —ya sea un side project, una startup en fase embrionaria o simplemente quieres aprender— la primera pregunta que te haces es: ¿cuánto me va a costar esto? La buena noticia es que AWS, Google Cloud y Azure tienen planes gratuitos bastante generosos. La mala es que no son equivalentes, y elegir el que no encaja con tu caso de uso puede costarte una sorpresa en la factura a final de mes.
+
+Este artículo es una guía práctica. Sin tecnicismos innecesarios. Con ejemplos reales de qué puedes montar gratis, y con las advertencias que normalmente no aparecen en los folletos.
+
+![Comparativa free tier AWS GCP Azure 2026](/news/cloud-free-tier.png)
+
+---
+
+## La diferencia entre "siempre gratis" y "gratis durante 12 meses"
+
+Antes de entrar en detalles por plataforma, hay un concepto que tienes que tener clarísimo: **no todo el free tier dura para siempre**.
+
+Las tres plataformas mezclan dos tipos de gratuidad:
+
+- **Always free**: servicios que son gratuitos indefinidamente, aunque pasen los primeros 12 meses.
+- **Free trial (12 meses)**: recursos gratuitos durante el primer año desde que creas la cuenta. Pasado ese tiempo, empiezan a cobrar.
+
+Confundir estas dos categorías es el error más común que comete la gente. Monta algo en un recurso "gratis", lo olvida, y a los 13 meses llega una factura.
+
+---
+
+## AWS Free Tier: el más conocido, pero con trampas
+
+![AWS Lambda serverless infraestructura](/news/aws.png)
+
+AWS fue el primero en popularizar el concepto de free tier y sigue siendo el de mayor ecosistema. Su capa gratuita es generosa en servicios, pero requiere que estés atento a los límites.
+
+### Recursos always free en AWS
+
+- **Lambda**: 1 millón de invocaciones y 400.000 GB-segundo de cómputo al mes, para siempre. Esto es mucho. Una función que se llame 100 veces al día tardando medio segundo en ejecutar con 128 MB no te costará nada nunca.
+- **DynamoDB**: 25 GB de almacenamiento y capacidad de lectura/escritura suficiente para aplicaciones de carga baja. Permanente.
+- **S3**: ojo, el almacenamiento de S3 **no** es always free; solo los primeros 5 GB son gratuitos durante 12 meses.
+- **SNS y SQS**: 1 millón de peticiones al mes de cada uno, para siempre.
+- **CloudWatch Logs**: 5 GB de ingestión y 5 GB de almacenamiento al mes, permanentes.
+
+### Recursos gratuitos solo los primeros 12 meses en AWS
+
+- **EC2**: 750 horas/mes de instancias t2.micro o t3.micro (equivale a una máquina virtual corriendo 24/7 durante un mes).
+- **RDS**: 750 horas/mes en instancia db.t2.micro o db.t3.micro, con 20 GB de almacenamiento.
+- **Elastic Load Balancing**: 750 horas/mes.
+- **Elastic Beanstalk**, **CodeBuild**, **CodePipeline**: con límites durante el primer año.
+
+### Para qué tipo de proyecto encaja mejor AWS
+
+AWS brilla especialmente cuando necesitas **arquitecturas serverless** y no quieres preocuparte por servidores. Si tu app puede vivir en Lambda + API Gateway + DynamoDB + S3, puedes tener algo funcionando en producción real de forma gratuita durante mucho tiempo.
+
+También es la mejor opción si ya sabes que en el futuro vas a escalar: el ecosistema de AWS es el más maduro, con más documentación, más comunidad y más integraciones de terceros que cualquier otro cloud.
+
+**Ideal para**: APIs REST serverless, bots, webhooks, aplicaciones JAMstack, proyectos de aprendizaje de arquitecturas cloud.
+
+**Cuidado con**: las transferencias de datos de salida (egress) en AWS son caras. Si tu aplicación transfiere muchos datos desde S3 o EC2 hacia internet, el free tier se acaba rápido y empieza a cobrar.
+
+---
+
+## Google Cloud Platform (GCP): el always free más generoso en cómputo
+
+![Google Cloud Platform infraestructura como código](/news/gcp.png)
+
+GCP tiene algo que AWS y Azure no ofrecen de la misma forma: **instancias de máquinas virtuales always free**. Es decir, puedes tener una VM corriendo indefinidamente sin pagar nada. Eso cambia bastante el panorama.
+
+### Recursos always free en GCP
+
+- **Compute Engine (e2-micro)**: 1 instancia e2-micro al mes en us-east1, us-central1 o us-west1. Son máquinas pequeñas (2 vCPU, 1 GB RAM), pero suficientes para un servidor web, un bot, un cron job o un entorno de staging.
+- **Cloud Storage**: 5 GB en la región estándar de Estados Unidos. Permanente.
+- **Cloud Run**: 2 millones de peticiones al mes y 360.000 vCPU-segundos. Ideal para contenedores serverless.
+- **BigQuery**: 10 GB de almacenamiento y 1 TB de consultas al mes. Una ganga brutal si trabajas con datos.
+- **Cloud Functions**: 2 millones de invocaciones al mes. Permanente.
+- **Firestore**: 1 GB de almacenamiento, 50.000 lecturas y 20.000 escrituras al día. Para siempre.
+- **Secret Manager**: 6 secretos activos y 10.000 operaciones al mes.
+- **Cloud Build**: 120 minutos de build al día.
+
+### Trial inicial de GCP: $300 durante 90 días
+
+GCP en lugar de 12 meses de free trial ofrece **$300 de crédito durante 90 días**. Eso te permite probar prácticamente cualquier servicio de la plataforma sin restricciones durante ese periodo.
+
+### Para qué tipo de proyecto encaja mejor GCP
+
+GCP es la opción más interesante si necesitas **persistencia de larga duración con cómputo siempre activo**. El e2-micro always free es perfecto para proyectos que necesitan un proceso corriendo 24/7: un servidor Discord, un scraper con cron, un servidor de desarrollo al que conectarte por SSH.
+
+Además, para proyectos que trabajan con **datos y analytics**, BigQuery con 1 TB de consultas gratuitas al mes es difícilmente superable. Ninguna otra plataforma ofrece algo parecido en el free tier.
+
+**Ideal para**: servidores siempre activos de bajo consumo, proyectos de datos y analytics, contenedores con Cloud Run, proyectos que usan Firebase (que se integra con GCP de forma nativa).
+
+**Cuidado con**: los $300 de crédito se pueden gastar rápido si pruebas servicios de ML o instancias grandes. Cuando se acaben los créditos y pasen los 90 días, solo quedan los recursos always free.
+
+---
+
+## Azure Free Tier: el que más equilibrio ofrece con servicios enterprise
+
+![Microsoft Azure DevOps pipelines enterprise](/news/azure.png)
+
+Microsoft Azure tiene una propuesta interesante porque combina un free tier con créditos iniciales y una gama de servicios always free orientados a casos enterprise y de desarrollo continuo.
+
+### Recursos always free en Azure
+
+- **Azure Functions**: 1 millón de ejecuciones y 400.000 GB-segundos al mes. Equivalente a AWS Lambda.
+- **Azure Blob Storage**: 5 GB (con LRS) al mes siempre gratuitos.
+- **Azure Cosmos DB**: 1.000 unidades de solicitud por segundo y 25 GB de almacenamiento. Permanente. Muy generoso para una base de datos NoSQL distribuida globalmente.
+- **Azure App Service**: 10 web apps en plan F1 (gratuito), aunque con limitaciones de CPU (60 minutos/día) y sin dominio personalizado.
+- **Azure DevOps**: 5 usuarios gratis con pipelines ilimitadas para proyectos públicos y 1.800 minutos de build al mes para privados. Para siempre.
+- **Azure Container Registry**: 10 webhooks, 100 GB de almacenamiento.
+- **Azure Active Directory**: hasta 50.000 usuarios y autenticaciones al mes.
+- **GitHub Actions** (aunque es de GitHub, se integra con Azure de forma nativa y tiene 2.000 minutos gratis al mes).
+
+### Recursos gratuitos solo los primeros 12 meses en Azure
+
+- **Virtual Machines**: 750 horas/mes de B1s (1 vCPU, 1 GB RAM).
+- **Azure SQL Database**: 250 GB con instancia S0.
+- **Azure Kubernetes Service (AKS)**: gestión de cluster gratis (solo pagas los nodos).
+
+Además, al crear la cuenta recibes **$200 de crédito durante los primeros 30 días**.
+
+### Para qué tipo de proyecto encaja mejor Azure
+
+Azure tiene ventaja clara en dos escenarios: si ya usas herramientas del ecosistema Microsoft (Visual Studio, .NET, Teams, Active Directory) o si necesitas **CI/CD y DevOps desde el día uno**. Azure DevOps gratuito con pipelines y repos es difícil de superar para equipos pequeños.
+
+También es una opción sólida para startups que anticipan vender a empresas medianas y grandes, ya que Azure tiene la mayor penetración en ese segmento y el ecosistema de integraciones enterprise es muy maduro.
+
+**Ideal para**: proyectos .NET y C#, startups con perfil enterprise, pipelines CI/CD, proyectos que usan autenticación con Azure AD (ahora Microsoft Entra ID), equipos que ya usan GitHub y quieren integración con Actions.
+
+**Cuidado con**: el plan F1 de App Service tiene limitaciones reales de CPU (60 minutos de cómputo al día) que lo hacen insuficiente para producción con tráfico real.
+
+---
+
+## Comparativa directa: ¿qué me llevo gratis a largo plazo?
+
+| Recurso | AWS | GCP | Azure |
+|---|---|---|---|
+| VM siempre gratis | ❌ | ✅ e2-micro | ❌ |
+| Serverless always free | ✅ Lambda (1M req) | ✅ Cloud Run + Functions | ✅ Azure Functions |
+| Base de datos NoSQL always free | ✅ DynamoDB (25 GB) | ✅ Firestore (1 GB) | ✅ Cosmos DB (25 GB) |
+| Almacenamiento always free | ❌ (solo 12 meses) | ✅ 5 GB | ✅ 5 GB |
+| Analytics gratis | ❌ | ✅ BigQuery (1 TB/mes) | ❌ |
+| CI/CD always free | ✅ CodePipeline (1 pipeline) | ✅ Cloud Build (120 min/día) | ✅ Azure DevOps (1.800 min/mes) |
+| Créditos iniciales | $0 extra | $300 / 90 días | $200 / 30 días |
+| Free trial | 12 meses | 90 días + créditos | 12 meses |
+
+---
+
+## ¿Cuál elijo según mi caso?
+
+Aquí va la respuesta directa, sin rodeos:
+
+**Elige AWS si...**
+Quieres construir una arquitectura serverless escalable desde el principio y prefieres el ecosistema más consolidado. Lambda + DynamoDB + S3 + API Gateway es probablemente la combinación más documentada y con más ejemplos en internet. Si tu objetivo es aprender cloud para el mercado laboral, AWS sigue siendo el curriculum más valioso.
+
+**Elige GCP si...**
+Necesitas un servidor que esté siempre encendido y no quieres pagar nada. La VM e2-micro always free es la joya oculta del free tier entre las tres plataformas. También es la opción obvia si vas a trabajar con datos, ML o Big Data; BigQuery gratuito es un recurso enorme. Y si usas Firebase, ya estás en el ecosistema GCP.
+
+**Elige Azure si...**
+Tu stack es Microsoft o planeas vender a empresas. Azure DevOps con pipelines gratuitas es una ventaja real para proyectos que necesitan CI/CD desde el primer día. Y si tu aplicación necesita autenticación de usuarios a escala, Azure AD gratuito hasta 50.000 usuarios es una propuesta difícil de igualar.
+
+---
+
+## El caso que aplica al 80% de los proyectos que se crean hoy
+
+Hay una combinación que se repite una y otra vez en los proyectos modernos: **frontend en Vercel + backend pequeño que necesita vivir en algún sitio**. Un SaaS con autenticación, un portfolio con formulario de contacto, una app con unos pocos endpoints de API. No hace falta nada enorme. Solo un backend que responda, escale y no te cobre nada mientras el proyecto está arrancando.
+
+Para ese caso —que encaja con una mayoría aplastante de lo que se construye hoy en día— la respuesta es **GCP Cloud Run**.
+
+![GCP Cloud Run backend serverless Vercel](/news/gcp.png)
+
+### Por qué Cloud Run es la opción obvia
+
+Cloud Run ejecuta contenedores Docker de forma serverless. Eso significa que no hay servidor que mantener, no hay que preocuparse por actualizaciones del sistema operativo ni por configurar Nginx. Subes tu contenedor, apuntas tu dominio y listo. Y lo más importante: **escala a cero cuando no hay tráfico**. Si tu proyecto no recibe visitas durante la noche, no consume recursos y no te cobra nada.
+
+El free tier de Cloud Run incluye **2 millones de peticiones al mes y 360.000 vCPU-segundos**, todo ello always free, sin fecha de expiración. Para una web o SaaS en fase inicial es prácticamente imposible superarlo.
+
+La arquitectura quedaría así:
+
+\`\`\`
+Usuario → Vercel (frontend Next.js)
+              ↓
+         Cloud Run (API backend — Node, Python, Go...)
+              ↓
+         Firestore (base de datos — también gratis)
+\`\`\`
+
+Con esta combinación tienes **todo el stack gratuito para siempre** en condiciones normales de arranque: frontend, backend, base de datos y almacenamiento.
+
+### ¿Y si el backend es todavía más ligero?
+
+Si solo necesitas unos pocos endpoints sin lógica compleja —un webhook, un formulario, una integración con una API externa— **AWS Lambda** compite de igual a igual. También es serverless, también escala a cero y tiene 1 millón de invocaciones always free. La diferencia práctica es que Cloud Run acepta cualquier contenedor y cualquier lenguaje sin restricciones, mientras que Lambda tiene sus propios runtimes y un modelo de despliegue algo más específico.
+
+Para la mayoría de proyectos ambas opciones funcionan. Si ya tienes un \`Dockerfile\` en el proyecto, Cloud Run es la opción sin fricción. Si prefieres no dockerizar y solo quieres subir una función, Lambda puede ser más directo.
+
+### Lo que no tiene sentido para este caso
+
+La VM e2-micro de GCP es gratuita para siempre, pero te convierte en administrador de sistemas: tienes que instalar el runtime, configurar el proceso para que no muera, gestionar los logs, aplicar parches de seguridad. Para un proyecto que acaba de arrancar, ese tiempo vale más que cualquier ahorro. Y Azure App Service en plan gratuito tiene un límite de 60 minutos de CPU al día, lo que lo hace inviable para producción con cualquier tráfico real.
+
+> La regla simple: si tu web necesita un backend y estás en fase de lanzamiento, **Vercel + Cloud Run + Firestore** te da un stack de producción real, escalable y gratuito. Cuando el proyecto crezca y empiece a generar ingresos, ya tendrás margen para pagar la infraestructura.
+
+---
+
+## El consejo final que nadie te da
+
+Configura alertas de facturación **desde el primer día** en cualquiera de las tres plataformas. Las tres tienen esta opción y es gratuita. Ponla en 1€ o 1$ para que te avise en cuanto empiece a generarse cualquier coste. Así evitas la sorpresa clásica de "pensaba que era gratis" que le ha pasado a todo el mundo alguna vez.
+
+Y una cosa más: no tengas miedo de usar las tres. Nada te impide tener tu servidor siempre activo en GCP, tu pipeline de CI/CD en Azure DevOps y tus funciones Lambda en AWS. El multi-cloud en el free tier es perfectamente viable y una forma excelente de aprender las diferencias entre plataformas con proyectos reales.`,
+    image: cloudFreeTier,
+    category: "devops",
+    tags: ["AWS", "GCP", "Azure", "Free Tier", "Cloud", "DevOps", "Infraestructura"],
+    author: authors.julian,
+    publishedAt: "2026-05-25T09:00:00Z",
+    readingMinutes: 14,
+    views: 1820,
+    likes: 134,
+    featured: true,
+    trending: true,
+  },
 ];
 
 export function getAllNews(): NewsArticle[] {
@@ -1330,13 +1547,17 @@ export function getAllNews(): NewsArticle[] {
 }
 
 export function getFeatured(): NewsArticle {
-  return news.find((n) => n.featured) ?? news[0];
+  return (
+    [...news]
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+      .find((n) => n.featured) ?? news[0]
+  );
 }
 
 export function getTrending(limit = 5): NewsArticle[] {
   return [...news]
     .filter((n) => n.trending)
-    .sort((a, b) => b.views - a.views)
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, limit);
 }
 
