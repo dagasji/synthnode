@@ -1537,6 +1537,195 @@ Y una cosa más: no tengas miedo de usar las tres. Nada te impide tener tu servi
     featured: true,
     trending: true,
   },
+  {
+    slug: "webwright-microsoft-agente-navegador-terminal",
+    title:
+      "Webwright: Microsoft convierte tu agente de código en un experto del navegador con un solo plugin",
+    excerpt:
+      "Un terminal, un browser, un modelo. Así funciona el framework de Microsoft que alcanza el estado del arte en tareas web de larga duración — y que puedes instalar en Claude Code o Codex en dos comandos.",
+    content: `La mayoría de los agentes web de hoy funcionan así: el modelo recibe el estado actual de la página, predice la siguiente acción — un clic, un campo de texto, un selector DOM — y espera al siguiente turno. Uno a uno. Acción por acción. Cuando la tarea tiene veinte pasos, eso son veinte turnos, veinte oportunidades para que algo salga mal y sin ninguna posibilidad de reutilizar el trabajo la próxima vez.
+
+Microsoft Research ha publicado **Webwright**, y la propuesta es exactamente la contraria.
+
+## La idea que lo cambia todo: el navegador como herramienta, no como estado
+
+El insight central de Webwright es tan sencillo que cuesta creer que no sea la norma: en vez de que el agente *viva dentro* de la sesión del navegador, que el agente *controle* el navegador desde fuera. Como un desarrollador que escribe un script de Playwright, lo prueba, lo corrige y lo reutiliza.
+
+> "No multi-agent system, no graph engine, no plugin layer, no hidden orchestration — just a terminal, a browser, and a model."
+
+El artefacto persistente no es la sesión del navegador, que se cierra al terminar. El artefacto persistente es el **código Python que describe la tarea completa**. Un único archivo reejectable, depurable, compartible.
+
+## Cómo funciona el bucle interno
+
+El flujo de Webwright en la práctica:
+
+1. El modelo recibe la tarea en lenguaje natural y el contexto del workspace.
+2. Escribe un script de Python con Playwright que resuelve la tarea de principio a fin.
+3. Ejecuta el script en el terminal. Si hay un error, lee los logs y la captura de pantalla del momento del fallo.
+4. Corrige el script y lo vuelve a ejecutar.
+5. Cuando el script completa sin errores, verifica visualmente el resultado contra las capturas guardadas.
+
+No hay un agente mirando cada clic. No hay un orquestador decidiendo cuándo capturar la pantalla. El modelo decide *él mismo* cuándo necesita ver el estado del navegador y lo hace lanzando las herramientas adecuadas en el script.
+
+\`\`\`python
+# Ejemplo simplificado de lo que genera Webwright
+from playwright.sync_api import sync_playwright
+
+def search_flights(origin: str, destination: str, depart_date: str) -> dict:
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto("https://www.google.com/flights")
+        page.fill('[data-placeholder="Where from?"]', origin)
+        page.fill('[data-placeholder="Where to?"]', destination)
+        # ... lógica completa de la tarea
+        results = page.query_selector_all(".gws-flights__li")
+        return {"flights": [r.inner_text() for r in results[:5]]}
+\`\`\`
+
+El resultado: un script parametrizable con argparse que puedes ejecutar mañana con diferentes fechas sin que el agente tenga que "redescubrir" cómo funciona Google Flights.
+
+## Los benchmarks que justifican el enfoque
+
+Los números son los que han llamado la atención:
+
+| Benchmark | Resultado | Contexto |
+|---|---|---|
+| Online-Mind2Web (300 tareas) | **86,7%** con GPT-5.4 | Mejor entre harnesses open-source en categoría AutoEval |
+| Odysseys (200 tareas largas) | **60,1%** con GPT-5.4 | +15,6 puntos sobre el anterior SOTA |
+| Base GPT-5.4 (coordenadas XY) | 33,5% | Sin Webwright, mismo modelo |
+
+La comparación más reveladora es la última: el mismo modelo GPT-5.4, con el enfoque clásico de predecir coordenadas en pantalla, llega al 33,5%. Con Webwright, al 60,1%. El framework importa más que el modelo en tareas de larga duración.
+
+El dato de Odysseys es especialmente significativo porque mide exactamente donde los agentes clásicos fallan: tareas con 70-100 pasos donde el error se acumula y no hay forma de volver atrás. Webwright puede relanzar el script desde el principio si algo falla en el paso 60, porque el estado vive en el código, no en el historial de clics.
+
+## Por qué el código es mejor que los clics
+
+Los agentes clásicos basados en acciones atómicas tienen tres problemas fundamentales:
+
+**Fragilidad**: si el botón se mueve un píxel o el selector DOM cambia, la acción falla y hay que empezar de nuevo. Un script de Playwright usa waits explícitos, reintentos y selectores semánticos — es inherentemente más robusto.
+
+**No-reutilización**: cada ejecución redescubre los mismos pasos. Webwright en modo \`/webwright:craft\` produce una función parametrizada que acepta argumentos como \`--origin JFK --destination LAX --depart-date 2026-07-01\`. La próxima vez que busques vuelos, el script ya existe.
+
+**Eficiencia en contexto largo**: comprimir veinte acciones de navegación en un bloque de código consume muchos menos tokens que describir cada estado de página. Menos tokens, menos latencia, menos coste.
+
+## Instalación en Claude Code: dos comandos
+
+\`\`\`bash
+# 1. Añadir el repo de Microsoft como marketplace de plugins
+/plugin marketplace add microsoft/Webwright
+
+# 2. Instalar el plugin
+/plugin install webwright@webwright
+\`\`\`
+
+Reinicia la sesión y ya puedes usarlo en lenguaje natural o con los slash commands:
+
+\`\`\`
+/webwright:run busca vuelos de MAD a JFK del 15 al 22 de agosto
+/webwright:craft busca un vuelo en Google Flights de MAD a NYC ida y vuelta
+\`\`\`
+
+La diferencia entre \`:run\` y \`:craft\`: el primero genera un script para esa tarea concreta; el segundo genera un script reutilizable con parámetros configurables por línea de comandos.
+
+## Instalación en OpenCode
+
+OpenCode descubre skills buscando archivos \`SKILL.md\` en rutas predefinidas. Webwright incluye su skill en la carpeta \`skills/webwright/\`, así que solo hay que colocarla donde OpenCode la encuentre.
+
+**Opción A — global** (disponible en todos tus proyectos):
+
+\`\`\`bash
+# Clona el repo
+git clone https://github.com/microsoft/Webwright
+
+# Copia o enlaza la skill en la ruta global de OpenCode
+mkdir -p ~/.config/opencode/skills
+ln -s /ruta/a/Webwright/skills/webwright ~/.config/opencode/skills/webwright
+
+# (Opcional) Instala los slash commands en la carpeta commands de OpenCode
+mkdir -p ~/.config/opencode/commands
+cp /ruta/a/Webwright/skills/webwright/commands/*.md ~/.config/opencode/commands/
+
+# Instala las dependencias de Webwright (una sola vez)
+cd /ruta/a/Webwright && pip install -e . && playwright install chromium
+\`\`\`
+
+**Opción B — local al proyecto** (solo en el repo actual):
+
+\`\`\`bash
+mkdir -p .opencode/skills
+ln -s /ruta/a/Webwright/skills/webwright .opencode/skills/webwright
+
+# (Opcional) Instala los slash commands localmente
+mkdir -p .opencode/commands
+cp /ruta/a/Webwright/skills/webwright/commands/*.md .opencode/commands/
+\`\`\`
+
+OpenCode también reconoce \`.agents/skills/\` y \`.claude/skills/\` si ya usas esas rutas.
+
+Una vez instalada, OpenCode detecta la skill automáticamente. Puedes pedírsela en lenguaje natural o usar los slash commands si los copiaste:
+
+\`\`\`
+busca vuelos de MAD a JFK del 15 al 22 de agosto en Google Flights
+# o si instalaste los commands:
+/webwright run busca vuelos de MAD a JFK del 15 al 22 de agosto
+\`\`\`
+
+El agente cargará la skill \`webwright\`, generará un script de Playwright y lo ejecutará en el terminal, exactamente igual que en Claude Code o Codex.
+
+## Soporte en más agentes
+
+Webwright funciona como plugin en cuatro agentes de codificación:
+
+- **Claude Code** — via \`/plugin install\`
+- **Codex CLI** — via \`codex /plugins\`
+- **OpenClaw** — via \`openclaw plugins install\`
+- **Hermes Agent** — misma carpeta \`skills/webwright/\`
+
+Una vez instalado, el host agent usa su propia suscripción al modelo — no necesitas una API key adicional. Los agentes que leen capturas de pantalla nativas (como Claude Code) se saltan las herramientas auxiliares \`image_qa\` y \`self_reflection\`.
+
+## Arquitectura: minimalismo deliberado
+
+El núcleo del framework son menos de 1.200 líneas de código en total:
+
+- **Bucle del agente**: ~450 líneas en \`agents/default.py\`
+- **Entorno Playwright**: ~570 líneas
+- **CLI**: ~150 líneas
+- **Backends de modelos**: 150-200 líneas cada uno (OpenAI, Anthropic, OpenRouter)
+
+Dependencias externas: \`httpx\`, \`pydantic\`, \`playwright\`, \`typer\`. Nada más. Sin frameworks de orquestación, sin bases de datos vectoriales, sin capas de abstracción entre el prompt y el resultado.
+
+> "If you want a minimal, easy-to-debug starting point for browser-using agents instead of another heavyweight platform, this is it."
+
+## Task Showcase: un dashboard para tareas repetibles
+
+Webwright incluye una pequeña aplicación Flask que actúa de dashboard para tareas que se ejecutan regularmente: búsqueda de ofertas, comprobación de inventario, seguimiento de precios, bolsas de empleo, tiempo. Cada tarea produce dos archivos — \`task.json\` y \`report.json\` — y el dashboard los renderiza genéricamente.
+
+\`\`\`bash
+pip install flask
+python assets/task_showcase/app.py  # http://127.0.0.1:5005
+\`\`\`
+
+Es una forma elegante de convertir tareas web recurrentes en reportes automáticos sin infraestructura adicional.
+
+## Qué significa esto para el ecosistema
+
+Webwright es open source (MIT), viene de Microsoft Research y ya tiene manifests para los cuatro agentes de codificación más usados. El timing es relevante: justo cuando los modelos frontier están alcanzando el nivel en el que realmente pueden escribir y depurar scripts complejos, un framework que explota exactamente esa capacidad alcanza el estado del arte en benchmarks públicos.
+
+El mensaje de fondo es que la arquitectura importa más de lo que parece. Tomar el mismo modelo y cambiar el harness de "predice el siguiente clic" a "escribe y ejecuta código" da +26 puntos porcentuales en tareas largas. Ese es el tipo de mejora que normalmente asociamos a un salto de generación de modelo, no a un cambio de framework.
+
+Para equipos que automatizan flujos web, procesos de data gathering o integraciones con webs sin API, Webwright es probablemente el punto de partida más limpio que existe hoy.`,
+    image: "/news/webwright.png",
+    category: "ai",
+    tags: ["Webwright", "Microsoft", "Browser Agent", "Claude Code", "Playwright", "Agentes"],
+    author: authors.noa,
+    publishedAt: "2026-05-27T09:00:00Z",
+    readingMinutes: 10,
+    views: 2140,
+    likes: 198,
+    featured: true,
+    trending: true,
+  },
 ];
 
 export function getAllNews(): NewsArticle[] {
