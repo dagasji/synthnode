@@ -15,7 +15,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home.meta" });
-  const canonical = locale === "es" ? `${BASE_URL}/` : `${BASE_URL}/${locale}`;
+  const canonical = `${BASE_URL}/`;
   return {
     title: t("title"),
     description: t("description"),

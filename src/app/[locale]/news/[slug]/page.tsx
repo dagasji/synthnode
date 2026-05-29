@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${article.title} — SYNTHNODE`,
     description: article.excerpt,
     alternates: {
-      canonical: localePath(locale, path),
+      canonical: localePath("es", path),
       languages: {
         es: localePath("es", path),
         en: localePath("en", path),
@@ -93,7 +93,7 @@ export default async function ArticlePage({ params }: Props) {
       name: "SYNTHNODE",
       url: BASE_URL,
     },
-    mainEntityOfPage: localePath(locale, `/news/${slug}`),
+    mainEntityOfPage: localePath("es", `/news/${slug}`),
   };
 
   return (

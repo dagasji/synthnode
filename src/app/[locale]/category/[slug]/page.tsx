@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${cat.name} — SYNTHNODE`,
     description: cat.description,
     alternates: {
-      canonical: localePath(locale, path),
+      canonical: localePath("es", path),
       languages: {
         es: localePath("es", path),
         en: localePath("en", path),
