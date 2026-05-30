@@ -29,7 +29,7 @@ export default function Error({ error, reset }: ErrorProps) {
           onClick={reset}
           className="px-5 py-2.5 bg-foreground text-background text-sm font-semibold rounded-md hover:bg-brand transition-colors"
         >
-          {t("retry")}
+          {tActions("retry")}
         </button>
         <Link
           href="/"

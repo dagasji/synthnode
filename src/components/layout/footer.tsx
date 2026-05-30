@@ -38,6 +38,11 @@ export async function Footer() {
             <h4 className="label-mono text-foreground mb-3">{t("footer.platformLabel")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
+                <Link href="/about" className="hover:text-foreground">
+                  {t("footer.about")}
+                </Link>
+              </li>
+              <li>
                 <Link href="/search" className="hover:text-foreground">
                   {t("navigation.search")}
                 </Link>
@@ -103,7 +108,17 @@ export async function Footer() {
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-border flex flex-col sm:flex-row justify-between gap-2">
         <span className="text-xs font-mono text-muted-foreground">{t("footer.copyright")}</span>
-        <span className="text-xs font-mono text-muted-foreground">SYS · OPERATIONAL</span>
+        <span className="text-xs font-mono text-muted-foreground">
+          SYS · OPERATIONAL ·{" "}
+          <a
+            href="https://binarycore.es"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground transition-colors"
+          >
+            BinaryCore
+          </a>
+        </span>
       </div>
     </footer>
   );

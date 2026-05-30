@@ -44,7 +44,8 @@
       "legal": "Legal Notice",
       "privacy": "Privacy",
       "cookies": "Cookies",
-      "contact": "Contact"
+      "contact": "Contact",
+      "about": "About"
     },
     "meta": {
       "siteName": "SYNTHNODE",
@@ -281,6 +282,23 @@
       "success": "Message sent successfully. We'll get back to you soon.",
       "error": "An error occurred. Please try again."
     }
+  },
+  "about": {
+    "meta": {
+      "title": "About SYNTHNODE",
+      "description": "Learn about the SYNTHNODE project, our mission and the principles behind the publication."
+    },
+    "label": "// ABOUT",
+    "title": "About SYNTHNODE",
+    "whatIs": "What is SYNTHNODE?",
+    "whatIsDesc": "SYNTHNODE is an independent publication covering artificial intelligence, programming, DevOps, cybersecurity and tech startups. We cover news, analysis and research for professionals building the next digital infrastructure.",
+    "mission": "Our mission",
+    "missionDesc": "Deliver quality technical content, free of noise and corporate agendas. Every article is curated and written so that industry professionals can stay on top of what matters.",
+    "privacy": "Privacy first",
+    "privacyDesc": "We do not track your behavior without consent. All content is accessible without registration. We respect your privacy and comply with GDPR.",
+    "development": "Development",
+    "developmentDesc": "SYNTHNODE was developed by BinaryCore, a company specializing in software development and innovative technology solutions. We prioritize user experience, performance and accessibility.",
+    "linkBinaryCore": "BinaryCore"
   },
   "cookieBanner": {
     "title": "This site uses cookies",

@@ -44,7 +44,8 @@
       "legal": "Legal Notice",
       "privacy": "Privacy",
       "cookies": "Cookies",
-      "contact": "Contact"
+      "contact": "Contact",
+      "about": "정보"
     },
     "meta": {
       "siteName": "SYNTHNODE",
@@ -281,6 +282,23 @@
       "success": "Message sent successfully. We'll get back to you soon.",
       "error": "An error occurred. Please try again."
     }
+  },
+  "about": {
+    "meta": {
+      "title": "SYNTHNODE 소개",
+      "description": "SYNTHNODE 프로젝트, 우리의 사명 및 출판물 뒤의 원칙에 대해 알아보세요."
+    },
+    "label": "// ABOUT",
+    "title": "SYNTHNODE 소개",
+    "whatIs": "SYNTHNODE란?",
+    "whatIsDesc": "SYNTHNODE는 인공지능, 프로그래밍, DevOps, 사이버보안, 테크 스타트업을 다루는 독립 출판물입니다. 다음 디지털 인프라를 구축하는 전문가들을 위한 뉴스, 분석, 연구를 다룹니다.",
+    "mission": "우리의 사명",
+    "missionDesc": "노이즈와 기업 의제 없는 고품질 기술 콘텐츠를 제공합니다. 모든 기사는 업계 전문가들이 중요한 것을 파악할 수 있도록 엄선해서 작성됩니다.",
+    "privacy": "개인정보 우선",
+    "privacyDesc": "동의 없이 행동을 추적하지 않습니다. 모든 콘텐츠는 회원가입 없이 이용 가능합니다. 개인정보를 존중하며 GDPR을 준수합니다.",
+    "development": "개발",
+    "developmentDesc": "SYNTHNODE는 BinaryCore가 개발했습니다. 사용자 경험, 성능, 접근성을 우선시합니다.",
+    "linkBinaryCore": "BinaryCore"
   },
   "cookieBanner": {
     "title": "이 사이트는 쿠키를 사용합니다",

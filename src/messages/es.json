@@ -44,7 +44,8 @@
       "legal": "Aviso Legal",
       "privacy": "Privacidad",
       "cookies": "Cookies",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "about": "Sobre nosotros"
     },
     "meta": {
       "siteName": "SYNTHNODE",
@@ -253,6 +254,23 @@
       "heading": "Contacto",
       "body": "Para dudas sobre cookies, usa el formulario de contacto del sitio."
     }
+  },
+  "about": {
+    "meta": {
+      "title": "Sobre SYNTHNODE",
+      "description": "Conoce el proyecto SYNTHNODE, nuestra misión y los principios que guían la publicación."
+    },
+    "label": "// ABOUT",
+    "title": "Sobre SYNTHNODE",
+    "whatIs": "¿Qué es SYNTHNODE?",
+    "whatIsDesc": "SYNTHNODE es una publicación independiente sobre inteligencia artificial, programación, DevOps, ciberseguridad y startups técnicas. Cubrimos noticias, análisis e investigación para profesionales que construyen la próxima infraestructura digital.",
+    "mission": "Nuestra misión",
+    "missionDesc": "Ofrecer contenido técnico de calidad, sin ruido, sin agenda corporativa. Cada artículo está seleccionado y redactado para que los profesionales del sector puedan mantenerse al día con lo que importa.",
+    "privacy": "Privacidad primero",
+    "privacyDesc": "No rastreamos tu comportamiento sin consentimiento. Todo el contenido es accesible sin registro. Respetamos tu privacidad y cumplimos con el RGPD.",
+    "development": "Desarrollo",
+    "developmentDesc": "SYNTHNODE ha sido desarrollado por BinaryCore, empresa especializada en desarrollo de software y soluciones tecnológicas innovadoras. Priorizamos la experiencia del usuario, el rendimiento y la accesibilidad.",
+    "linkBinaryCore": "BinaryCore"
   },
   "cookieBanner": {
     "title": "Este sitio usa cookies",
