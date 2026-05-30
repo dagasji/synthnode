@@ -281,5 +281,19 @@
       "success": "Message sent successfully. We'll get back to you soon.",
       "error": "An error occurred. Please try again."
     }
+  },
+  "cookieBanner": {
+    "title": "このサイトはCookieを使用しています",
+    "description": "体験を向上させるために、独自CookieとサードパーティCookieを使用しています。すべて受け入れる、必須でないものを拒否する、または設定をカスタマイズできます。",
+    "acceptAll": "すべて受け入れる",
+    "rejectNonEssential": "必須でないものを拒否",
+    "configure": "設定",
+    "save": "設定を保存",
+    "analytics": "Google Analytics",
+    "adsense": "Google AdSense",
+    "essential": "必須Cookie（常に有効）"
+  },
+  "cookieSettings": {
+    "manage": "Cookieを管理"
   }
 }

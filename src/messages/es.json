@@ -254,6 +254,20 @@
       "body": "Para dudas sobre cookies, usa el formulario de contacto del sitio."
     }
   },
+  "cookieBanner": {
+    "title": "Este sitio usa cookies",
+    "description": "Usamos cookies propias y de terceros para mejorar tu experiencia. Puedes aceptar todas, rechazar las no esenciales o configurar tus preferencias.",
+    "acceptAll": "Aceptar todas",
+    "rejectNonEssential": "Rechazar no esenciales",
+    "configure": "Configurar",
+    "save": "Guardar preferencias",
+    "analytics": "Google Analytics",
+    "adsense": "Google AdSense",
+    "essential": "Cookies esenciales (siempre activas)"
+  },
+  "cookieSettings": {
+    "manage": "Gestionar cookies"
+  },
   "contact": {
     "meta": {
       "title": "Contacto — Synthnode",

@@ -281,5 +281,19 @@
       "success": "Message sent successfully. We'll get back to you soon.",
       "error": "An error occurred. Please try again."
     }
+  },
+  "cookieBanner": {
+    "title": "This site uses cookies",
+    "description": "We use own and third-party cookies to improve your experience. You can accept all, reject non-essential, or configure your preferences.",
+    "acceptAll": "Accept all",
+    "rejectNonEssential": "Reject non-essential",
+    "configure": "Configure",
+    "save": "Save preferences",
+    "analytics": "Google Analytics",
+    "adsense": "Google AdSense",
+    "essential": "Essential cookies (always active)"
+  },
+  "cookieSettings": {
+    "manage": "Manage cookies"
   }
 }
