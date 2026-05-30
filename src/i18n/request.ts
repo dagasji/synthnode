@@ -7,11 +7,11 @@ import jaMessages from "../messages/ja.json";
 import koMessages from "../messages/ko.json";
 
 const messagesMap: Record<string, AbstractIntlMessages> = {
-  es: esMessages as AbstractIntlMessages,
-  en: enMessages as AbstractIntlMessages,
-  "pt-BR": ptBRMessages as AbstractIntlMessages,
-  ja: jaMessages as AbstractIntlMessages,
-  ko: koMessages as AbstractIntlMessages,
+  es: esMessages as unknown as AbstractIntlMessages,
+  en: enMessages as unknown as AbstractIntlMessages,
+  "pt-BR": ptBRMessages as unknown as AbstractIntlMessages,
+  ja: jaMessages as unknown as AbstractIntlMessages,
+  ko: koMessages as unknown as AbstractIntlMessages,
 };
 
 export default getRequestConfig(async ({ requestLocale }) => {

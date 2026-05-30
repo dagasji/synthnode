@@ -1,1 +1,285 @@
-{}
+{
+  "common": {
+    "navigation": {
+      "home": "Home",
+      "search": "Search",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "allCategories": "All categories",
+      "categories": {
+        "ai": "Artificial Intelligence",
+        "programming": "Programming",
+        "web-dev": "Web Development",
+        "devops": "DevOps",
+        "startups": "Startups",
+        "open-source": "Open Source",
+        "security": "Cybersecurity"
+      }
+    },
+    "actions": {
+      "backToHome": "Back to home",
+      "retry": "Try again",
+      "exploreAll": "Explore all",
+      "filterBy": "FILTER BY:",
+      "filterAll": "All",
+      "searchPlaceholder": "Search news…"
+    },
+    "errors": {
+      "notFound": "Page not found",
+      "notFoundDescription": "The route you are looking for does not exist or has been moved.",
+      "generic": "Something went wrong",
+      "genericDescription": "Unexpected error. Please try again."
+    },
+    "footer": {
+      "tagline": "Independent publication on AI, programming and the next infrastructure.",
+      "copyright": "© 2026 SYNTHNODE",
+      "sectionsLabel": "SECTIONS",
+      "platformLabel": "Platform",
+      "connectLabel": "Connect",
+      "newsletterLink": "Newsletter",
+      "rssLink": "RSS Feed",
+      "twitterLink": "Twitter",
+      "githubLink": "GitHub",
+      "legalLabel": "Legal",
+      "legal": "Legal Notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "contact": "Contact"
+    },
+    "meta": {
+      "siteName": "SYNTHNODE",
+      "siteDescription": "Independent publication on AI, machine learning, DevOps, cybersecurity, open source and technical startups."
+    },
+    "theme": {
+      "toggle": "Toggle theme",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "switch": "Switch language"
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "SYNTHNODE — AI, programming and next-gen infrastructure news",
+      "description": "The independent news portal on AI, machine learning, DevOps, cybersecurity, open source and technical startups."
+    },
+    "latestTitle": "LATEST NEWS",
+    "moreTitle": "MORE ARTICLES",
+    "sections": {
+      "recentLabel": "// RECENT",
+      "recentTitle": "Latest news",
+      "categoriesLabel": "// SECTIONS"
+    }
+  },
+  "article": {
+    "meta": {
+      "titleSuffix": "— SYNTHNODE"
+    },
+    "labels": {
+      "minRead": "min read",
+      "views": "views",
+      "likes": "likes",
+      "tags": "TAGS",
+      "category": "CATEGORY"
+    },
+    "toc": {
+      "title": "In this article"
+    },
+    "share": {
+      "label": "Share",
+      "twitter": "Share on X",
+      "linkedin": "Share on LinkedIn",
+      "copyLink": "Copy link",
+      "copied": "Link copied"
+    },
+    "related": {
+      "title": "Related"
+    }
+  },
+  "category": {
+    "label": "// CATEGORY",
+    "articles": "{count, plural, one {# article} other {# articles}}",
+    "filter": "FILTER BY:",
+    "filterAll": "All",
+    "noArticles": "No articles in this category yet.",
+    "otherTagsLabel": "// OTHER POPULAR TAGS"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "subtitle": "Direct technical analysis. No noise.",
+    "emailPlaceholder": "you@email.com",
+    "submit": "Subscribe",
+    "submitting": "Sending…",
+    "success": "Subscribed! Check your inbox.",
+    "error": "Something went wrong. Please try again."
+  },
+  "trending": {
+    "title": "Trending",
+    "reads": "reads"
+  },
+  "sidebar": {
+    "toolbench": {
+      "title": "IA Toolbench"
+    },
+    "tags": {
+      "title": "Core Tags"
+    }
+  },
+  "search": {
+    "meta": {
+      "title": "Search — SYNTHNODE",
+      "description": "Real-time search across the entire SYNTHNODE archive."
+    },
+    "label": "// SEARCH",
+    "title": "Explore the archive",
+    "subtitle": "Fuzzy real-time search across titles, descriptions and tags.",
+    "placeholder": "Search news, tags, authors…",
+    "results": "{count, plural, one {# result} other {# results}}",
+    "noResults": "No results. Try removing filters or changing your search.",
+    "loadingFallback": "Loading…",
+    "filters": {
+      "category": "CATEGORY",
+      "allCategories": "All",
+      "tags": "TAGS",
+      "allTags": "all",
+      "date": "DATE",
+      "anyTime": "Any time",
+      "last7Days": "Last 7 days",
+      "last30Days": "Last 30 days",
+      "last90Days": "Last 90 days"
+    }
+  },
+  "legal": {
+    "meta": {
+      "title": "Legal Notice — Synthnode",
+      "description": "Legal notice for synthnode.dev. Information about the owner, terms of use and intellectual property."
+    },
+    "title": "Legal Notice",
+    "lastUpdated": "Last updated: May 2026",
+    "owner": {
+      "heading": "Site owner",
+      "body": "Synthnode is a BinaryCore project. For any inquiries, use the site's contact page."
+    },
+    "purpose": {
+      "heading": "Site purpose",
+      "body": "Synthnode is a technology information medium. Content is published for informational purposes and does not constitute professional advice."
+    },
+    "liability": {
+      "heading": "Limitation of liability",
+      "body": "BinaryCore does not guarantee the accuracy or suitability of the content. The user assumes responsibility for the use made of the published information."
+    },
+    "intellectualProperty": {
+      "heading": "Intellectual property",
+      "body": "The code, design and content of the site are the property of BinaryCore. Reproduction without express authorization is prohibited."
+    },
+    "governing": {
+      "heading": "Applicable law",
+      "body": "This legal notice is governed by Spanish law. For any dispute, the parties submit to the courts and tribunals of Spain."
+    },
+    "contact": {
+      "heading": "Contact",
+      "body": "For any legal inquiries, use the contact form available on this site."
+    }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Policy — Synthnode",
+      "description": "How we handle your data on synthnode.dev. No personal data collection; local processing in your browser."
+    },
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": {
+      "heading": "Introduction",
+      "body": "At Synthnode, privacy is a priority. This policy explains how we manage user information."
+    },
+    "localProcessing": {
+      "heading": "Local data processing",
+      "body": "All content is served statically. We do not send any of your data to our own servers."
+    },
+    "noDataCollection": {
+      "heading": "Data we do NOT collect",
+      "items": ["Content you read or search for", "Tokens or credentials", "Personally identifiable information", "Browsing history within the site"]
+    },
+    "cookies": {
+      "heading": "Cookies and third-party services",
+      "body": "We use Google Analytics (GA4) and Google AdSense. These services install their own cookies. See our cookie policy for more details."
+    },
+    "thirdParty": {
+      "heading": "Third-party services",
+      "body": "The hosting provider may log IPs and visited pages for security reasons. We do not share data with third parties for marketing purposes."
+    },
+    "security": {
+      "heading": "Security",
+      "body": "Always access via HTTPS. Keep your browser updated to ensure the security of your connection."
+    },
+    "changes": {
+      "heading": "Changes to this policy",
+      "body": "This policy may be updated. Check the last updated date at the top of this page."
+    },
+    "contact": {
+      "heading": "Contact",
+      "body": "For any privacy inquiries, use the site's contact form."
+    }
+  },
+  "cookies": {
+    "meta": {
+      "title": "Cookie Policy — Synthnode",
+      "description": "What cookies synthnode.dev uses, what they are for and how to manage them."
+    },
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": {
+      "heading": "What are cookies?",
+      "body": "Cookies are small text files that websites store in your browser to save preferences and analyze usage."
+    },
+    "ownCookies": {
+      "heading": "Own cookies",
+      "body": "We only use localStorage to save your cookie consent preference. It is not sent to the server."
+    },
+    "thirdPartyCookies": {
+      "heading": "Third-party cookies",
+      "items": ["Google Analytics (GA4): anonymized traffic analytics.", "Google AdSense: personalized advertising based on your browsing."]
+    },
+    "consent": {
+      "heading": "Your consent",
+      "body": "By accepting, you enable GA and AdSense. By rejecting, both services are blocked; the site remains fully functional."
+    },
+    "howToDisable": {
+      "heading": "How to manage cookies",
+      "body": "You can modify your consent at any time using the cookie settings button (bottom right corner) or from your browser settings."
+    },
+    "contact": {
+      "heading": "Contact",
+      "body": "For questions about cookies, use the site's contact form."
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact — Synthnode",
+      "description": "Contact the Synthnode team. Report a bug, propose content or send us a message."
+    },
+    "title": "Contact",
+    "subtitle": "Have something to tell us? We'd love to hear from you.",
+    "bugCard": {
+      "title": "Report a bug",
+      "description": "Describe the problem and steps to reproduce it."
+    },
+    "suggestionCard": {
+      "title": "Propose content",
+      "description": "Tell us what topics or articles you'd like to see on Synthnode."
+    },
+    "formCard": {
+      "title": "Contact form"
+    },
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send message",
+      "submitting": "Sending...",
+      "success": "Message sent successfully. We'll get back to you soon.",
+      "error": "An error occurred. Please try again."
+    }
+  }
+}

@@ -13,7 +13,7 @@ export async function Footer() {
           </span>
           <p className="text-sm text-muted-foreground leading-relaxed">{t("footer.tagline")}</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           <div>
             <h4 className="label-mono text-foreground mb-3">{t("footer.sectionsLabel")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
@@ -71,6 +71,31 @@ export async function Footer() {
                 <a className="hover:text-foreground" href="#">
                   LinkedIn
                 </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="label-mono text-foreground mb-3">{t("footer.legalLabel")}</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/legal" className="hover:text-foreground">
+                  {t("footer.legal")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-foreground">
+                  {t("footer.privacy")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/cookies" className="hover:text-foreground">
+                  {t("footer.cookies")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-foreground">
+                  {t("footer.contact")}
+                </Link>
               </li>
             </ul>
           </div>
