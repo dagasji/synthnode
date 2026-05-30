@@ -137,6 +137,8 @@
     "subtitle": "Fuzzy real-time search across titles, descriptions and tags.",
     "placeholder": "Search news, tags, authors…",
     "results": "{count, plural, one {# result} other {# results}}",
+    "resultsOne": "result",
+    "resultsMany": "results",
     "noResults": "No results. Try removing filters or changing your search.",
     "loadingFallback": "Loading…",
     "filters": {
@@ -145,6 +147,11 @@
       "tags": "TAGS",
       "allTags": "all",
       "date": "DATE",
+      "since": "Since",
+      "sinceAll": "Any time",
+      "since24h": "Last 24h",
+      "since7d": "Last 7 days",
+      "since30d": "Last 30 days",
       "anyTime": "Any time",
       "last7Days": "Last 7 days",
       "last30Days": "Last 30 days",
@@ -200,7 +207,12 @@
     },
     "noDataCollection": {
       "heading": "Data we do NOT collect",
-      "items": ["Content you read or search for", "Tokens or credentials", "Personally identifiable information", "Browsing history within the site"]
+      "items": [
+        "Content you read or search for",
+        "Tokens or credentials",
+        "Personally identifiable information",
+        "Browsing history within the site"
+      ]
     },
     "cookies": {
       "heading": "Cookies and third-party services",
@@ -240,7 +252,10 @@
     },
     "thirdPartyCookies": {
       "heading": "Third-party cookies",
-      "items": ["Google Analytics (GA4): anonymized traffic analytics.", "Google AdSense: personalized advertising based on your browsing."]
+      "items": [
+        "Google Analytics (GA4): anonymized traffic analytics.",
+        "Google AdSense: personalized advertising based on your browsing."
+      ]
     },
     "consent": {
       "heading": "Your consent",

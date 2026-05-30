@@ -1726,6 +1726,397 @@ Para equipos que automatizan flujos web, procesos de data gathering o integracio
     featured: true,
     trending: true,
   },
+  {
+    slug: "claude-opus-4-8-subagentes-paralelos-claude-code",
+    title:
+      "Claude Opus 4.8: subagentes en paralelo, modo rápido 3× más barato y control de esfuerzo",
+    excerpt:
+      "Anthropic lanza su nuevo flagship con mejoras en coding y razonamiento. Claude Code gana workflows dinámicos con subagentes paralelos para tareas a gran escala.",
+    content: `Anthropic ha lanzado Claude Opus 4.8, la actualización de su modelo flagship, con mejoras medibles en coding, tareas agénticas, razonamiento y trabajo con conocimiento. El lanzamiento incluye tres novedades que cambian el uso diario del modelo en contextos de desarrollo.
+
+## Control de esfuerzo en claude.ai
+
+La primera es el *effort control*, disponible directamente en claude.ai. Los usuarios pueden ahora indicar explícitamente cuánto esfuerzo computacional quieren que el modelo dedique a una respuesta. Para preguntas rápidas, el modo ligero responde en menos tiempo y consume menos créditos. Para tareas complejas —análisis de código, debugging profundo, razonamiento encadenado— el modo máximo aplica más capacidad y más tokens de razonamiento interno antes de responder.
+
+Es un cambio conceptualmente importante: el modelo deja de ser una función de entrada-salida fija y pasa a ser un recurso con throttle controlable por el usuario.
+
+## Workflows dinámicos en Claude Code
+
+La segunda novedad es la más relevante para equipos de ingeniería: **dynamic workflows en Claude Code** con subagentes paralelos.
+
+Hasta ahora, Claude Code ejecutaba tareas de forma secuencial. Opus 4.8 introduce la capacidad de lanzar subagentes especializados que trabajan en paralelo sobre partes independientes de una tarea compleja. El agente principal coordina, los subagentes ejecutan en paralelo y los resultados se sintetizan al final.
+
+Un ejemplo concreto: refactorizar un módulo grande con tests, documentación y cambios en múltiples archivos puede dividirse en subagentes que trabajan simultáneamente sobre cada parte, con el agente principal controlando la coherencia global.
+
+\`\`\`bash
+# En Claude Code, las tareas largas ahora pueden delegar automáticamente
+# a subagentes paralelos según la complejidad detectada
+claude "Refactoriza el módulo de autenticación, actualiza los tests y 
+documenta los cambios en el CHANGELOG"
+# → Subagente 1: refactoring del código
+# → Subagente 2: actualización de tests
+# → Subagente 3: redacción de CHANGELOG
+# → Agente principal: síntesis y coherencia
+\`\`\`
+
+## Modo rápido: 3× más barato que los modelos anteriores
+
+La tercera novedad es la que más impacta en el coste operativo: un *fast mode* que es **tres veces más barato** que los modelos flagship previos, manteniendo la calidad de Opus 4.8 en tareas estándar. Para pipelines de producción con alto volumen de llamadas, el ahorro puede ser significativo.
+
+## Benchmarks
+
+Anthropic no ha publicado aún los benchmarks completos en el momento del lanzamiento, pero los números internos citados muestran mejoras en SWE-bench Verified, GPQA Diamond y los benchmarks propios de coding de la empresa frente a Opus 4.7.
+
+El lanzamiento de Opus 4.8 consolida la estrategia de Anthropic: modelos con más capacidad agéntica, mejor control de recursos y precios competitivos para despliegue en producción. La combinación de subagentes paralelos en Claude Code y el modo rápido económico apunta directamente a casos de uso empresariales donde el coste por tarea y la velocidad de ejecución son los factores críticos.`,
+    image: "/news/claude-opus-4-8.jpg",
+    category: "ai",
+    tags: ["Anthropic", "Claude", "Claude Code", "Agentes", "LLMs"],
+    author: authors.noa,
+    publishedAt: "2026-05-28T10:00:00Z",
+    readingMinutes: 7,
+    views: 3840,
+    likes: 291,
+    featured: true,
+    trending: true,
+  },
+  {
+    slug: "openrouter-113m-serie-b-capitalg-nvidia-1300m-valoracion",
+    title:
+      "OpenRouter recauda 113M$ en Serie B: CapitalG y Nvidia respaldan el routing multi-modelo",
+    excerpt:
+      "La plataforma que unifica el acceso a cientos de modelos de IA alcanza 1.300M$ de valoración y procesa 25 billones de tokens por semana.",
+    content: `OpenRouter, la plataforma que ofrece una API unificada para acceder y enrutar peticiones entre cientos de modelos de IA, ha cerrado una ronda Serie B de 113 millones de dólares liderada por CapitalG, el fondo de crecimiento de Alphabet. La ronda incluye participación de NVentures (el brazo inversor de Nvidia), ServiceNow Ventures y otros inversores institucionales.
+
+La valoración resultante es de 1.300 millones de dólares, más del doble de los 547 millones de la ronda anterior.
+
+## Qué es OpenRouter y por qué importa ahora
+
+OpenRouter resuelve un problema de infraestructura que se ha vuelto cada vez más relevante conforme el ecosistema de modelos se fragmenta: no quieres estar atado a un único proveedor cuando hay docenas de modelos compitiendo en benchmarks distintos cada semana.
+
+La plataforma permite a los desarrolladores enviar una petición a la API de OpenRouter y que esta decida automáticamente —o según reglas configurables— qué modelo responde. Las políticas de routing pueden basarse en precio, latencia, disponibilidad, capacidades específicas del modelo o cualquier combinación de estas.
+
+\`\`\`typescript
+// Una sola integración, acceso a cientos de modelos
+const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    "Authorization": \`Bearer \${process.env.OPENROUTER_KEY}\`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    model: "anthropic/claude-opus-4-8", // o cualquier otro modelo disponible
+    messages: [{ role: "user", content: "Hola" }],
+  }),
+});
+\`\`\`
+
+## Los números que explican la inversión
+
+- **25 billones de tokens procesados por semana** en el momento del cierre de la ronda.
+- **Más de 8 millones de usuarios activos**.
+- Crecimiento acelerado en adopción enterprise, especialmente en equipos que despliegan agentes con múltiples modelos especializados.
+
+El crecimiento del uso agéntico es la clave aquí. Cuando un sistema agéntico necesita razonar, generar código, analizar imágenes y ejecutar herramientas en el mismo pipeline, la capacidad de enrutar cada subtarea al modelo más adecuado (y más económico) es una ventaja competitiva real.
+
+## Participación de Nvidia: una señal estratégica
+
+La presencia de NVentures en la ronda no es cosmética. Nvidia tiene un interés directo en que la demanda de inferencia se escale correctamente: más volumen de tokens procesados significa más demanda de GPUs. Respaldar la infraestructura de routing que facilita ese escale tiene sentido estratégico.
+
+El respaldo de CapitalG, con su conexión directa a los proyectos de IA de Alphabet, añade otra capa de interés: Google tiene sus propios modelos en el catálogo de OpenRouter y se beneficia de una plataforma de distribución neutral que no favorece a ningún proveedor específico.
+
+## Qué viene
+
+Con 113 millones adicionales, OpenRouter puede escalar su infraestructura, añadir más modelos al catálogo (actualmente más de 300), mejorar las capacidades de observabilidad y análisis para equipos enterprise, y posiblemente expandir el producto hacia herramientas de evaluación y fine-tuning. La apuesta de que el futuro de la IA en producción es multi-modelo parece más sólida que nunca.`,
+    image: "/news/openrouter.jpg",
+    category: "startups",
+    tags: ["OpenRouter", "Startups", "LLMs", "IA", "Inversión", "API"],
+    author: authors.iria,
+    publishedAt: "2026-05-28T12:00:00Z",
+    readingMinutes: 6,
+    views: 2910,
+    likes: 187,
+    featured: false,
+    trending: true,
+  },
+  {
+    slug: "google-io-2026-antigravity-2-subagentes-managed-agents-gemini",
+    title:
+      "Google I/O 2026: Antigravity 2.0, subagentes en CLI y managed agents en la API de Gemini",
+    excerpt:
+      "Google presenta su apuesta agéntica completa: un CLI con sandboxing nativo, subagentes especializados, deploy one-click a Cloud Run y soporte Kotlin en AI Studio.",
+    content: `Google I/O 2026 marcó el punto más claro hasta la fecha en la estrategia agéntica de la compañía. Bajo el paraguas de Antigravity, Google presentó una suite de herramientas para desarrolladores orientada a construir, desplegar y gestionar agentes de IA en producción.
+
+## Antigravity 2.0 y el nuevo CLI
+
+La novedad más destacada para desarrolladores es **Antigravity 2.0** junto con el **Antigravity CLI**, una interfaz de línea de comandos diseñada para lanzar subagentes especializados que trabajan en paralelo sobre workflows complejos.
+
+El CLI incluye por defecto:
+- **Cross-platform terminal sandboxing**: los agentes ejecutan código en entornos aislados independientemente del sistema operativo.
+- **Credential masking**: las credenciales no se exponen en los logs ni en los contextos enviados al modelo.
+- **Hardened Git policies**: control granular sobre qué operaciones de Git puede ejecutar un agente sin confirmación humana.
+
+\`\`\`bash
+# Ejemplo: lanzar un subagente especializado desde Antigravity CLI
+antigravity run --agent code-reviewer --sandbox --repo ./my-project
+\`\`\`
+
+La posibilidad de orquestar múltiples subagentes desde el CLI, con cada uno trabajando en una parte independiente de un workflow, es el cambio arquitectónico más relevante del anuncio.
+
+## Managed Agents en la API de Gemini
+
+Para equipos que no quieren gestionar su propia infraestructura de agentes, Google anunció **Managed Agents en la API de Gemini**: una sola llamada a la API provisiona un agente completamente equipado con un sandbox remoto, sin configuración de infraestructura.
+
+\`\`\`python
+# Una llamada API = agente con sandbox, herramientas y memoria
+import google.generativeai as genai
+
+agent = genai.create_managed_agent(
+    model="gemini-3-pro",
+    tools=["code_execution", "web_search"],
+    sandbox=True,
+)
+response = agent.run("Analiza este repositorio y genera un informe de deuda técnica")
+\`\`\`
+
+El concepto de *managed agent* elimina la fricción de infraestructura que actualmente frena a muchos equipos: no hace falta gestionar la ejecución de código, la memoria temporal ni el aislamiento de seguridad. Google lo gestiona como servicio.
+
+## Google AI Studio: Kotlin nativo, Workspace y deploy a Cloud Run
+
+Google AI Studio, la herramienta de prototipado de Google, recibió varias actualizaciones que acercan el gap entre prototipo y producción:
+
+- **Soporte nativo de Kotlin** para construir apps Android directamente desde el entorno de AI Studio.
+- **Integración con Google Workspace**: acceso directo a Docs, Sheets y Drive desde el contexto del agente.
+- **Deploy one-click a Cloud Run**: pasar de un prototipo funcional en AI Studio a un servicio productivo en Cloud Run sin salir del entorno.
+- **Exportación completa del estado del proyecto a Antigravity**: continuar desarrollando desde el CLI sin perder contexto.
+
+## Antigravity SDK: control programático del agente harness
+
+Para casos más avanzados, Google publicó el **Antigravity SDK**, que expone el harness del agente de forma programática. Los equipos pueden personalizar completamente el comportamiento del agente y desplegarlo en su propia infraestructura.
+
+\`\`\`typescript
+import { AntigravityAgent } from "@google/antigravity-sdk";
+
+const agent = new AntigravityAgent({
+  model: "gemini-3-pro",
+  sandbox: { type: "docker", image: "node:22-alpine" },
+  maxIterations: 50,
+  tools: ["bash", "read_file", "write_file"],
+});
+
+await agent.run("Implementa los tests unitarios para el módulo de pagos");
+\`\`\`
+
+Google I/O 2026 deja claro que la apuesta de Google en el espacio agéntico es completa: desde el prototipo en AI Studio hasta el despliegue en producción en Cloud Run, pasando por el control total en infraestructura propia con el SDK. La integración vertical con el ecosistema de Google (Workspace, Cloud Run, Android) es el diferenciador que Anthropic y OpenAI no pueden replicar fácilmente.`,
+    image: "/news/google-io-antigravity.jpg",
+    category: "ai",
+    tags: ["Google", "Gemini", "Antigravity", "Agentes", "Google I/O", "Cloud Run"],
+    author: authors.sara,
+    publishedAt: "2026-05-20T09:00:00Z",
+    readingMinutes: 9,
+    views: 4120,
+    likes: 334,
+    featured: true,
+    trending: true,
+  },
+  {
+    slug: "nano-banana-2-google-gemini-generacion-imagenes-video-input",
+    title:
+      "Google lanza Nano Banana 2 en GA: generación de imágenes con vídeo como input y adopción enterprise",
+    excerpt:
+      "Gemini 3.1 Flash Image y Gemini 3 Pro Image llegan a disponibilidad general. Adobe, Shopify y WPP ya los integran en workflows creativos y comerciales.",
+    content: `Google Cloud ha anunciado la disponibilidad general (GA) de **Nano Banana 2** —el nombre interno de Gemini 3.1 Flash Image— y **Nano Banana Pro** —Gemini 3 Pro Image—, sus modelos de generación y edición de imágenes de grado enterprise, disponibles a través del Gemini Enterprise Agent Platform.
+
+El anuncio incluye una feature en preview que cambia significativamente las posibilidades de los modelos: **Nano Banana 2 acepta ahora archivos de vídeo como input** para generación de imágenes con contexto derivado del vídeo.
+
+## Qué cambia con el input de vídeo
+
+Hasta ahora, los modelos de generación de imágenes trabajaban con prompts de texto o imágenes de referencia. La capacidad de procesar vídeo como input abre casos de uso que no eran posibles antes:
+
+- **Extracción de frames clave**: el modelo puede analizar un vídeo y generar imágenes coherentes con el estilo visual, la iluminación y los sujetos del vídeo original.
+- **Storyboarding automatizado**: a partir de un vídeo de referencia, generar variaciones de escenas con consistencia visual garantizada.
+- **Productización de contenido**: marcas con catálogos de vídeo pueden generar assets de imagen para campañas manteniendo coherencia con el material original.
+
+\`\`\`python
+import vertexai
+from vertexai.preview.vision_models import ImageGenerationModel
+
+vertexai.init(project="my-project", location="us-central1")
+
+model = ImageGenerationModel.from_pretrained("nano-banana-2")
+
+# Generar imagen usando vídeo como contexto
+response = model.generate_images(
+    prompt="Producto en uso en exteriores, misma paleta de color",
+    video_context="gs://my-bucket/product-demo.mp4",
+    number_of_images=4,
+)
+\`\`\`
+
+## Adopción enterprise: Adobe, Shopify, WPP, URBN
+
+El anuncio en Google I/O destaca cuatro empresas que ya tienen los modelos integrados en producción:
+
+- **Adobe**: integración en flujos de edición creativa, con Nano Banana Pro para generación de assets de alta calidad.
+- **Shopify**: generación automatizada de imágenes de producto para catálogos de merchants.
+- **WPP**: automatización de producción de assets para campañas publicitarias a escala global.
+- **URBN** (Urban Outfitters, Anthropologie, Free People): personalización de imágenes de producto para diferentes mercados y contextos.
+
+La adopción simultánea en retail, publicidad y herramientas creativas sugiere que los modelos han alcanzado el nivel de calidad necesario para workflows de producción real, no solo para prototipos.
+
+## Nano Banana 2 vs Nano Banana Pro
+
+| | Nano Banana 2 (Gemini 3.1 Flash Image) | Nano Banana Pro (Gemini 3 Pro Image) |
+|---|---|---|
+| **Velocidad** | Alta (flash) | Media |
+| **Calidad** | Alta | Muy alta |
+| **Input vídeo** | ✓ (preview) | En roadmap |
+| **Caso de uso** | Producción a volumen | Assets premium |
+| **Disponibilidad** | GA | GA |
+
+La estrategia de Google con estos modelos sigue el patrón Flash/Pro: un modelo rápido y económico para alto volumen y un modelo premium para casos donde la calidad es prioritaria sobre el coste.
+
+## Disponibilidad y precios
+
+Ambos modelos están disponibles a través del Gemini Enterprise Agent Platform. Los precios de producción no se han publicado oficialmente en el momento del lanzamiento; Google está gestionando el acceso enterprise con acuerdos específicos. El acceso para desarrolladores individuales está disponible a través de Vertex AI con créditos de prueba.`,
+    image: "/news/nano-banana-2.jpg",
+    category: "ai",
+    tags: ["Google", "Gemini", "Generación de imágenes", "IA", "Enterprise", "Google I/O"],
+    author: authors.sara,
+    publishedAt: "2026-05-28T14:00:00Z",
+    readingMinutes: 7,
+    views: 1870,
+    likes: 143,
+    featured: false,
+    trending: true,
+  },
+  {
+    slug: "meta-suscripciones-instagram-facebook-whatsapp-meta-ai-19-99",
+    title:
+      "Meta lanza suscripciones globales: Instagram Plus, WhatsApp Plus y Meta One Premium con IA avanzada",
+    excerpt:
+      "Meta oficializa su modelo de suscripción en Instagram (3,99$/mes), Facebook y WhatsApp. Meta One Premium añade razonamiento profundo y mayor capacidad generativa por 19,99$/mes.",
+    content: `Meta ha lanzado oficialmente sus planes de suscripción de pago a nivel global, completando una estrategia que llevaba meses en pruebas en mercados seleccionados. El movimiento transforma el modelo de ingresos de la compañía, que hasta ahora dependía casi exclusivamente de la publicidad, añadiendo una línea de suscripciones directas al consumidor.
+
+## Los planes disponibles
+
+**Instagram Plus** — 3,99$/mes
+- Verificación de cuenta con badge.
+- Mayor visibilidad en comentarios y búsqueda.
+- Protección proactiva frente a suplantación.
+
+**Facebook Plus** — 3,99$/mes
+- Verificación de cuenta.
+- Mayor alcance para publicaciones personales.
+- Acceso anticipado a nuevas funcionalidades.
+
+**WhatsApp Plus** — 2,99$/mes
+- Verificación de número.
+- Funciones avanzadas de privacidad.
+- Mayor capacidad de almacenamiento en la nube.
+
+## Meta One: el tier de IA
+
+La novedad más relevante desde el punto de vista tecnológico es la **familia Meta One**, aún en pruebas pero con lanzamiento anunciado:
+
+- **Meta One para negocios**: herramientas de automatización y análisis para páginas y cuentas profesionales.
+- **Meta One para creadores**: analítica avanzada y herramientas de monetización.
+- **Meta One Premium** — 19,99$/mes: acceso a **razonamiento profundo** en Meta AI y **mayor capacidad generativa**, incluyendo generación de imágenes de mayor calidad y conversaciones más largas con el modelo.
+
+El tier Premium es el más interesante desde la perspectiva del ecosistema de IA: Meta está apostando por monetizar directamente la capacidad de su modelo de IA en lugar de limitarla a una herramienta gratuita de retención.
+
+\`\`\`
+Modelo de ingresos por IA:
+- Gratuito: Meta AI básico, respuestas estándar
+- Meta One Premium ($19.99/mes): razonamiento extendido, más tokens, 
+  generación de imágenes de mayor resolución
+\`\`\`
+
+## Por qué esto importa más allá de Meta
+
+El movimiento de Meta establece un precedente en el ecosistema de redes sociales: la capacidad de IA avanzada pasa a ser un argumento de venta de una suscripción premium, no solo un beneficio gratuito para retener usuarios.
+
+Esto tiene implicaciones directas para el resto del sector:
+
+1. **Snapchat, TikTok y X** tendrán que responder con sus propias ofertas de IA premium o arriesgarse a perder usuarios dispuestos a pagar por capacidades avanzadas.
+2. **El precio de 19,99$/mes** para un tier de IA conversacional con razonamiento avanzado establece un benchmark de mercado que otros competidores tendrán que considerar.
+3. **La distribución de Meta** —más de 3.000 millones de usuarios en sus plataformas— le da una ventaja única para monetizar IA a escala masiva, algo que modelos puros como ChatGPT o Claude no pueden igualar en cobertura global.
+
+La pregunta que el sector estará observando es cuántos usuarios de las 3.000 millones de personas en el ecosistema Meta están dispuestos a pagar por el tier Premium. Si la conversión es incluso del 0,1%, estamos hablando de 3 millones de suscriptores premium adicionales.`,
+    image: "/news/meta-subscriptions.jpg",
+    category: "startups",
+    tags: ["Meta", "Instagram", "WhatsApp", "IA", "Startups", "Suscripciones"],
+    author: authors.iria,
+    publishedAt: "2026-05-27T16:00:00Z",
+    readingMinutes: 6,
+    views: 2560,
+    likes: 176,
+    featured: false,
+    trending: true,
+  },
+  {
+    slug: "google-android-cli-estable-android-bench-migration-agent-kotlin",
+    title:
+      "Android CLI estable en Google I/O: agentes externos controlan Android Studio y Migration Agent convierte apps en horas",
+    excerpt:
+      "Google estabiliza el Android CLI, lanza Android Bench como leaderboard de LLMs para desarrollo Android y presenta un agente que migra React Native o iOS a Kotlin nativo.",
+    content: `Google I/O 2026 trajo un conjunto de anuncios específicamente orientados a desarrollo Android que cambia la relación entre los agentes de IA y el ecosistema de herramientas de Google. El elemento central es la estabilización del **Android CLI**, pero el anuncio más llamativo es el **Migration Agent**: una herramienta que convierte apps React Native, web frameworks o iOS en apps Kotlin nativas en horas en lugar de semanas.
+
+## Android CLI: estable y open source
+
+El **Android CLI** pasa de preview a estado estable. Su función es exponer las capacidades "pesadas" de Android Studio —descarga del SDK, ejecución en dispositivos físicos o emuladores, compilación, análisis de errores— a cualquier agente de IA externo, no solo a los de Google.
+
+Esto significa que Claude Code, Cursor, Windsurf o cualquier agente compatible con herramientas puede ahora invocar operaciones reales de Android Studio sin que el usuario tenga que hacerlo manualmente:
+
+\`\`\`bash
+# El agente puede ejecutar esto directamente a través del Android CLI
+android-cli run --device pixel-9 --debug
+android-cli install-sdk --version 36
+android-cli test --module :app --variant debugUnitTest
+\`\`\`
+
+Google también ha **publicado como open source los Android Skills**: un conjunto de instrucciones estructuradas que enseñan a los LLMs a ejecutar correctamente workflows complejos de Android, como migrar a Jetpack Compose o actualizar a Jetpack Navigation 3. Los Skills actúan como contexto especializado que mejora la calidad de las respuestas de cualquier modelo cuando trabaja con código Android.
+
+## Android Bench: el leaderboard de LLMs para Android
+
+Para entender qué modelos son realmente buenos desarrollando Android, Google ha creado **Android Bench**, un leaderboard de benchmarks específico para tareas de desarrollo Android. En el lanzamiento ya incluye modelos open-weight como **Gemma 4**, además de los modelos frontier habituales.
+
+Los benchmarks evalúan tareas reales: completar una migración a Compose, implementar un feature con Navigation 3, corregir un bug en código Kotlin con Coroutines. Diferente de benchmarks genéricos de código, Android Bench mide conocimiento específico del ecosistema Android.
+
+## Migration Agent: de React Native o iOS a Kotlin nativo
+
+El anuncio más impactante del bloque Android es el **Migration Agent**, disponible como preview en Android Studio. El agente analiza el código fuente de una app existente —React Native, un web framework o iOS Swift/SwiftUI— y genera una versión Kotlin nativa para Android.
+
+El proceso:
+1. El agente analiza el código fuente completo, arquitectura y dependencias.
+2. Genera un plan de migración por componentes.
+3. Produce el código Kotlin equivalente, respetando las convenciones modernas de Android (Compose UI, ViewModel, Coroutines, Hilt).
+4. Genera tests básicos para los componentes migrados.
+
+\`\`\`
+Migración típica (estimación de Google):
+- Antes del Migration Agent: 4-8 semanas para una app mediana
+- Con el Migration Agent: 4-8 horas para el 80% del código base
+- Revisión humana estimada: 1-3 días para completar y ajustar
+\`\`\`
+
+La demo mostrada en Google I/O convirtió una app React Native de tamaño mediano en Kotlin con Compose UI en menos de dos horas. El agente no produce código perfecto —hay patrones de React Native sin equivalente directo en Android— pero el punto de partida es vastamente superior a una migración manual.
+
+## Qué significa para el ecosistema
+
+La combinación de Android CLI estable, Android Skills open source y Migration Agent pone a los desarrolladores Android en un punto diferente: los agentes de IA pueden ahora hacer operaciones reales en el entorno de desarrollo, no solo sugerir código. El agente puede compilar, probar en dispositivo, detectar el error y proponer el fix en el mismo turno de conversación.
+
+Para empresas con apps React Native o web que quieren presencia nativa en Android, el Migration Agent elimina el argumento de "es demasiado costoso migrar". La pregunta deja de ser si migrar y pasa a ser cuándo revisar el output del agente.`,
+    image: "/news/android-cli.jpg",
+    category: "programming",
+    tags: ["Android", "Google", "Kotlin", "React Native", "Google I/O", "LLMs", "Agentes"],
+    author: authors.dax,
+    publishedAt: "2026-05-20T11:00:00Z",
+    readingMinutes: 8,
+    views: 1490,
+    likes: 118,
+    featured: false,
+    trending: false,
+  },
 ];
 
 export function getAllNews(): NewsArticle[] {

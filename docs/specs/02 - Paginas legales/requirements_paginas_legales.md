@@ -10,12 +10,12 @@
 
 Crear cuatro páginas estáticas de contenido legal para el sitio `synthnode.dev`:
 
-| Página | URL (es — default) | URL (en) |
-|---|---|---|
-| Aviso Legal | `/legal` | `/en/legal` |
-| Política de Privacidad | `/privacy` | `/en/privacy` |
-| Política de Cookies | `/cookies` | `/en/cookies` |
-| Contacto | `/contact` | `/en/contact` |
+| Página                 | URL (es — default) | URL (en)      |
+| ---------------------- | ------------------ | ------------- |
+| Aviso Legal            | `/legal`           | `/en/legal`   |
+| Política de Privacidad | `/privacy`         | `/en/privacy` |
+| Política de Cookies    | `/cookies`         | `/en/cookies` |
+| Contacto               | `/contact`         | `/en/contact` |
 
 El proyecto usa `next-intl` con `localePrefix: "as-needed"`, por lo que el locale por defecto (`es`) no lleva prefijo en la URL. Todos los textos deben estar externalizados en los ficheros de mensajes i18n (los 5 locales existentes: `es`, `en`, `pt-BR`, `ja`, `ko`).
 
@@ -118,16 +118,16 @@ export default async function LegalPage() {
 
 **Clases CSS a usar** (consistentes con el resto del proyecto):
 
-| Elemento | Clases |
-|---|---|
-| Wrapper página | `max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10` |
-| Label monospace | `label-mono text-brand` |
-| H1 | `text-4xl font-bold tracking-tight` |
-| H2 sección | `text-xl font-semibold mb-3` |
-| Párrafos | `text-muted-foreground leading-relaxed` |
-| Sección wrapper | `<section className="space-y-3">` |
-| Listas `<ul>` | `list-disc list-inside space-y-1 text-muted-foreground` |
-| Card destacada (contacto) | `bg-muted/50 p-6 rounded-lg border border-border` |
+| Elemento                  | Clases                                                  |
+| ------------------------- | ------------------------------------------------------- |
+| Wrapper página            | `max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10`       |
+| Label monospace           | `label-mono text-brand`                                 |
+| H1                        | `text-4xl font-bold tracking-tight`                     |
+| H2 sección                | `text-xl font-semibold mb-3`                            |
+| Párrafos                  | `text-muted-foreground leading-relaxed`                 |
+| Sección wrapper           | `<section className="space-y-3">`                       |
+| Listas `<ul>`             | `list-disc list-inside space-y-1 text-muted-foreground` |
+| Card destacada (contacto) | `bg-muted/50 p-6 rounded-lg border border-border`       |
 
 ---
 
@@ -137,24 +137,24 @@ export default async function LegalPage() {
 
 **Namespace i18n:** `legal`
 
-| Clave | Contenido (es) |
-|---|---|
-| `meta.title` | `Aviso Legal — Synthnode` |
-| `meta.description` | `Aviso legal del sitio synthnode.dev. Información sobre el titular, condiciones de uso y propiedad intelectual.` |
-| `title` | `Aviso Legal` |
-| `lastUpdated` | `Última actualización: mayo de 2026` |
-| `owner.heading` | `Titular del sitio` |
-| `owner.body` | `Synthnode es un proyecto de BinaryCore. Para cualquier consulta, utiliza la página de contacto del sitio.` |
-| `purpose.heading` | `Finalidad del sitio` |
-| `purpose.body` | `Synthnode es un medio de información tecnológica. Los contenidos se publican con fines informativos y no constituyen asesoramiento profesional.` |
-| `liability.heading` | `Limitación de responsabilidad` |
-| `liability.body` | `BinaryCore no garantiza la exactitud o idoneidad de los contenidos. El usuario asume la responsabilidad del uso que haga de la información publicada.` |
-| `intellectualProperty.heading` | `Propiedad intelectual` |
-| `intellectualProperty.body` | `El código, diseño y contenidos del sitio son propiedad de BinaryCore. Queda prohibida su reproducción sin autorización expresa.` |
-| `governing.heading` | `Legislación aplicable` |
-| `governing.body` | `Este aviso legal se rige por la legislación española. Para cualquier litigio, las partes se someten a los juzgados y tribunales de España.` |
-| `contact.heading` | `Contacto` |
-| `contact.body` | `Para cualquier consulta legal, utiliza el formulario de contacto disponible en este sitio.` |
+| Clave                          | Contenido (es)                                                                                                                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `meta.title`                   | `Aviso Legal — Synthnode`                                                                                                                               |
+| `meta.description`             | `Aviso legal del sitio synthnode.dev. Información sobre el titular, condiciones de uso y propiedad intelectual.`                                        |
+| `title`                        | `Aviso Legal`                                                                                                                                           |
+| `lastUpdated`                  | `Última actualización: mayo de 2026`                                                                                                                    |
+| `owner.heading`                | `Titular del sitio`                                                                                                                                     |
+| `owner.body`                   | `Synthnode es un proyecto de BinaryCore. Para cualquier consulta, utiliza la página de contacto del sitio.`                                             |
+| `purpose.heading`              | `Finalidad del sitio`                                                                                                                                   |
+| `purpose.body`                 | `Synthnode es un medio de información tecnológica. Los contenidos se publican con fines informativos y no constituyen asesoramiento profesional.`       |
+| `liability.heading`            | `Limitación de responsabilidad`                                                                                                                         |
+| `liability.body`               | `BinaryCore no garantiza la exactitud o idoneidad de los contenidos. El usuario asume la responsabilidad del uso que haga de la información publicada.` |
+| `intellectualProperty.heading` | `Propiedad intelectual`                                                                                                                                 |
+| `intellectualProperty.body`    | `El código, diseño y contenidos del sitio son propiedad de BinaryCore. Queda prohibida su reproducción sin autorización expresa.`                       |
+| `governing.heading`            | `Legislación aplicable`                                                                                                                                 |
+| `governing.body`               | `Este aviso legal se rige por la legislación española. Para cualquier litigio, las partes se someten a los juzgados y tribunales de España.`            |
+| `contact.heading`              | `Contacto`                                                                                                                                              |
+| `contact.body`                 | `Para cualquier consulta legal, utiliza el formulario de contacto disponible en este sitio.`                                                            |
 
 ---
 
@@ -162,28 +162,28 @@ export default async function LegalPage() {
 
 **Namespace i18n:** `privacy`
 
-| Clave | Contenido (es) |
-|---|---|
-| `meta.title` | `Política de Privacidad — Synthnode` |
-| `meta.description` | `Cómo tratamos tus datos en synthnode.dev. Sin recopilación de datos personales; procesamiento local en tu navegador.` |
-| `title` | `Política de Privacidad` |
-| `lastUpdated` | `Última actualización: mayo de 2026` |
-| `intro.heading` | `Introducción` |
-| `intro.body` | `En Synthnode la privacidad es una prioridad. Esta política explica cómo gestionamos la información de los usuarios.` |
-| `localProcessing.heading` | `Procesamiento local de datos` |
-| `localProcessing.body` | `Todo el contenido se sirve de forma estática. No enviamos ningún dato tuyo a servidores propios.` |
-| `noDataCollection.heading` | `Datos que NO recopilamos` |
-| `noDataCollection.items` | `["Contenido que leas o busques", "Tokens o credenciales", "Información de identificación personal", "Historial de navegación dentro del sitio"]` |
-| `cookies.heading` | `Cookies y servicios de terceros` |
-| `cookies.body` | `Utilizamos Google Analytics (GA4) y Google AdSense. Estos servicios instalan cookies propias. Consulta nuestra política de cookies para más detalle.` |
-| `thirdParty.heading` | `Servicios de terceros` |
-| `thirdParty.body` | `El proveedor de hosting puede registrar IPs y páginas visitadas por razones de seguridad. No compartimos datos con terceros con fines de marketing.` |
-| `security.heading` | `Seguridad` |
-| `security.body` | `Accede siempre mediante HTTPS. Mantén tu navegador actualizado para garantizar la seguridad de tu conexión.` |
-| `changes.heading` | `Cambios en esta política` |
-| `changes.body` | `Esta política puede actualizarse. Revisa la fecha de última actualización al inicio de esta página.` |
-| `contact.heading` | `Contacto` |
-| `contact.body` | `Para cualquier consulta sobre privacidad, usa el formulario de contacto del sitio.` |
+| Clave                      | Contenido (es)                                                                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `meta.title`               | `Política de Privacidad — Synthnode`                                                                                                                   |
+| `meta.description`         | `Cómo tratamos tus datos en synthnode.dev. Sin recopilación de datos personales; procesamiento local en tu navegador.`                                 |
+| `title`                    | `Política de Privacidad`                                                                                                                               |
+| `lastUpdated`              | `Última actualización: mayo de 2026`                                                                                                                   |
+| `intro.heading`            | `Introducción`                                                                                                                                         |
+| `intro.body`               | `En Synthnode la privacidad es una prioridad. Esta política explica cómo gestionamos la información de los usuarios.`                                  |
+| `localProcessing.heading`  | `Procesamiento local de datos`                                                                                                                         |
+| `localProcessing.body`     | `Todo el contenido se sirve de forma estática. No enviamos ningún dato tuyo a servidores propios.`                                                     |
+| `noDataCollection.heading` | `Datos que NO recopilamos`                                                                                                                             |
+| `noDataCollection.items`   | `["Contenido que leas o busques", "Tokens o credenciales", "Información de identificación personal", "Historial de navegación dentro del sitio"]`      |
+| `cookies.heading`          | `Cookies y servicios de terceros`                                                                                                                      |
+| `cookies.body`             | `Utilizamos Google Analytics (GA4) y Google AdSense. Estos servicios instalan cookies propias. Consulta nuestra política de cookies para más detalle.` |
+| `thirdParty.heading`       | `Servicios de terceros`                                                                                                                                |
+| `thirdParty.body`          | `El proveedor de hosting puede registrar IPs y páginas visitadas por razones de seguridad. No compartimos datos con terceros con fines de marketing.`  |
+| `security.heading`         | `Seguridad`                                                                                                                                            |
+| `security.body`            | `Accede siempre mediante HTTPS. Mantén tu navegador actualizado para garantizar la seguridad de tu conexión.`                                          |
+| `changes.heading`          | `Cambios en esta política`                                                                                                                             |
+| `changes.body`             | `Esta política puede actualizarse. Revisa la fecha de última actualización al inicio de esta página.`                                                  |
+| `contact.heading`          | `Contacto`                                                                                                                                             |
+| `contact.body`             | `Para cualquier consulta sobre privacidad, usa el formulario de contacto del sitio.`                                                                   |
 
 ---
 
@@ -191,24 +191,24 @@ export default async function LegalPage() {
 
 **Namespace i18n:** `cookies`
 
-| Clave | Contenido (es) |
-|---|---|
-| `meta.title` | `Política de Cookies — Synthnode` |
-| `meta.description` | `Qué cookies usa synthnode.dev, para qué sirven y cómo gestionarlas.` |
-| `title` | `Política de Cookies` |
-| `lastUpdated` | `Última actualización: mayo de 2026` |
-| `intro.heading` | `¿Qué son las cookies?` |
-| `intro.body` | `Las cookies son pequeños ficheros de texto que los sitios web almacenan en tu navegador para guardar preferencias y analizar el uso.` |
-| `ownCookies.heading` | `Cookies propias` |
-| `ownCookies.body` | `Solo usamos \`localStorage\` para guardar tu preferencia de consentimiento de cookies. No se envía al servidor.` |
-| `thirdPartyCookies.heading` | `Cookies de terceros` |
-| `thirdPartyCookies.items` | `["Google Analytics (GA4): analítica de tráfico anonimizada.", "Google AdSense: publicidad personalizada basada en tu navegación."]` |
-| `consent.heading` | `Tu consentimiento` |
-| `consent.body` | `Al aceptar, habilitas GA y AdSense. Al rechazar, ambos servicios quedan bloqueados; el sitio sigue siendo completamente funcional.` |
-| `howToDisable.heading` | `Cómo gestionar las cookies` |
-| `howToDisable.body` | `Puedes modificar tu consentimiento en cualquier momento mediante el botón de configuración de cookies (esquina inferior derecha) o desde la configuración de tu navegador.` |
-| `contact.heading` | `Contacto` |
-| `contact.body` | `Para dudas sobre cookies, usa el formulario de contacto del sitio.` |
+| Clave                       | Contenido (es)                                                                                                                                                               |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `meta.title`                | `Política de Cookies — Synthnode`                                                                                                                                            |
+| `meta.description`          | `Qué cookies usa synthnode.dev, para qué sirven y cómo gestionarlas.`                                                                                                        |
+| `title`                     | `Política de Cookies`                                                                                                                                                        |
+| `lastUpdated`               | `Última actualización: mayo de 2026`                                                                                                                                         |
+| `intro.heading`             | `¿Qué son las cookies?`                                                                                                                                                      |
+| `intro.body`                | `Las cookies son pequeños ficheros de texto que los sitios web almacenan en tu navegador para guardar preferencias y analizar el uso.`                                       |
+| `ownCookies.heading`        | `Cookies propias`                                                                                                                                                            |
+| `ownCookies.body`           | `Solo usamos \`localStorage\` para guardar tu preferencia de consentimiento de cookies. No se envía al servidor.`                                                            |
+| `thirdPartyCookies.heading` | `Cookies de terceros`                                                                                                                                                        |
+| `thirdPartyCookies.items`   | `["Google Analytics (GA4): analítica de tráfico anonimizada.", "Google AdSense: publicidad personalizada basada en tu navegación."]`                                         |
+| `consent.heading`           | `Tu consentimiento`                                                                                                                                                          |
+| `consent.body`              | `Al aceptar, habilitas GA y AdSense. Al rechazar, ambos servicios quedan bloqueados; el sitio sigue siendo completamente funcional.`                                         |
+| `howToDisable.heading`      | `Cómo gestionar las cookies`                                                                                                                                                 |
+| `howToDisable.body`         | `Puedes modificar tu consentimiento en cualquier momento mediante el botón de configuración de cookies (esquina inferior derecha) o desde la configuración de tu navegador.` |
+| `contact.heading`           | `Contacto`                                                                                                                                                                   |
+| `contact.body`              | `Para dudas sobre cookies, usa el formulario de contacto del sitio.`                                                                                                         |
 
 ---
 
@@ -218,24 +218,24 @@ export default async function LegalPage() {
 
 Layout: `max-w-2xl` (más estrecho que las otras páginas, centrado).
 
-| Clave | Contenido (es) |
-|---|---|
-| `meta.title` | `Contacto — Synthnode` |
-| `meta.description` | `Contacta con el equipo de Synthnode. Reporta un error, propón contenido o envíanos un mensaje.` |
-| `title` | `Contacto` |
-| `subtitle` | `¿Tienes algo que decirnos? Estamos encantados de escucharte.` |
-| `bugCard.title` | `Reportar un error` |
-| `bugCard.description` | `Describe el problema y los pasos para reproducirlo.` |
-| `suggestionCard.title` | `Proponer contenido` |
-| `suggestionCard.description` | `Cuéntanos qué temas o artículos te gustaría ver en Synthnode.` |
-| `formCard.title` | `Formulario de contacto` |
-| `form.name` | `Nombre` |
-| `form.email` | `Correo electrónico` |
-| `form.message` | `Mensaje` |
-| `form.submit` | `Enviar mensaje` |
-| `form.submitting` | `Enviando...` |
-| `form.success` | `Mensaje enviado correctamente. Te responderemos pronto.` |
-| `form.error` | `Ha ocurrido un error. Por favor, inténtalo de nuevo.` |
+| Clave                        | Contenido (es)                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| `meta.title`                 | `Contacto — Synthnode`                                                                           |
+| `meta.description`           | `Contacta con el equipo de Synthnode. Reporta un error, propón contenido o envíanos un mensaje.` |
+| `title`                      | `Contacto`                                                                                       |
+| `subtitle`                   | `¿Tienes algo que decirnos? Estamos encantados de escucharte.`                                   |
+| `bugCard.title`              | `Reportar un error`                                                                              |
+| `bugCard.description`        | `Describe el problema y los pasos para reproducirlo.`                                            |
+| `suggestionCard.title`       | `Proponer contenido`                                                                             |
+| `suggestionCard.description` | `Cuéntanos qué temas o artículos te gustaría ver en Synthnode.`                                  |
+| `formCard.title`             | `Formulario de contacto`                                                                         |
+| `form.name`                  | `Nombre`                                                                                         |
+| `form.email`                 | `Correo electrónico`                                                                             |
+| `form.message`               | `Mensaje`                                                                                        |
+| `form.submit`                | `Enviar mensaje`                                                                                 |
+| `form.submitting`            | `Enviando...`                                                                                    |
+| `form.success`               | `Mensaje enviado correctamente. Te responderemos pronto.`                                        |
+| `form.error`                 | `Ha ocurrido un error. Por favor, inténtalo de nuevo.`                                           |
 
 #### Componente ContactForm
 
@@ -286,8 +286,8 @@ Añadir las claves i18n correspondientes al namespace `common.footer`:
 
 ## 6. Variables de entorno
 
-| Variable | Propósito | Obligatoria |
-|---|---|---|
+| Variable                    | Propósito                                                                           | Obligatoria             |
+| --------------------------- | ----------------------------------------------------------------------------------- | ----------------------- |
 | `NEXT_PUBLIC_WEB3FORMS_KEY` | Access key de [web3forms.com](https://web3forms.com) para el formulario de contacto | Sí (solo para contacto) |
 
 Añadir a `.env.local` y documentar en `.env.example` si existe.

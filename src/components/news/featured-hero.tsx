@@ -19,7 +19,7 @@ export function FeaturedHero({ article }: { article: NewsArticle }) {
       className="relative group"
     >
       <Link href={`/news/${article.slug}`} className="block">
-        <div className="aspect-[21/9] overflow-hidden rounded-md outline outline-1 -outline-offset-1 outline-border bg-surface mb-6">
+        <div className="aspect-[16/9] overflow-hidden rounded-md outline outline-1 -outline-offset-1 outline-border bg-surface mb-6">
           <Image
             src={article.image}
             alt={article.title}

@@ -135,7 +135,7 @@ export function SearchClient({
 
       {/* Results count */}
       <p className="label-mono text-muted-foreground">
-        {results.length} {results.length === 1 ? t("results.one") : t("results.many")}
+        {results.length} {results.length === 1 ? t("resultsOne") : t("resultsMany")}
       </p>
 
       {/* Results grid */}

@@ -137,6 +137,8 @@
     "subtitle": "Búsqueda fuzzy en tiempo real sobre títulos, descripciones y tags.",
     "placeholder": "Buscar noticias, tags, autores…",
     "results": "{count, plural, one {# resultado} other {# resultados}}",
+    "resultsOne": "resultado",
+    "resultsMany": "resultados",
     "noResults": "Sin resultados. Prueba a quitar filtros o cambiar la búsqueda.",
     "loadingFallback": "Cargando…",
     "filters": {
@@ -145,6 +147,11 @@
       "tags": "TAGS",
       "allTags": "todos",
       "date": "FECHA",
+      "since": "Desde",
+      "sinceAll": "Cualquier momento",
+      "since24h": "Últimas 24h",
+      "since7d": "Últimos 7 días",
+      "since30d": "Últimos 30 días",
       "anyTime": "Cualquier momento",
       "last7Days": "Últimos 7 días",
       "last30Days": "Últimos 30 días",
@@ -200,7 +207,12 @@
     },
     "noDataCollection": {
       "heading": "Datos que NO recopilamos",
-      "items": ["Contenido que leas o busques", "Tokens o credenciales", "Información de identificación personal", "Historial de navegación dentro del sitio"]
+      "items": [
+        "Contenido que leas o busques",
+        "Tokens o credenciales",
+        "Información de identificación personal",
+        "Historial de navegación dentro del sitio"
+      ]
     },
     "cookies": {
       "heading": "Cookies y servicios de terceros",
@@ -240,7 +252,10 @@
     },
     "thirdPartyCookies": {
       "heading": "Cookies de terceros",
-      "items": ["Google Analytics (GA4): analítica de tráfico anonimizada.", "Google AdSense: publicidad personalizada basada en tu navegación."]
+      "items": [
+        "Google Analytics (GA4): analítica de tráfico anonimizada.",
+        "Google AdSense: publicidad personalizada basada en tu navegación."
+      ]
     },
     "consent": {
       "heading": "Tu consentimiento",

@@ -1,2 +1,2 @@
-Al igual que tenemos en el modulo /home/dgaspar/Documents/workspaces/workspace-binary-core/devtoolshub vamos a crear pagina legal, privacidad, cookies y contacto. 
+Al igual que tenemos en el modulo /home/dgaspar/Documents/workspaces/workspace-binary-core/devtoolshub vamos a crear pagina legal, privacidad, cookies y contacto.
 Vamos a hacerlo analogo a lo que ya tenemos en la otra web

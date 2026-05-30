@@ -31,13 +31,13 @@
 
 Sin cambios respecto al proyecto. Dependencias existentes cubren todo el alcance.
 
-| Tecnología | Versión | Uso en este módulo |
-|---|---|---|
-| Next.js 15 | existente | App Router, Server Components, `generateMetadata` |
-| next-intl 3 | existente | `getTranslations` server-side, `useTranslations` en ContactForm |
-| Tailwind CSS | existente | Estilos de todas las páginas |
-| shadcn/ui | existente | `Button`, `Input`, `Textarea` en ContactForm |
-| web3forms | externo | Envío del formulario de contacto (sin backend propio) |
+| Tecnología   | Versión   | Uso en este módulo                                              |
+| ------------ | --------- | --------------------------------------------------------------- |
+| Next.js 15   | existente | App Router, Server Components, `generateMetadata`               |
+| next-intl 3  | existente | `getTranslations` server-side, `useTranslations` en ContactForm |
+| Tailwind CSS | existente | Estilos de todas las páginas                                    |
+| shadcn/ui    | existente | `Button`, `Input`, `Textarea` en ContactForm                    |
+| web3forms    | externo   | Envío del formulario de contacto (sin backend propio)           |
 
 **Dependencia nueva**: ninguna. Solo se añade `NEXT_PUBLIC_WEB3FORMS_KEY` como env var.
 
@@ -47,13 +47,13 @@ Sin cambios respecto al proyecto. Dependencias existentes cubren todo el alcance
 
 ### 4.1 Locales
 
-| Locale | Estado | URL base |
-|---|---|---|
-| `es` | Default | `/` (sin prefijo) |
-| `en` | Secundario | `/en` |
-| `pt-BR` | Secundario | `/pt-BR` |
-| `ja` | Secundario | `/ja` |
-| `ko` | Secundario | `/ko` |
+| Locale  | Estado     | URL base          |
+| ------- | ---------- | ----------------- |
+| `es`    | Default    | `/` (sin prefijo) |
+| `en`    | Secundario | `/en`             |
+| `pt-BR` | Secundario | `/pt-BR`          |
+| `ja`    | Secundario | `/ja`             |
+| `ko`    | Secundario | `/ko`             |
 
 Configuración existente en `src/middleware.ts` — no se modifica.
 
@@ -137,7 +137,12 @@ Claves del namespace `common.footer` a añadir:
     },
     "noDataCollection": {
       "heading": "Datos que NO recopilamos",
-      "items": ["Contenido que leas o busques", "Tokens o credenciales", "Información de identificación personal", "Historial de navegación dentro del sitio"]
+      "items": [
+        "Contenido que leas o busques",
+        "Tokens o credenciales",
+        "Información de identificación personal",
+        "Historial de navegación dentro del sitio"
+      ]
     },
     "cookies": {
       "heading": "Cookies y servicios de terceros",
@@ -177,7 +182,10 @@ Claves del namespace `common.footer` a añadir:
     },
     "thirdPartyCookies": {
       "heading": "Cookies de terceros",
-      "items": ["Google Analytics (GA4): analítica de tráfico anonimizada.", "Google AdSense: publicidad personalizada basada en tu navegación."]
+      "items": [
+        "Google Analytics (GA4): analítica de tráfico anonimizada.",
+        "Google AdSense: publicidad personalizada basada en tu navegación."
+      ]
     },
     "consent": {
       "heading": "Tu consentimiento",
@@ -237,8 +245,8 @@ const t = await getTranslations({ locale, namespace: "legal.meta" });
 
 // En el componente:
 const t = await getTranslations("legal");
-t("title")          // → "Aviso Legal"
-t("owner.heading")  // → "Titular del sitio"
+t("title"); // → "Aviso Legal"
+t("owner.heading"); // → "Titular del sitio"
 ```
 
 ### 4.6 Uso en ContactForm (Client Component)
@@ -247,7 +255,7 @@ t("owner.heading")  // → "Titular del sitio"
 "use client";
 import { useTranslations } from "next-intl";
 const t = useTranslations("contact.form");
-t("submit")  // → "Enviar mensaje"
+t("submit"); // → "Enviar mensaje"
 ```
 
 ---
@@ -256,12 +264,12 @@ t("submit")  // → "Enviar mensaje"
 
 ### 5.1 Rendering
 
-| Página | Estrategia | Justificación |
-|---|---|---|
-| `/legal` | SSG estático | Contenido invariante, no hay `generateStaticParams` necesario — Next.js lo renderiza como estático automáticamente al no tener datos dinámicos |
-| `/privacy` | SSG estático | Idem |
-| `/cookies` | SSG estático | Idem |
-| `/contact` | SSG estático (shell) + CSR (form) | Página estática; `ContactForm` es client component |
+| Página     | Estrategia                        | Justificación                                                                                                                                  |
+| ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/legal`   | SSG estático                      | Contenido invariante, no hay `generateStaticParams` necesario — Next.js lo renderiza como estático automáticamente al no tener datos dinámicos |
+| `/privacy` | SSG estático                      | Idem                                                                                                                                           |
+| `/cookies` | SSG estático                      | Idem                                                                                                                                           |
+| `/contact` | SSG estático (shell) + CSR (form) | Página estática; `ContactForm` es client component                                                                                             |
 
 **Nota**: Sin `generateStaticParams` explícito. Las páginas `[locale]/*/page.tsx` sin datos dinámicos se comportan como estáticas en build.
 
@@ -336,18 +344,19 @@ src/components/layout/footer.tsx          # +columna Legal con 4 enlaces
 
 ### 7.1 Mapa de rutas
 
-| Ruta ES | Ruta EN | Archivo | Indexable |
-|---|---|---|---|
-| `/legal` | `/en/legal` | `app/[locale]/legal/page.tsx` | Sí |
-| `/privacy` | `/en/privacy` | `app/[locale]/privacy/page.tsx` | Sí |
-| `/cookies` | `/en/cookies` | `app/[locale]/cookies/page.tsx` | Sí |
-| `/contact` | `/en/contact` | `app/[locale]/contact/page.tsx` | Sí |
+| Ruta ES    | Ruta EN       | Archivo                         | Indexable |
+| ---------- | ------------- | ------------------------------- | --------- |
+| `/legal`   | `/en/legal`   | `app/[locale]/legal/page.tsx`   | Sí        |
+| `/privacy` | `/en/privacy` | `app/[locale]/privacy/page.tsx` | Sí        |
+| `/cookies` | `/en/cookies` | `app/[locale]/cookies/page.tsx` | Sí        |
+| `/contact` | `/en/contact` | `app/[locale]/contact/page.tsx` | Sí        |
 
 ### 7.2 Especificación: `/legal`
 
 **Propósito**: Aviso legal obligatorio.
 
 **Layout**:
+
 ```
 max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10
   <header>
@@ -373,6 +382,7 @@ max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10
 **Secciones** (8): intro, localProcessing, noDataCollection (con `<ul>`), cookies, thirdParty, security, changes, contact.
 
 La sección `noDataCollection` renderiza una lista:
+
 ```tsx
 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
   {/* t.raw("noDataCollection.items") as string[] → map → <li> */}
@@ -398,6 +408,7 @@ La sección `thirdPartyCookies` renderiza una lista igual que `noDataCollection`
 **Propósito**: Canal de contacto.
 
 **Layout**:
+
 ```
 max-w-2xl mx-auto px-4 sm:px-6 py-16 space-y-10
   <header>
@@ -436,21 +447,24 @@ max-w-2xl mx-auto px-4 sm:px-6 py-16 space-y-10
 **Props**: ninguna.
 
 **Estado interno**:
+
 ```typescript
 type FormStatus = "idle" | "loading" | "success" | "error";
 const [status, setStatus] = useState<FormStatus>("idle");
 ```
 
 **Campos**:
+
 ```typescript
 interface FormData {
-  name: string;     // <Input type="text" required />
-  email: string;    // <Input type="email" required />
-  message: string;  // <Textarea required />
+  name: string; // <Input type="text" required />
+  email: string; // <Input type="email" required />
+  message: string; // <Textarea required />
 }
 ```
 
 **Lógica de envío**:
+
 ```typescript
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -480,6 +494,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 ```
 
 **Feedback visual**:
+
 - `success`: banner verde (`bg-green-50 border-green-200 text-green-800`) con `t("success")`
 - `error`: banner rojo (`bg-red-50 border-red-200 text-red-800`) con `t("error")`
 - `loading`: botón disabled, texto `t("submitting")`
@@ -500,14 +515,31 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 **Cambio**: añadir columna "Legal" con 4 enlaces.
 
 **Nueva columna**:
+
 ```tsx
 <div>
   <h4 className="label-mono text-foreground mb-3">{t("footer.legalLabel")}</h4>
   <ul className="space-y-2 text-sm text-muted-foreground">
-    <li><Link href="/legal" className="hover:text-foreground">{t("footer.legal")}</Link></li>
-    <li><Link href="/privacy" className="hover:text-foreground">{t("footer.privacy")}</Link></li>
-    <li><Link href="/cookies" className="hover:text-foreground">{t("footer.cookies")}</Link></li>
-    <li><Link href="/contact" className="hover:text-foreground">{t("footer.contact")}</Link></li>
+    <li>
+      <Link href="/legal" className="hover:text-foreground">
+        {t("footer.legal")}
+      </Link>
+    </li>
+    <li>
+      <Link href="/privacy" className="hover:text-foreground">
+        {t("footer.privacy")}
+      </Link>
+    </li>
+    <li>
+      <Link href="/cookies" className="hover:text-foreground">
+        {t("footer.cookies")}
+      </Link>
+    </li>
+    <li>
+      <Link href="/contact" className="hover:text-foreground">
+        {t("footer.contact")}
+      </Link>
+    </li>
   </ul>
 </div>
 ```
@@ -518,10 +550,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
 ## 9. Gestión de Estado
 
-| Estado | Alcance | Tecnología | Ubicación |
-|---|---|---|---|
-| Form status | Local | `useState` | `ContactForm.tsx` |
-| Form data | Local | `useState` | `ContactForm.tsx` |
+| Estado      | Alcance | Tecnología | Ubicación         |
+| ----------- | ------- | ---------- | ----------------- |
+| Form status | Local   | `useState` | `ContactForm.tsx` |
+| Form data   | Local   | `useState` | `ContactForm.tsx` |
 
 Sin estado global nuevo.
 
@@ -539,12 +571,12 @@ No hay fetching de datos en estas páginas. Todo el contenido viene de i18n (tra
 
 ### 11.1 Metadata por página
 
-| Página | `title` (es) | `robots` |
-|---|---|---|
-| `/legal` | `Aviso Legal — Synthnode` | index, follow |
+| Página     | `title` (es)                         | `robots`      |
+| ---------- | ------------------------------------ | ------------- |
+| `/legal`   | `Aviso Legal — Synthnode`            | index, follow |
 | `/privacy` | `Política de Privacidad — Synthnode` | index, follow |
-| `/cookies` | `Política de Cookies — Synthnode` | index, follow |
-| `/contact` | `Contacto — Synthnode` | index, follow |
+| `/cookies` | `Política de Cookies — Synthnode`    | index, follow |
+| `/contact` | `Contacto — Synthnode`               | index, follow |
 
 ### 11.2 Hreflang
 
@@ -592,37 +624,37 @@ Convenciones `cod_style.md` aplicadas:
 
 **Clases de referencia**:
 
-| Elemento | Clases |
-|---|---|
-| Wrapper página (legal/privacy/cookies) | `max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10` |
-| Wrapper página (contact) | `max-w-2xl mx-auto px-4 sm:px-6 py-16 space-y-10` |
-| Label monospace | `label-mono text-brand` |
-| H1 | `text-4xl font-bold tracking-tight` |
-| H2 sección | `text-xl font-semibold mb-3` |
-| Párrafos | `text-muted-foreground leading-relaxed` |
-| Sección | `space-y-3` |
-| Lista `<ul>` | `list-disc list-inside space-y-1 text-muted-foreground` |
-| Card info | `bg-muted/50 p-6 rounded-lg border border-border` |
-| Banner success | `bg-green-50 border border-green-200 text-green-800 text-sm p-3 rounded-md` |
-| Banner error | `bg-red-50 border border-red-200 text-red-800 text-sm p-3 rounded-md` |
+| Elemento                               | Clases                                                                      |
+| -------------------------------------- | --------------------------------------------------------------------------- |
+| Wrapper página (legal/privacy/cookies) | `max-w-4xl mx-auto px-4 sm:px-6 py-16 space-y-10`                           |
+| Wrapper página (contact)               | `max-w-2xl mx-auto px-4 sm:px-6 py-16 space-y-10`                           |
+| Label monospace                        | `label-mono text-brand`                                                     |
+| H1                                     | `text-4xl font-bold tracking-tight`                                         |
+| H2 sección                             | `text-xl font-semibold mb-3`                                                |
+| Párrafos                               | `text-muted-foreground leading-relaxed`                                     |
+| Sección                                | `space-y-3`                                                                 |
+| Lista `<ul>`                           | `list-disc list-inside space-y-1 text-muted-foreground`                     |
+| Card info                              | `bg-muted/50 p-6 rounded-lg border border-border`                           |
+| Banner success                         | `bg-green-50 border border-green-200 text-green-800 text-sm p-3 rounded-md` |
+| Banner error                           | `bg-red-50 border border-red-200 text-red-800 text-sm p-3 rounded-md`       |
 
 ---
 
 ## 15. Accesibilidad
 
-| Elemento | Requisito A11y |
-|---|---|
+| Elemento          | Requisito A11y                                                                                |
+| ----------------- | --------------------------------------------------------------------------------------------- |
 | `<ContactForm />` | `<form aria-label>`, `<label htmlFor>` en cada campo, `aria-live="polite"` en banner feedback |
-| Páginas legales | Estructura semántica `<header>`, `<section>`, `<h1>`, `<h2>` |
-| Footer links | Texto descriptivo (no "click aquí") |
+| Páginas legales   | Estructura semántica `<header>`, `<section>`, `<h1>`, `<h2>`                                  |
+| Footer links      | Texto descriptivo (no "click aquí")                                                           |
 
 ---
 
 ## 16. Gestión de Errores
 
-| Tipo | Componente | Acción |
-|---|---|---|
-| Error envío formulario | `ContactForm` | Banner rojo con mensaje i18n. Sin `console.log`. |
+| Tipo                                        | Componente          | Acción                                                       |
+| ------------------------------------------- | ------------------- | ------------------------------------------------------------ |
+| Error envío formulario                      | `ContactForm`       | Banner rojo con mensaje i18n. Sin `console.log`.             |
 | Env var `NEXT_PUBLIC_WEB3FORMS_KEY` ausente | ContactForm runtime | El fetch falla → estado `error`. Documentar en `.env.local`. |
 
 Páginas legales: sin errores posibles (contenido estático).
@@ -631,8 +663,8 @@ Páginas legales: sin errores posibles (contenido estático).
 
 ## 17. Variables de Entorno
 
-| Variable | Propósito | Obligatoria |
-|---|---|---|
+| Variable                    | Propósito                   | Obligatoria                            |
+| --------------------------- | --------------------------- | -------------------------------------- |
 | `NEXT_PUBLIC_WEB3FORMS_KEY` | Access key de web3forms.com | Sí (solo para funcionar el formulario) |
 
 Añadir a `.env.local` (no commitear el valor real).
@@ -641,12 +673,12 @@ Añadir a `.env.local` (no commitear el valor real).
 
 ## 18. Decisiones Técnicas
 
-| Decisión | Alternativas | Elegida | Por qué |
-|---|---|---|---|
-| Servicio formulario | Formspree, EmailJS, backend propio | web3forms | Mismo servicio que devtoolshub — coherencia; sin backend |
-| `localePath` | Centralizar en `src/lib/seo/hreflang.ts` | inline en cada `page.tsx` | Patrón existente del proyecto; evitar refactor no solicitado |
-| Footer columna "Legal" | Añadir al pie del copyright, nueva columna en grid | Nueva columna en el grid 3-col | Visibilidad y coherencia con estructura existente |
-| Listas i18n (`noDataCollection.items`) | Claves numeradas (`item0`, `item1`), array JSON | Array JSON + `t.raw()` | Más mantenible para listas variables |
+| Decisión                               | Alternativas                                       | Elegida                        | Por qué                                                      |
+| -------------------------------------- | -------------------------------------------------- | ------------------------------ | ------------------------------------------------------------ |
+| Servicio formulario                    | Formspree, EmailJS, backend propio                 | web3forms                      | Mismo servicio que devtoolshub — coherencia; sin backend     |
+| `localePath`                           | Centralizar en `src/lib/seo/hreflang.ts`           | inline en cada `page.tsx`      | Patrón existente del proyecto; evitar refactor no solicitado |
+| Footer columna "Legal"                 | Añadir al pie del copyright, nueva columna en grid | Nueva columna en el grid 3-col | Visibilidad y coherencia con estructura existente            |
+| Listas i18n (`noDataCollection.items`) | Claves numeradas (`item0`, `item1`), array JSON    | Array JSON + `t.raw()`         | Más mantenible para listas variables                         |
 
 ---
 
