@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
@@ -143,12 +144,13 @@ export default async function ArticlePage({ params }: Props) {
               <p className="label-mono text-muted-foreground mb-3">{t("labels.tags")}</p>
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag}
-                    className="px-2.5 py-1 text-xs font-mono border border-border rounded text-muted-foreground"
+                    href={`/search?q=&category=all&tag=${encodeURIComponent(tag)}`}
+                    className="px-2.5 py-1 text-xs font-mono border border-border rounded text-muted-foreground hover:border-foreground hover:text-foreground transition-colors"
                   >
                     #{tag.toLowerCase()}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -69,6 +69,324 @@ const authors = {
 
 export const news: NewsArticle[] = [
   {
+    slug: "agentes-ia-produccion-patrones-arquitectura",
+    title: "Agentes IA en producción: los 5 patrones de arquitectura que realmente funcionan",
+    excerpt:
+      "Del prototipo al sistema estable: los patrones concretos que separan los agentes que escalan de los que explotan en producción.",
+    content: `Montar un agente de IA que funcione en un notebook es sencillo. Que ese agente funcione de forma fiable en producción, bajo carga real, con usuarios reales y sin que explote cada vez que el modelo alucina, es otra historia completamente distinta.
+
+Llevamos dos años viendo cómo equipos de todo tamaño pasan por el mismo ciclo: prototipo impresionante, demo que funciona, deploy que colapsa. El problema casi nunca es el modelo. El problema es la arquitectura que rodea al modelo.
+
+Estos son los cinco patrones que, tras revisar docenas de sistemas en producción, realmente marcan la diferencia.
+
+## 1. ReAct con memoria episódica acotada
+
+El patrón ReAct (Reasoning + Acting) es el punto de partida de casi todos los agentes. El agente razona, actúa, observa el resultado, y vuelve a razonar. El problema en producción es que la ventana de contexto crece sin control.
+
+La solución que funciona es la **memoria episódica acotada**: en lugar de pasar todo el historial al modelo, pasas solo los últimos N pasos relevantes más un resumen comprimido del estado anterior. El agente sigue teniendo continuidad, pero el coste por llamada no crece indefinidamente.
+
+\`\`\`python
+def build_context(history: list[Step], max_steps: int = 10) -> str:
+    recent = history[-max_steps:]
+    summary = summarize(history[:-max_steps]) if len(history) > max_steps else ""
+    return format_context(summary, recent)
+\`\`\`
+
+## 2. Tool calling con contrato explícito
+
+El mayor error en tool calling no es el modelo: es que los desarrolladores definen las herramientas de forma ambigua. Si el modelo puede interpretar la herramienta de dos maneras distintas, lo hará, y eligirá la incorrecta justo cuando no debes.
+
+El patrón correcto es tratar cada tool como un contrato: nombre inequívoco, descripción que incluye cuándo NO usar la herramienta, ejemplos de input/output, y validación de esquema en ambas direcciones.
+
+Los sistemas que usan Pydantic o Zod para validar los argumentos antes de ejecutar la tool tienen tasas de error hasta 60% menores que los que confían ciegamente en el output del modelo.
+
+## 3. Supervisor-Worker para tareas largas
+
+Cuando la tarea requiere más de 5-6 pasos, el patrón de agente único empieza a degradarse. El contexto se llena, el modelo pierde el hilo, y los errores se acumulan.
+
+El patrón **Supervisor-Worker** divide el trabajo: un agente supervisor descompone la tarea en subtareas atómicas y delega en agentes worker especializados. Cada worker tiene un scope acotado y un contexto limpio.
+
+Lo importante es que el supervisor no intenta ejecutar nada directamente: su único trabajo es planificar, delegar, y agregar resultados. La separación de responsabilidades es lo que hace que el sistema sea debuggeable.
+
+## 4. Checkpointing y reanudación
+
+Los agentes de larga duración fallan. El modelo tiene un error transitorio, la API externa devuelve un 503, el usuario cierra la sesión. Sin checkpointing, todo el trabajo previo se pierde.
+
+El patrón es simple pero pocas implementaciones lo tienen desde el principio: serializa el estado del agente (qué pasos completó, qué observaciones tiene, qué plan sigue) después de cada paso significativo. Si algo falla, reanuda desde el último checkpoint válido.
+
+\`\`\`python
+@dataclass
+class AgentCheckpoint:
+    task_id: str
+    completed_steps: list[Step]
+    current_plan: Plan
+    observations: dict[str, Any]
+    created_at: datetime
+
+async def run_with_checkpoint(task: Task, storage: CheckpointStorage):
+    checkpoint = await storage.load(task.id) or AgentCheckpoint.new(task)
+    async for step in agent.run(task, resume_from=checkpoint):
+        await storage.save(step.checkpoint)
+        yield step
+\`\`\`
+
+## 5. Evaluación continua en el loop
+
+El quinto patrón es el menos glamuroso y el más importante: un evaluador automático que corre dentro del loop de ejecución, no solo al final.
+
+En lugar de ejecutar toda la cadena y ver el resultado al final, el evaluador revisa cada paso intermediario: ¿la acción tiene sentido dado el objetivo? ¿el output de la tool es plausible? ¿el agente está en bucle?
+
+Los equipos que implementan esto detectan el 80% de los fallos antes de que el agente llegue a cometer un error visible al usuario. El coste es una llamada adicional al modelo por paso —normalmente con un modelo más pequeño y barato—, que compensa con creces.
+
+## El patrón que no está en esta lista
+
+Hay un patrón que todo el mundo menciona y pocos usan bien: **human-in-the-loop**. No como fallback cuando todo falla, sino como decisión de diseño deliberada para acciones de alto impacto.
+
+Los sistemas de producción más robustos no intentan automatizar el 100%. Identifican con precisión qué decisiones deben pasar siempre por un humano y construyen el flujo alrededor de eso desde el principio, en lugar de añadirlo como parche después.
+
+Eso, más que cualquier patrón técnico, es lo que separa los agentes que dan vergüenza mostrar de los que dan orgullo.`,
+    image: "/news/ai-agents-architecture.jpg",
+    category: "ai",
+    tags: ["Agentes IA", "Arquitectura", "Producción", "LLMs", "Patrones"],
+    author: authors.noa,
+    publishedAt: "2026-06-03T09:00:00Z",
+    readingMinutes: 9,
+    views: 2100,
+    likes: 187,
+    featured: false,
+    trending: true,
+  },
+  {
+    slug: "postgres-vectorial-pgvector-produccion",
+    title: "pgvector en producción: PostgreSQL como base de datos vectorial sin abandonar tu stack",
+    excerpt:
+      "Búsqueda semántica, RAG y embeddings directamente en tu Postgres. Cuándo pgvector es suficiente y cuándo necesitas algo más.",
+    content: `La mayoría de equipos que empiezan a construir aplicaciones con RAG hacen lo mismo: buscan una base de datos vectorial, evalúan Pinecone, Weaviate o Qdrant, y acaban añadiendo una dependencia nueva a su stack. A veces tiene sentido. Muchas veces, no.
+
+Si ya tienes PostgreSQL en producción —y la mayoría de aplicaciones lo tienen—, pgvector te da búsqueda vectorial sin salir de tu stack actual. La pregunta no es si puedes usarlo: la pregunta es cuándo es suficiente y cuándo no lo es.
+
+## Qué es pgvector y qué problema resuelve
+
+pgvector es una extensión de PostgreSQL que añade un tipo de dato \`vector\` y operadores para calcular similitud entre vectores. Esto te permite almacenar embeddings directamente en tus tablas y hacer búsquedas de similitud (nearest neighbor) con SQL normal.
+
+\`\`\`sql
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE documentos (
+  id BIGSERIAL PRIMARY KEY,
+  contenido TEXT,
+  embedding vector(1536),  -- dimensiones del modelo de embeddings
+  metadata JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Búsqueda por similitud coseno
+SELECT contenido, 1 - (embedding <=> $1) AS similitud
+FROM documentos
+ORDER BY embedding <=> $1
+LIMIT 10;
+\`\`\`
+
+## El índice que importa: HNSW vs IVFFlat
+
+pgvector soporta dos tipos de índice para búsqueda aproximada. Elegir mal aquí es el error más común en producción.
+
+**IVFFlat** divide los vectores en listas (clusters) y busca solo en los más cercanos al query. Es rápido de construir y funciona bien para colecciones estáticas, pero degrada mucho si insertas datos frecuentemente porque el índice no se rebalancea.
+
+**HNSW** (Hierarchical Navigable Small World) construye un grafo multicapa que permite búsqueda logarítmica. Es más lento de construir y consume más memoria, pero mantiene la precisión bajo inserciones continuas y escala mejor en producción.
+
+\`\`\`sql
+-- HNSW: mejor para datos dinámicos
+CREATE INDEX ON documentos USING hnsw (embedding vector_cosine_ops)
+WITH (m = 16, ef_construction = 64);
+
+-- IVFFlat: mejor para colecciones grandes y estáticas
+CREATE INDEX ON documentos USING ivfflat (embedding vector_l2_ops)
+WITH (lists = 100);
+\`\`\`
+
+Regla práctica: si insertas más de 1000 documentos al día, HNSW. Si cargas un corpus de una vez y rara vez actualizas, IVFFlat.
+
+## RAG con pgvector: el flujo completo
+
+\`\`\`python
+import asyncpg
+from openai import AsyncOpenAI
+
+client = AsyncOpenAI()
+
+async def rag_query(pregunta: str, conn: asyncpg.Connection) -> str:
+    # 1. Generar embedding de la pregunta
+    response = await client.embeddings.create(
+        model="text-embedding-3-small",
+        input=pregunta
+    )
+    query_embedding = response.data[0].embedding
+
+    # 2. Recuperar documentos relevantes
+    docs = await conn.fetch("""
+        SELECT contenido, 1 - (embedding <=> $1) AS score
+        FROM documentos
+        WHERE 1 - (embedding <=> $1) > 0.7
+        ORDER BY embedding <=> $1
+        LIMIT 5
+    """, query_embedding)
+
+    # 3. Construir contexto y llamar al LLM
+    contexto = "\\n\\n".join(doc["contenido"] for doc in docs)
+    completion = await client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": f"Contexto:\\n{contexto}"},
+            {"role": "user", "content": pregunta}
+        ]
+    )
+    return completion.choices[0].message.content
+\`\`\`
+
+## Cuándo pgvector es suficiente
+
+pgvector cubre bien estos escenarios:
+- Colecciones de hasta ~10 millones de vectores con HNSW
+- Equipos que ya operan PostgreSQL y quieren evitar otra dependencia
+- Aplicaciones donde los vectores conviven con datos relacionales (filtros por usuario, fecha, categoría)
+- Startups que quieren velocidad de iteración sin complejidad operacional
+
+La ventaja clave frente a bases de datos vectoriales especializadas no es el rendimiento: es la **colocación de datos**. Puedes hacer JOINs entre tus vectores y tu tabla de usuarios, filtrar por permisos antes de buscar, o actualizar un documento y su embedding en la misma transacción.
+
+## Cuándo necesitas algo más
+
+pgvector tiene límites reales que importan en ciertos contextos:
+- **Más de 10-15M de vectores**: el rendimiento de HNSW empieza a degradar con colecciones muy grandes
+- **Multi-tenancy masivo**: si tienes miles de tenants con colecciones separadas, la gestión de índices se complica
+- **Latencia P99 muy estricta (<10ms)**: las bases de datos vectoriales especializadas tienen ventaja aquí
+- **Búsqueda híbrida compleja**: combinaciones de vectores + text search + facets a escala
+
+En esos casos, Qdrant o Weaviate tienen sentido. Pero para el 80% de las aplicaciones RAG que se construyen hoy, pgvector es más que suficiente.
+
+## Configuración de producción que no puedes olvidar
+
+\`\`\`sql
+-- Ajustar trabajo de memoria para construcción de índices
+SET maintenance_work_mem = '1GB';
+
+-- Para búsqueda HNSW en tiempo de query
+SET hnsw.ef_search = 100;  -- más alto = más preciso, más lento
+
+-- Monitorizar tamaño del índice
+SELECT pg_size_pretty(pg_relation_size('documentos_embedding_idx'));
+\`\`\`
+
+La configuración de \`maintenance_work_mem\` es especialmente importante: construir un índice HNSW con la configuración por defecto (64MB) en una colección de 1M de vectores puede tardar horas. Con 1-4GB, el mismo proceso tarda minutos.`,
+    image: "/news/pgvector-database.jpg",
+    category: "programming",
+    tags: ["PostgreSQL", "pgvector", "RAG", "Embeddings", "Bases de Datos"],
+    author: authors.dax,
+    publishedAt: "2026-06-03T08:00:00Z",
+    readingMinutes: 10,
+    views: 1850,
+    likes: 163,
+    trending: true,
+  },
+  {
+    slug: "ollama-vs-lmstudio-llms-locales-2026",
+    title: "Ollama vs LM Studio en 2026: cómo elegir tu entorno de LLMs locales según tu caso de uso",
+    excerpt:
+      "Dos formas distintas de correr modelos en tu máquina. Una comparativa práctica para desarrolladores que quieren privacidad, velocidad o simplemente control total.",
+    content: `Correr un LLM en tu propia máquina dejó de ser un ejercicio de masoquismo técnico. Con Ollama y LM Studio, cualquier desarrollador con una GPU razonable —o incluso con solo CPU— puede tener un modelo funcionando en minutos. El problema ya no es si puedes hacerlo: es cuál de los dos usar y para qué.
+
+Esta no es una comparativa de benchmarks. Es una guía para elegir según lo que realmente vas a hacer con el modelo.
+
+## Qué son y qué hacen diferente
+
+**Ollama** es una herramienta de línea de comandos que expone una API REST compatible con OpenAI. Está pensada para desarrolladores: descargas un modelo con un comando, lo sirves en localhost:11434, y cualquier cliente que hable con la API de OpenAI funciona sin cambios. Nada de interfaz gráfica, todo en terminal.
+
+**LM Studio** es una aplicación de escritorio con interfaz visual. Tiene un chat integrado, explorador de modelos, configuración de parámetros con sliders, y también expone una API REST local. Está pensada para ser usable por alguien que no quiere tocar la terminal.
+
+La diferencia fundamental no es de capacidades técnicas —ambos pueden correr los mismos modelos— sino de filosofía: Ollama es una pieza de infraestructura, LM Studio es una aplicación de usuario.
+
+## Ollama: para integrar modelos en tu flujo de desarrollo
+
+Si vas a usar el modelo desde código, Ollama es la opción correcta. La API es compatible con el cliente oficial de OpenAI, lo que significa que cambiar de GPT-4 a un modelo local es literalmente cambiar la URL base:
+
+\`\`\`python
+from openai import OpenAI
+
+# Antes: cliente contra OpenAI
+# client = OpenAI(api_key="sk-...")
+
+# Con Ollama: exactamente lo mismo, distinta URL
+client = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama",  # cualquier string, no se valida
+)
+
+response = client.chat.completions.create(
+    model="llama3.2:8b",
+    messages=[{"role": "user", "content": "Explica qué es un closure en JavaScript"}],
+)
+print(response.choices[0].message.content)
+\`\`\`
+
+Descargar y servir un modelo:
+
+\`\`\`bash
+ollama pull llama3.2:8b        # descarga ~4.7GB
+ollama pull qwen2.5-coder:7b   # modelo especializado en código
+ollama serve                   # inicia el servidor (o corre automáticamente)
+ollama list                    # modelos descargados
+\`\`\`
+
+Ollama también gestiona automáticamente la cuantización, la memoria GPU/CPU y las capas de offload. Si tu GPU tiene 8GB de VRAM y el modelo necesita 12GB, Ollama distribuye automáticamente lo que no cabe en GPU hacia RAM del sistema.
+
+## LM Studio: para explorar modelos y experimentar rápido
+
+LM Studio brilla cuando quieres probar un modelo sin escribir código. Descarga el modelo desde su interfaz, ajusta temperatura, top-p y longitud de contexto con sliders, y chatea directamente. Para evaluar si un modelo sirve para un caso de uso concreto antes de integrarlo, es más rápido que cualquier alternativa.
+
+También tiene ventajas prácticas para no-técnicos del equipo: un PM o un diseñador puede explorar capacidades del modelo sin necesidad de terminal. Y el servidor local que expone es también compatible con la API de OpenAI, así que la integración posterior es igual de directa.
+
+## Comparativa directa
+
+| Aspecto | Ollama | LM Studio |
+|---|---|---|
+| Instalación | \`brew install ollama\` / script | Instalador GUI |
+| Interfaz | Terminal + API REST | GUI + API REST |
+| Compatibilidad API | OpenAI-compatible | OpenAI-compatible |
+| Gestión de modelos | CLI (\`ollama pull\`) | Explorador visual |
+| Automatización / CI | Excelente | Limitado |
+| Ajuste de parámetros | Via Modelfile o API | Sliders en UI |
+| Soporte GPU | NVIDIA, AMD, Apple Silicon | NVIDIA, AMD, Apple Silicon |
+| Sistema operativo | macOS, Linux, Windows | macOS, Windows (Linux beta) |
+| Multimodal (visión) | Sí (llava, etc.) | Sí |
+
+## Qué modelos usar en 2026
+
+La elección del entorno importa, pero la elección del modelo importa más. Algunos que funcionan bien en local en 2026:
+
+- **Código**: \`qwen2.5-coder:7b\` o \`deepseek-coder-v2:16b\` si tienes GPU con más VRAM
+- **Propósito general**: \`llama3.2:8b\` para balance velocidad/calidad, \`llama3.1:70b\` si tienes hardware potente
+- **Razonamiento**: \`qwq:32b\` para tareas que requieren chain-of-thought
+- **Embeddings**: \`nomic-embed-text\` (Ollama) para RAG local
+
+## La respuesta corta
+
+Usa **Ollama** si vas a integrarlo en código, automatizarlo, o usarlo en un servidor.
+
+Usa **LM Studio** si quieres explorar modelos visualmente, hacer demos, o necesitas que alguien sin experiencia técnica interactúe con el modelo.
+
+Y si ya tienes Ollama funcionando, no necesitas LM Studio: puedes conectar Open WebUI a tu instancia local de Ollama y tener la interfaz visual sin duplicar la infraestructura.`,
+    image: "/news/local-llm-terminal.jpg",
+    category: "ai",
+    tags: ["Ollama", "LM Studio", "LLMs Locales", "Privacidad", "Modelos"],
+    author: authors.noa,
+    publishedAt: "2026-06-03T07:00:00Z",
+    readingMinutes: 8,
+    views: 1620,
+    likes: 141,
+    featured: true,
+    trending: true,
+  },
+  {
     slug: "codegraph-grafo-conocimiento-94-menos-tool-calls",
     title:
       "CodeGraph: El grafo de conocimiento que reduce en un 92% las llamadas de herramientas en agentes de código",
