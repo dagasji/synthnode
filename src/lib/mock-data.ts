@@ -290,7 +290,8 @@ La configuración de \`maintenance_work_mem\` es especialmente importante: const
   },
   {
     slug: "ollama-vs-lmstudio-llms-locales-2026",
-    title: "Ollama vs LM Studio en 2026: cómo elegir tu entorno de LLMs locales según tu caso de uso",
+    title:
+      "Ollama vs LM Studio en 2026: cómo elegir tu entorno de LLMs locales según tu caso de uso",
     excerpt:
       "Dos formas distintas de correr modelos en tu máquina. Una comparativa práctica para desarrolladores que quieren privacidad, velocidad o simplemente control total.",
     content: `Correr un LLM en tu propia máquina dejó de ser un ejercicio de masoquismo técnico. Con Ollama y LM Studio, cualquier desarrollador con una GPU razonable —o incluso con solo CPU— puede tener un modelo funcionando en minutos. El problema ya no es si puedes hacerlo: es cuál de los dos usar y para qué.
