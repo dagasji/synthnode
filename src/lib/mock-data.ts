@@ -69,6 +69,269 @@ const authors = {
 
 export const news: NewsArticle[] = [
   {
+    slug: "apple-siri-ai-wwdc-2026",
+    title: "Apple reinventa Siri con IA generativa en WWDC 2026",
+    excerpt:
+      "En la WWDC más esperada de la última década, Apple presentó Siri AI: una reescritura completa del asistente que corre sobre modelos propios en Private Cloud Compute con hardware Nvidia dentro de Google Cloud.",
+    content: `La WWDC 2026 tenía una presión acumulada enorme. Apple llevaba dos años prometiendo un Siri renovado y entregando actualizaciones menores que no convencían a nadie. Este lunes, Craig Federighi subió al escenario de Apple Park y presentó lo que el sector llevaba esperando: Siri AI.
+
+No es una actualización. Es una reescritura completa.
+
+## Qué es Siri AI
+
+Siri AI es el nuevo asistente de Apple construido sobre modelos de lenguaje propios —los Apple Foundational Models— combinados con acceso contextual a toda la información del dispositivo: correos, calendarios, fotos, documentos, aplicaciones instaladas. La diferencia clave respecto a cualquier chatbot externo es que el contexto es local y privado por diseño.
+
+La arquitectura tiene dos capas:
+
+- **On-device**: Para la mayoría de peticiones cotidianas, el modelo corre directamente en el chip Apple Silicon sin enviar nada a la nube. Respuestas en milisegundos, cero datos saliendo del dispositivo.
+- **Private Cloud Compute**: Para peticiones que requieren más capacidad, la petición se envía a servidores donde corre el Apple Foundational Model sobre hardware Nvidia —específicamente dentro de la infraestructura de Google Cloud—, con una garantía criptográfica de que Apple no puede ver el contenido de la consulta.
+
+## El momento de la privacidad como ventaja competitiva
+
+Durante años, la privacidad fue el argumento que Apple usaba para compensar la inferioridad técnica de Siri frente a Google Assistant o Alexa. Con Siri AI, la ecuación cambia: la privacidad ya no es el consuelo, es la diferenciación real frente a ChatGPT, Gemini y Copilot.
+
+La arquitectura de Private Cloud Compute resuelve el problema que ha bloqueado a otros competidores: cómo ofrecer un asistente con contexto rico sobre datos personales sin que esos datos salgan del control del usuario. Apple lo ha hecho construyendo una infraestructura donde los servidores no retienen los datos tras procesar la petición y el código que corre en esos servidores es verificable públicamente.
+
+Es una apuesta arriesgada en términos de ingeniería. Y parece que ha funcionado.
+
+## Integración en iOS 27, macOS Golden Gate y visionOS 27
+
+Siri AI llega en todos los sistemas operativos anunciados esta semana. En iOS 27 la integración es especialmente profunda: el asistente puede actuar dentro de cualquier aplicación instalada, no solo las de Apple. Crear un evento en Notion, responder un mensaje en Telegram, buscar un archivo en Dropbox... todo a través de lenguaje natural.
+
+En visionOS 27, Apple añadió una representación visual del asistente: una esfera luminosa que puede anclarse en cualquier punto del espacio de trabajo y proyecta luz sobre las superficies cercanas. Es detalles como ese los que recuerdan por qué Apple sigue siendo Apple.
+
+## La cuestión de la UE
+
+La nota amarga llegó al final: Siri AI no estará disponible de forma completa en la Unión Europea en el lanzamiento. Apple culpa a la interpretación del DMA por parte de los reguladores europeos, que según la compañía exigiría dar a cualquier asistente de voz acceso directo a datos privados del usuario y control sobre otras aplicaciones sin las salvaguardas de privacidad de Private Cloud Compute.
+
+El argumento es discutible. Pero el resultado es real: los usuarios europeos tendrán acceso parcial, limitado a macOS, watchOS y visionOS en una primera fase.
+
+## Conclusión
+
+Siri AI es el producto que Apple necesitaba para seguir siendo relevante en la era de los asistentes IA. La apuesta por la privacidad como arquitectura —no como marketing— es técnicamente sólida y difícil de replicar para competidores que han construido sus modelos sobre datos de usuario masivos. Si la ejecución está a la altura de la presentación, Apple acaba de definir el estándar del sector para los próximos años.`,
+    image: "/news/apple-siri-ai-wwdc.jpg",
+    category: "ai",
+    tags: ["Apple", "Siri", "WWDC", "LLM", "Privacidad"],
+    author: authors.noa,
+    publishedAt: "2026-06-09T10:00:00Z",
+    readingMinutes: 6,
+    views: 4200,
+    likes: 380,
+    featured: true,
+    trending: true,
+  },
+  {
+    slug: "openai-ipo-confidencial-2026",
+    title: "OpenAI presenta confidencialmente su solicitud de IPO",
+    excerpt:
+      "OpenAI ha iniciado el proceso de salida a bolsa presentando su documentación de forma confidencial ante la SEC, siguiendo los pasos de Anthropic. La maniobra llega en el momento de mayor presión de monetización de la historia de la compañía.",
+    content: `OpenAI ha dado el paso que el mercado llevaba meses anticipando: la compañía ha presentado confidencialmente su solicitud de oferta pública inicial (IPO) ante la Securities and Exchange Commission (SEC). La noticia, confirmada hoy por TechCrunch, coloca a OpenAI en el mismo camino que Anthropic, que inició su proceso de IPO hace semanas.
+
+## Por qué ahora
+
+La pregunta no es si OpenAI iba a salir a bolsa, sino cuándo. La respuesta tiene que ver con tres factores que convergen en 2026.
+
+**Primero, la presión de los inversores.** Microsoft, que ha invertido más de 13.000 millones de dólares en OpenAI, y el resto de accionistas institucionales llevan tiempo esperando liquidez. Una IPO es la salida natural para un capital que lleva años inmovilizado en una valoración privada que ha pasado de 29.000 millones en 2023 a más de 300.000 millones en las últimas rondas secundarias.
+
+**Segundo, la competencia con Anthropic.** Que Anthropic haya iniciado su IPO antes es una señal de mercado que OpenAI no puede ignorar. Los inversores institucionales que van a participar en la IPO de Anthropic son los mismos que evaluarán la de OpenAI. Llegar tarde significa competir por el mismo capital con un competidor que ya lleva ventaja en el proceso.
+
+**Tercero, la ventana macroeconómica.** Los mercados tech están en un momento favorable, con el índice de IPOs tecnológicas en máximos de tres años. La ventana puede cerrarse.
+
+## La presentación confidencial: qué significa
+
+Presentar la solicitud de forma confidencial (el mecanismo conocido como "confidential S-1") permite a OpenAI iniciar el proceso de revisión regulatoria de la SEC sin revelar públicamente sus cifras financieras hasta 15 días antes del roadshow. Es el mismo mecanismo que usaron Airbnb, Snowflake y Stripe en sus IPOs.
+
+La ventaja es estratégica: OpenAI puede negociar con underwriters, ajustar la estructura de la oferta y preparar el roadshow sin exponer sus márgenes, costes de inferencia y tasa de crecimiento a la competencia.
+
+## Las preguntas que el S-1 tendrá que responder
+
+Cuando el documento se haga público, el mercado buscará respuestas a preguntas que hoy no tienen respuesta oficial. ¿Cuánto cuesta realmente entrenar y servir GPT-5 y sus sucesores? ¿Cuál es el margen real de ChatGPT con sus 200 millones de usuarios? ¿Cómo afecta la creciente competencia de modelos open source a la disposición a pagar de los clientes enterprise?
+
+La estructura corporativa de OpenAI —que ha completado su transición a entidad con ánimo de lucro en los últimos meses— también será objeto de escrutinio. El modelo de "capped profit" que limitaba los retornos de los inversores ha quedado atrás, pero las implicaciones para la misión de seguridad en IA de la organización siguen siendo un punto de debate.
+
+## Implicaciones para el ecosistema
+
+Una IPO exitosa de OpenAI normalizaría la inversión en labs de IA frontier como clase de activo para inversores públicos. También aumentaría la presión sobre Anthropic, xAI y Google DeepMind para demostrar sus propios modelos de negocio. El mercado público es implacable con las narrativas sin números.
+
+La era del "confía en nosotros, estamos salvando la humanidad" como estrategia de financiación está llegando a su fin.`,
+    image: "/news/openai-ipo.jpg",
+    category: "startups",
+    tags: ["OpenAI", "IPO", "Mercados", "IA", "Startups"],
+    author: authors.iria,
+    publishedAt: "2026-06-09T09:00:00Z",
+    readingMinutes: 5,
+    views: 3100,
+    likes: 245,
+    trending: true,
+  },
+  {
+    slug: "microsoft-tools-hack-credenciales-ia",
+    title: "Herramientas open source de Microsoft comprometidas para robar credenciales de desarrolladores IA",
+    excerpt:
+      "Un ataque de supply chain dirigido específicamente a desarrolladores que trabajan con modelos de IA ha comprometido paquetes del ecosistema open source de Microsoft. Los atacantes buscaban claves de API de OpenAI, Anthropic y AWS Bedrock.",
+    content: `Un ataque de cadena de suministro sofisticado ha comprometido paquetes del ecosistema open source de Microsoft, con un objetivo muy específico: las credenciales de desarrolladores que trabajan con modelos de inteligencia artificial. La investigación, publicada hoy por TechCrunch a partir de un informe de seguridad de Zack Whittaker, revela que los atacantes inyectaron código malicioso en herramientas ampliamente usadas por el ecosistema de desarrollo de IA.
+
+## El vector de ataque
+
+Los atacantes comprometieron la cadena de publicación de al menos tres paquetes de herramientas open source mantenidas bajo la organización de Microsoft en GitHub. El código malicioso inyectado no era genérico: estaba diseñado específicamente para buscar y exfiltrar variables de entorno y ficheros de configuración que contuvieran patrones de credenciales específicos de servicios de IA.
+
+Las claves objetivo incluían:
+- Claves de API de OpenAI (\`OPENAI_API_KEY\`)
+- Tokens de Anthropic (\`ANTHROPIC_API_KEY\`)
+- Credenciales de AWS Bedrock
+- Tokens de acceso de Hugging Face
+- Claves de Azure OpenAI Service
+
+El código exfiltraba las credenciales encontradas a un servidor de comando y control antes de ejecutar la funcionalidad legítima del paquete, haciendo que el comportamiento malicioso fuera difícil de detectar en ejecución normal.
+
+## Por qué los desarrolladores de IA son el nuevo objetivo
+
+Este ataque no es accidental. Los desarrolladores que trabajan con LLMs representan un target de alto valor por varias razones.
+
+**Créditos de API con alto valor económico.** Una clave de OpenAI comprometida puede usarse para consumir créditos de inferencia de forma masiva —los mismos que el propietario pagará en su factura a fin de mes—. El mercado negro de claves de API de modelos de IA tiene precios que reflejan este valor.
+
+**Acceso a infraestructura sensible.** Las mismas credenciales de AWS o Azure que se usan para Bedrock o Azure OpenAI suelen tener permisos más amplios sobre la infraestructura cloud del desarrollador o la empresa.
+
+**Volumen y concentración.** La popularidad de las herramientas de Microsoft en el ecosistema de desarrollo de IA —especialmente en el espacio de agentes y automation— significa que un solo paquete comprometido puede afectar a decenas de miles de instalaciones.
+
+## Qué hacer si usas estas herramientas
+
+Si tienes alguno de los paquetes afectados instalados (Microsoft publicará la lista definitiva en las próximas horas), los pasos inmediatos son:
+
+1. **Rotar todas las claves de API** de servicios de IA que estuvieran en variables de entorno o ficheros de configuración en el sistema donde estaban instalados los paquetes
+2. **Revisar los logs de uso** de tus cuentas de OpenAI, Anthropic y AWS Bedrock para detectar consumo anómalo
+3. **Actualizar los paquetes** a las versiones parcheadas que Microsoft está publicando
+4. **Auditar los permisos** de las claves comprometidas y reducirlos al mínimo necesario
+
+## El problema estructural del open source en IA
+
+Este incidente pone de manifiesto un problema que el sector lleva tiempo ignorando: la cadena de suministro del software de IA no está auditada al mismo nivel que su capacidad técnica. Los equipos dedican semanas a evaluar si un modelo tiene sesgos o alucinaciones, pero confían ciegamente en los paquetes de infraestructura que lo rodean.
+
+La adopción masiva de herramientas de IA ha creado una nueva superficie de ataque enorme, con credenciales de alto valor distribuidas en miles de entornos de desarrollo que no aplican las mismas prácticas de seguridad que los entornos de producción.
+
+El incidente de hoy no será el último.`,
+    image: "/news/microsoft-supply-chain-hack.jpg",
+    category: "security",
+    tags: ["Seguridad", "Supply Chain", "Microsoft", "OpenAI", "Credenciales"],
+    author: authors.dax,
+    publishedAt: "2026-06-09T08:30:00Z",
+    readingMinutes: 6,
+    views: 2800,
+    likes: 210,
+    trending: true,
+  },
+  {
+    slug: "xiaomi-mimo-ultra-1t-tokens-por-segundo",
+    title: "Xiaomi lanza MiMo Ultra: un billón de parámetros a 1.000 tokens por segundo",
+    excerpt:
+      "MiMo-v2.5-Pro-UltraSpeed es el modelo más rápido lanzado hasta la fecha: un billón de parámetros que alcanza 1.000 tokens por segundo de throughput sostenido. Xiaomi entra de lleno en la guerra de la inferencia de alta velocidad.",
+    content: `Xiaomi acaba de lanzar MiMo-v2.5-Pro-UltraSpeed, un modelo de lenguaje de un billón de parámetros que alcanza 1.000 tokens por segundo de throughput sostenido. El anuncio, que está siendo trending hoy en Hacker News con casi 600 puntos, redefine el estado del arte en inferencia de alta velocidad y representa la entrada más ambiciosa de un fabricante de hardware de consumo en el espacio de los grandes modelos de lenguaje.
+
+## Los números
+
+1T de parámetros. 1.000 tokens/s. Estos dos números son el titular, pero el contexto importa.
+
+El throughput de 1.000 tokens/s se mide en condiciones de batch inference con hardware propio de Xiaomi —detalles técnicos que la compañía ha publicado junto con el modelo—. En inferencia de usuario único (el escenario más relevante para aplicaciones conversacionales), los números son diferentes, pero siguen siendo notablemente altos para el tamaño del modelo.
+
+Para comparación: los modelos de clase similar en velocidad hasta ahora —Llama 3.1 405B, Mistral Large 2— no superaban los 200-300 tokens/s en configuraciones de producción estándar. La diferencia no es incremental.
+
+## Cómo lo han conseguido
+
+Xiaomi no ha publicado todos los detalles técnicos, pero el paper que acompaña al lanzamiento apunta a tres innovaciones principales:
+
+**Arquitectura Mixture-of-Experts optimizada para inferencia.** MiMo Ultra usa una variante de MoE donde los experts activos por token son dinámicamente seleccionados con un overhead de routing mínimo. El resultado es que el modelo tiene 1T de parámetros totales pero activa solo una fracción en cada forward pass.
+
+**Cuantización INT4 nativa con calibración por capa.** La cuantización no es nueva, pero la implementación de Xiaomi aplica esquemas de calibración específicos por capa que preservan la calidad en las capas críticas mientras maximiza la compresión en las capas donde la pérdida de precisión es tolerable.
+
+**Hardware dedicado.** Xiaomi ha desarrollado aceleradores propios —bajo el nombre en clave Surge X2— optimizados para la arquitectura específica de MiMo Ultra. Es el mismo camino que siguió Apple con los Apple Silicon y Google con las TPUs: controlar el stack completo para optimizar end-to-end.
+
+## El contexto geopolítico
+
+Este lanzamiento no se puede leer sin el contexto de la competencia tecnológica entre China y EEUU. Xiaomi lanza MiMo Ultra en la misma semana en que Apple presenta Siri AI y OpenAI anuncia su IPO. No es coincidencia.
+
+Los labs chinos —Xiaomi, Baidu, Alibaba, DeepSeek— están convergiendo en una estrategia clara: superar a los labs occidentales en eficiencia de inferencia, la dimensión donde las restricciones de acceso a hardware Nvidia H100/H200 son menos determinantes que en el entrenamiento.
+
+Si no puedes tener los mejores chips para entrenar, puedes optimizar para hacer más con los chips que tienes. Y aparentemente, Xiaomi ha encontrado cómo hacerlo.
+
+## Disponibilidad
+
+MiMo-v2.5-Pro-UltraSpeed está disponible hoy en Hugging Face bajo licencia Apache 2.0 para los pesos del modelo base. La versión de inferencia optimizada con los aceleradores Surge X2 está disponible via API en la plataforma cloud de Xiaomi, con acceso anticipado para desarrolladores en lista de espera.
+
+El modelo base es open weights. El hardware que lo hace especial, no.`,
+    image: "/news/xiaomi-mimo-ultra.jpg",
+    category: "ai",
+    tags: ["Xiaomi", "LLM", "Inferencia", "Open Weights", "MoE"],
+    author: authors.noa,
+    publishedAt: "2026-06-09T08:00:00Z",
+    readingMinutes: 5,
+    views: 2400,
+    likes: 195,
+    trending: true,
+  },
+  {
+    slug: "gitdot-github-alternativa-open-source-rust",
+    title: "Gitdot: el competidor open source de GitHub escrito en Rust llega a producción",
+    excerpt:
+      "Con 290 puntos en Hacker News en su primer día, Gitdot se presenta como una alternativa completa a GitHub: repositorios, pull requests, issues, CI/CD y revisión de código, todo open source y escrito en Rust.",
+    content: `Esta mañana apareció en Hacker News un Show HN que acumula 290 puntos en pocas horas: Gitdot, una alternativa open source completa a GitHub escrita en Rust. El proyecto, disponible en gitdot.io, no es otro intento de clonar las funciones básicas de gestión de repositorios. Es un pitch directo a la dependencia estructural del sector en una plataforma privada controlada por Microsoft.
+
+## Qué ofrece Gitdot
+
+La funcionalidad cubre todo el flujo de trabajo moderno de desarrollo:
+
+- **Repositorios Git** con soporte completo de ramas, tags y large file storage
+- **Pull requests** con revisión de código inline, sugerencias y threading de comentarios
+- **Issues y proyectos** con boards kanban y milestone tracking
+- **CI/CD integrado** — el sistema de pipelines está construido sobre WebAssembly, lo que permite ejecutar workers en cualquier plataforma sin dependencia de runners propietarios
+- **Gestión de paquetes** para npm, cargo, pip y Docker
+- **API compatible con la API de GitHub** para los endpoints más usados, permitiendo migrar herramientas existentes sin modificarlas
+
+La elección de Rust no es accidental. El equipo detrás de Gitdot argumenta que la ausencia de garbage collector y el modelo de memoria de Rust permiten servir operaciones de repositorio —especialmente diffs y blame sobre repos grandes— con una latencia consistentemente baja que JVM y runtimes de Python no pueden igualar.
+
+## El argumento de la dependencia
+
+El post original en HN articula el problema de fondo con claridad: el sector del software depende de forma crítica de una infraestructura gestionada por una empresa privada (Microsoft/GitHub) para almacenar su código fuente, coordinar el desarrollo y distribuir paquetes. Si GitHub decide cambiar su política de acceso, sus precios o simplemente tiene una outage, miles de equipos se detienen.
+
+La respuesta habitual a este argumento es que GitLab existe y es open source en su edición Community. Lo que Gitdot añade al debate es que GitLab lleva años derivando hacia una arquitectura cada vez más compleja y pesada de operar, y que su adopción como sustituto de GitHub en equipos pequeños y medianos sigue siendo baja.
+
+## El reto de la red social del código
+
+El problema más difícil para cualquier alternativa a GitHub no es técnico. Es la red. GitHub tiene 100 millones de desarrolladores registrados. Los perfiles de GitHub son el currículum técnico estándar. La visibilidad de un proyecto en GitHub es un activo de marketing.
+
+Gitdot no tiene respuesta para esto hoy. El equipo lo reconoce en el FAQ del proyecto: la estrategia inicial es el self-hosting para organizaciones que priorizan la soberanía de datos sobre la visibilidad pública, y el desarrollo de una red federada en fases posteriores usando ActivityPub.
+
+Es la misma apuesta que hicieron Mastodon frente a Twitter: federar en lugar de centralizar. Los resultados de Mastodon sugieren que la federación no derrota automáticamente a la centralización, pero es un modelo viable para ecosistemas que valoran la autonomía.
+
+## Cómo instalarlo
+
+Gitdot distribuye binarios compilados para Linux, macOS y Windows, y una imagen Docker oficial:
+
+\`\`\`bash
+# Docker (recomendado para producción)
+docker pull gitdot/server:latest
+docker run -p 3000:3000 -v gitdot-data:/data gitdot/server:latest
+
+# Binario directo (Linux x86_64)
+curl -L https://get.gitdot.io/install.sh | bash
+\`\`\`
+
+La configuración inicial incluye un wizard que replica la experiencia de setup de GitLab, con soporte para LDAP, SAML y OAuth2 desde el primer día.
+
+## Veredicto inicial
+
+Gitdot es técnicamente sólido, está bien documentado y tiene un equipo que entiende el problema que está resolviendo. El código fuente es genuinamente open source (licencia AGPL v3). Las demos de rendimiento en los benchmarks publicados son convincentes.
+
+Si lo que buscas es una solución de self-hosting moderna para tu organización, merece una evaluación seria. Si lo que buscas es desplazar a GitHub como plataforma pública, esa es una batalla mucho más larga.`,
+    image: "/news/gitdot-open-source.jpg",
+    category: "open-source",
+    tags: ["Rust", "GitHub", "Open Source", "DevTools", "Git"],
+    author: authors.sara,
+    publishedAt: "2026-06-09T07:30:00Z",
+    readingMinutes: 7,
+    views: 1900,
+    likes: 165,
+  },
+  {
     slug: "agentes-ia-produccion-patrones-arquitectura",
     title: "Agentes IA en producción: los 5 patrones de arquitectura que realmente funcionan",
     excerpt:
