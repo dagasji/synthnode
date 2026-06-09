@@ -166,7 +166,8 @@ La era del "confía en nosotros, estamos salvando la humanidad" como estrategia 
   },
   {
     slug: "microsoft-tools-hack-credenciales-ia",
-    title: "Herramientas open source de Microsoft comprometidas para robar credenciales de desarrolladores IA",
+    title:
+      "Herramientas open source de Microsoft comprometidas para robar credenciales de desarrolladores IA",
     excerpt:
       "Un ataque de supply chain dirigido específicamente a desarrolladores que trabajan con modelos de IA ha comprometido paquetes del ecosistema open source de Microsoft. Los atacantes buscaban claves de API de OpenAI, Anthropic y AWS Bedrock.",
     content: `Un ataque de cadena de suministro sofisticado ha comprometido paquetes del ecosistema open source de Microsoft, con un objetivo muy específico: las credenciales de desarrolladores que trabajan con modelos de inteligencia artificial. La investigación, publicada hoy por TechCrunch a partir de un informe de seguridad de Zack Whittaker, revela que los atacantes inyectaron código malicioso en herramientas ampliamente usadas por el ecosistema de desarrollo de IA.
