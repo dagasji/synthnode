@@ -192,82 +192,82 @@
   },
   "privacy": {
     "meta": {
-      "title": "Privacy Policy — Synthnode",
-      "description": "How we handle your data on synthnode.dev. No personal data collection; local processing in your browser."
+      "title": "Política de Privacidade — Synthnode",
+      "description": "Como tratamos seus dados em synthnode.dev. Sem coleta de dados pessoais; processamento local no seu navegador."
     },
-    "title": "Privacy Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: maio de 2026",
     "intro": {
-      "heading": "Introduction",
-      "body": "At Synthnode, privacy is a priority. This policy explains how we manage user information."
+      "heading": "Introdução",
+      "body": "No Synthnode, a privacidade é uma prioridade. Esta política explica como gerenciamos as informações dos usuários."
     },
     "localProcessing": {
-      "heading": "Local data processing",
-      "body": "All content is served statically. We do not send any of your data to our own servers."
+      "heading": "Processamento local de dados",
+      "body": "Todo o conteúdo é servido de forma estática. Não enviamos nenhum de seus dados para nossos próprios servidores."
     },
     "noDataCollection": {
-      "heading": "Data we do NOT collect",
+      "heading": "Dados que NÃO coletamos",
       "items": [
-        "Content you read or search for",
-        "Tokens or credentials",
-        "Personally identifiable information",
-        "Browsing history within the site"
+        "Conteúdo que você lê ou busca",
+        "Tokens ou credenciais",
+        "Informações de identificação pessoal",
+        "Histórico de navegação dentro do site"
       ]
     },
     "cookies": {
-      "heading": "Cookies and third-party services",
-      "body": "We use Google Analytics (GA4) and Google AdSense. These services install their own cookies. See our cookie policy for more details."
+      "heading": "Cookies e serviços de terceiros",
+      "body": "Usamos Google Analytics (GA4) e Google AdSense. Esses serviços instalam seus próprios cookies. Consulte nossa política de cookies para mais detalhes."
     },
     "thirdParty": {
-      "heading": "Third-party services",
-      "body": "The hosting provider may log IPs and visited pages for security reasons. We do not share data with third parties for marketing purposes."
+      "heading": "Serviços de terceiros",
+      "body": "O provedor de hospedagem pode registrar IPs e páginas visitadas por motivos de segurança. Não compartilhamos dados com terceiros para fins de marketing."
     },
     "security": {
-      "heading": "Security",
-      "body": "Always access via HTTPS. Keep your browser updated to ensure the security of your connection."
+      "heading": "Segurança",
+      "body": "Acesse sempre via HTTPS. Mantenha seu navegador atualizado para garantir a segurança de sua conexão."
     },
     "changes": {
-      "heading": "Changes to this policy",
-      "body": "This policy may be updated. Check the last updated date at the top of this page."
+      "heading": "Alterações nesta política",
+      "body": "Esta política pode ser atualizada. Verifique a data da última atualização no topo desta página."
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For any privacy inquiries, use the site's contact form."
+      "heading": "Contato",
+      "body": "Para qualquer consulta sobre privacidade, use o formulário de contato do site."
     }
   },
   "cookies": {
     "meta": {
-      "title": "Cookie Policy — Synthnode",
-      "description": "What cookies synthnode.dev uses, what they are for and how to manage them."
+      "title": "Política de Cookies — Synthnode",
+      "description": "Quais cookies o synthnode.dev usa, para que servem e como gerenciá-los."
     },
-    "title": "Cookie Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "Política de Cookies",
+    "lastUpdated": "Última atualização: maio de 2026",
     "intro": {
-      "heading": "What are cookies?",
-      "body": "Cookies are small text files that websites store in your browser to save preferences and analyze usage."
+      "heading": "O que são cookies?",
+      "body": "Cookies são pequenos arquivos de texto que os sites armazenam no seu navegador para salvar preferências e analisar o uso."
     },
     "ownCookies": {
-      "heading": "Own cookies",
-      "body": "We only use localStorage to save your cookie consent preference. It is not sent to the server."
+      "heading": "Cookies próprios",
+      "body": "Usamos apenas localStorage para salvar sua preferência de consentimento de cookies. Não é enviado ao servidor."
     },
     "thirdPartyCookies": {
-      "heading": "Third-party cookies",
+      "heading": "Cookies de terceiros",
       "items": [
-        "Google Analytics (GA4): anonymized traffic analytics.",
-        "Google AdSense: personalized advertising based on your browsing."
+        "Google Analytics (GA4): análise de tráfego anonimizada.",
+        "Google AdSense: publicidade personalizada com base na sua navegação."
       ]
     },
     "consent": {
-      "heading": "Your consent",
-      "body": "By accepting, you enable GA and AdSense. By rejecting, both services are blocked; the site remains fully functional."
+      "heading": "Seu consentimento",
+      "body": "Ao aceitar, você habilita GA e AdSense. Ao rejeitar, ambos serviços são bloqueados; o site continua totalmente funcional."
     },
     "howToDisable": {
-      "heading": "How to manage cookies",
-      "body": "You can modify your consent at any time using the cookie settings button (bottom right corner) or from your browser settings."
+      "heading": "Como gerenciar cookies",
+      "body": "Você pode modificar seu consentimento a qualquer momento usando o botão de configuração de cookies (canto inferior direito) ou nas configurações do seu navegador."
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For questions about cookies, use the site's contact form."
+      "heading": "Contato",
+      "body": "Para dúvidas sobre cookies, use o formulário de contato do site."
     }
   },
   "contact": {

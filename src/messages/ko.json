@@ -192,82 +192,82 @@
   },
   "privacy": {
     "meta": {
-      "title": "Privacy Policy — Synthnode",
-      "description": "How we handle your data on synthnode.dev. No personal data collection; local processing in your browser."
+      "title": "개인정보 처리방침 — Synthnode",
+      "description": "synthnode.dev에서 데이터를 처리하는 방법. 개인 데이터 수집 없음; 브라우저에서 로컬 처리."
     },
-    "title": "Privacy Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "개인정보 처리방침",
+    "lastUpdated": "최종 업데이트: 2026년 5월",
     "intro": {
-      "heading": "Introduction",
-      "body": "At Synthnode, privacy is a priority. This policy explains how we manage user information."
+      "heading": "소개",
+      "body": "Synthnode에서는 개인정보를 최우선으로 생각합니다. 이 정책은 사용자 정보를 어떻게 관리하는지 설명합니다."
     },
     "localProcessing": {
-      "heading": "Local data processing",
-      "body": "All content is served statically. We do not send any of your data to our own servers."
+      "heading": "로컬 데이터 처리",
+      "body": "모든 콘텐츠는 정적으로 제공됩니다. 귀하의 데이터를 자체 서버로 전송하지 않습니다."
     },
     "noDataCollection": {
-      "heading": "Data we do NOT collect",
+      "heading": "수집하지 않는 데이터",
       "items": [
-        "Content you read or search for",
-        "Tokens or credentials",
-        "Personally identifiable information",
-        "Browsing history within the site"
+        "읽거나 검색한 콘텐츠",
+        "토큰 또는 자격 증명",
+        "개인 식별 정보",
+        "사이트 내 탐색 기록"
       ]
     },
     "cookies": {
-      "heading": "Cookies and third-party services",
-      "body": "We use Google Analytics (GA4) and Google AdSense. These services install their own cookies. See our cookie policy for more details."
+      "heading": "쿠키 및 제3자 서비스",
+      "body": "Google Analytics (GA4)와 Google AdSense를 사용합니다. 이 서비스는 자체 쿠키를 설치합니다. 자세한 내용은 쿠키 정책을 참조하세요."
     },
     "thirdParty": {
-      "heading": "Third-party services",
-      "body": "The hosting provider may log IPs and visited pages for security reasons. We do not share data with third parties for marketing purposes."
+      "heading": "제3자 서비스",
+      "body": "호스팅 제공자는 보상상의 이유로 IP와 방문한 페이지를 기록할 수 있습니다. 마케팅 목적으로 제3자와 데이터를 공유하지 않습니다."
     },
     "security": {
-      "heading": "Security",
-      "body": "Always access via HTTPS. Keep your browser updated to ensure the security of your connection."
+      "heading": "보안",
+      "body": "항상 HTTPS를 통해 액세스하세요. 연결 보안을 보장하려면 브라우저를 최신 상태로 유지하세요."
     },
     "changes": {
-      "heading": "Changes to this policy",
-      "body": "This policy may be updated. Check the last updated date at the top of this page."
+      "heading": "이 정책의 변경",
+      "body": "이 정책은 업데이트될 수 있습니다. 이 페이지 상단의 최종 업데이트 날짜를 확인하세요."
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For any privacy inquiries, use the site's contact form."
+      "heading": "연락처",
+      "body": "개인정보 관련 문의는 사이트의 연락 양식을 사용하세요."
     }
   },
   "cookies": {
     "meta": {
-      "title": "Cookie Policy — Synthnode",
-      "description": "What cookies synthnode.dev uses, what they are for and how to manage them."
+      "title": "쿠키 정책 — Synthnode",
+      "description": "synthnode.dev가 사용하는 쿠키, 용도 및 관리 방법."
     },
-    "title": "Cookie Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "쿠키 정책",
+    "lastUpdated": "최종 업데이트: 2026년 5월",
     "intro": {
-      "heading": "What are cookies?",
-      "body": "Cookies are small text files that websites store in your browser to save preferences and analyze usage."
+      "heading": "쿠키란 무엇인가요?",
+      "body": "쿠키는 웹사이트가 브라우저에 저장하여 설정을 저장하고 사용량을 분석하는 작은 텍스트 파일입니다."
     },
     "ownCookies": {
-      "heading": "Own cookies",
-      "body": "We only use localStorage to save your cookie consent preference. It is not sent to the server."
+      "heading": "자체 쿠키",
+      "body": "쿠키 동의 기본 설정을 저장하기 위해 localStorage만 사용합니다. 서버로 전송되지 않습니다."
     },
     "thirdPartyCookies": {
-      "heading": "Third-party cookies",
+      "heading": "제3자 쿠키",
       "items": [
-        "Google Analytics (GA4): anonymized traffic analytics.",
-        "Google AdSense: personalized advertising based on your browsing."
+        "Google Analytics (GA4): 익명화된 트래픽 분석.",
+        "Google AdSense: 탐색을 기반으로 한 개인화된 광고."
       ]
     },
     "consent": {
-      "heading": "Your consent",
-      "body": "By accepting, you enable GA and AdSense. By rejecting, both services are blocked; the site remains fully functional."
+      "heading": "동의",
+      "body": "수락하면 GA와 AdSense가 활성화됩니다. 거부하면 두 서비스 모두 차단됩니다. 사이트는 완전히 기능합니다."
     },
     "howToDisable": {
-      "heading": "How to manage cookies",
-      "body": "You can modify your consent at any time using the cookie settings button (bottom right corner) or from your browser settings."
+      "heading": "쿠키를 관리하는 방법",
+      "body": "쿠키 설정 버튼(오른쪽 하단 모서리) 또는 브라우저 설정을 사용하여 언제든지 동의를 수정할 수 있습니다."
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For questions about cookies, use the site's contact form."
+      "heading": "연락처",
+      "body": "쿠키 관련 질문은 사이트의 연락 양식을 사용하세요."
     }
   },
   "contact": {

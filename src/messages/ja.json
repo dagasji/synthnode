@@ -192,82 +192,82 @@
   },
   "privacy": {
     "meta": {
-      "title": "Privacy Policy — Synthnode",
-      "description": "How we handle your data on synthnode.dev. No personal data collection; local processing in your browser."
+      "title": "プライバシーポリシー — Synthnode",
+      "description": "synthnode.devでのデータの扱いについて。個人データの収集なし；ブラウザでのローカル処理。"
     },
-    "title": "Privacy Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "プライバシーポリシー",
+    "lastUpdated": "最終更新: 2026年5月",
     "intro": {
-      "heading": "Introduction",
-      "body": "At Synthnode, privacy is a priority. This policy explains how we manage user information."
+      "heading": "はじめに",
+      "body": "Synthnodeではプライバシーを優先しています。このポリシーでは、ユーザー情報をどのように管理しているかを説明します。"
     },
     "localProcessing": {
-      "heading": "Local data processing",
-      "body": "All content is served statically. We do not send any of your data to our own servers."
+      "heading": "ローカルデータ処理",
+      "body": "すべてのコンテンツは静的に配信されます。お客様のデータを独自のサーバーに送信することはありません。"
     },
     "noDataCollection": {
-      "heading": "Data we do NOT collect",
+      "heading": "収集しないデータ",
       "items": [
-        "Content you read or search for",
-        "Tokens or credentials",
-        "Personally identifiable information",
-        "Browsing history within the site"
+        "閲覧または検索したコンテンツ",
+        "トークンまたは認証情報",
+        "個人識別可能な情報",
+        "サイト内での閲覧履歴"
       ]
     },
     "cookies": {
-      "heading": "Cookies and third-party services",
-      "body": "We use Google Analytics (GA4) and Google AdSense. These services install their own cookies. See our cookie policy for more details."
+      "heading": "Cookieとサードパーティサービス",
+      "body": "Google Analytics (GA4) と Google AdSense を使用しています。これらのサービスは独自のCookieをインストールします。詳細についてはCookieポリシーをご覧ください。"
     },
     "thirdParty": {
-      "heading": "Third-party services",
-      "body": "The hosting provider may log IPs and visited pages for security reasons. We do not share data with third parties for marketing purposes."
+      "heading": "サードパーティサービス",
+      "body": "ホスティングプロバイダーはセキュリティ上の理由からIPと訪問したページを記録する場合があります。マーケティング目的で第三者とデータを共有することはありません。"
     },
     "security": {
-      "heading": "Security",
-      "body": "Always access via HTTPS. Keep your browser updated to ensure the security of your connection."
+      "heading": "セキュリティ",
+      "body": "常にHTTPS経由でアクセスしてください。接続の安全性を確保するため、ブラウザを最新の状態に保ってください。"
     },
     "changes": {
-      "heading": "Changes to this policy",
-      "body": "This policy may be updated. Check the last updated date at the top of this page."
+      "heading": "このポリシーの変更",
+      "body": "このポリシーは更新される場合があります。このページの上部にある最終更新日を確認してください。"
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For any privacy inquiries, use the site's contact form."
+      "heading": "お問い合わせ",
+      "body": "プライバシーに関するご質問は、サイトの連絡フォームを使用してください。"
     }
   },
   "cookies": {
     "meta": {
-      "title": "Cookie Policy — Synthnode",
-      "description": "What cookies synthnode.dev uses, what they are for and how to manage them."
+      "title": "Cookieポリシー — Synthnode",
+      "description": "synthnode.devが使用するCookie、その目的、管理方法について。"
     },
-    "title": "Cookie Policy",
-    "lastUpdated": "Last updated: May 2026",
+    "title": "Cookieポリシー",
+    "lastUpdated": "最終更新: 2026年5月",
     "intro": {
-      "heading": "What are cookies?",
-      "body": "Cookies are small text files that websites store in your browser to save preferences and analyze usage."
+      "heading": "Cookieとは？",
+      "body": "Cookieは、ウェブサイトがブラウザに保存して設定を保存し、使用状況を分析する小さなテキストファイルです。"
     },
     "ownCookies": {
-      "heading": "Own cookies",
-      "body": "We only use localStorage to save your cookie consent preference. It is not sent to the server."
+      "heading": "独自のCookie",
+      "body": "Cookieの同意設定を保存するためにlocalStorageのみを使用しています。サーバーには送信されません。"
     },
     "thirdPartyCookies": {
-      "heading": "Third-party cookies",
+      "heading": "サードパーティCookie",
       "items": [
-        "Google Analytics (GA4): anonymized traffic analytics.",
-        "Google AdSense: personalized advertising based on your browsing."
+        "Google Analytics (GA4): 匿名化されたトラフィック分析。",
+        "Google AdSense: 閲覧に基づいたパーソナライズされた広告。"
       ]
     },
     "consent": {
-      "heading": "Your consent",
-      "body": "By accepting, you enable GA and AdSense. By rejecting, both services are blocked; the site remains fully functional."
+      "heading": "同意",
+      "body": "受け入れると、GAとAdSenseが有効になります。拒否すると、両方のサービスがブロックされます。サイトは完全に機能し続けます。"
     },
     "howToDisable": {
-      "heading": "How to manage cookies",
-      "body": "You can modify your consent at any time using the cookie settings button (bottom right corner) or from your browser settings."
+      "heading": "Cookieを管理する方法",
+      "body": "Cookie設定ボタン（右下隅）またはブラウザ設定を使用して、いつでも同意を変更できます。"
     },
     "contact": {
-      "heading": "Contact",
-      "body": "For questions about cookies, use the site's contact form."
+      "heading": "お問い合わせ",
+      "body": "Cookieに関するご質問は、サイトの連絡フォームを使用してください。"
     }
   },
   "contact": {

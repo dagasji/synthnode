@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: localePath("es", "/privacy"),
+      canonical: localePath(locale, "/privacy"),
       languages: {
         es: localePath("es", "/privacy"),
         en: localePath("en", "/privacy"),
