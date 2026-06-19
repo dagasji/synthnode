@@ -9,6 +9,7 @@ const devops = "/news/devops.jpg";
 const programming = "/news/rust.jpg";
 const openSource = "/news/neural.jpg";
 const cloudFreeTier = "/news/cloud-free-tier.png";
+const appleContainer = "/news/apple-container-docker.jpg";
 
 export const categories: Category[] = [
   {
@@ -68,6 +69,97 @@ const authors = {
 };
 
 export const news: NewsArticle[] = [
+  {
+    slug: "apple-container-docker-alternativa",
+    title:
+      "Apple Container v1.0: la alternativa nativa a Docker Desktop llega para cambiar el juego en macOS",
+    excerpt:
+      "Escrito en Swift y optimizado para Apple Silicon, el nuevo runtime de contenedores de Apple ofrece aislamiento hardware-level, startup sub-segundo y footprint casi cero. Pero todavía no es un reemplazo completo de Docker.",
+    content: `Después de años de desarrolladores Mac conviviendo con Docker Desktop —sus procesos en background, su memoria inflada, sus ventiladores ruidosos y sus restricciones de licencia— Apple ha lanzado su propia respuesta. Apple Container v1.0.0, presentado en WWDC 2026 y disponible desde el 9 de junio, es una herramienta open source escrita en Swift que promete resolver los problemas arquitectónicos de Docker en macOS desde la raíz.
+
+La diferencia fundamental no es de superficie, es de arquitectura.
+
+## El problema con Docker en macOS
+
+Docker Desktop en macOS tiene un problema estructural: todos los contenedores corren dentro de una única máquina virtual Linux que está siempre encendida, uses contenedores o no. Esa VM consume memoria constantemente, genera overhead de CPU y añade una capa de virtualización que no existe en Linux nativo.
+
+El resultado es una experiencia que se degrada con el tiempo: más memoria usada, más ruido de ventilador, más latencia. Y para equipos grandes, las restricciones de licencia comercial de Docker Desktop añadieron fricción adicional en 2024.
+
+## La arquitectura de Apple Container: un-contenedor, una-VM
+
+Apple Container toma un camino completamente diferente. En lugar de una VM compartida, cada contenedor tiene su propia micro-VM ligera. Esto es posible gracias al framework de virtualización de macOS, que en Apple Silicon puede arrancar y destruir VMs con una eficiencia que no existía en la era Intel.
+
+El resultado es tangible:
+
+- **Startup sub-segundo**: los contenedores arrancan en milisegundos, no en segundos
+- **Aislamiento hardware-level**: cada contenedor tiene su propio kernel y stack de red; si uno falla, el resto no se ve afectado
+- **Footprint casi cero en idle**: cuando un contenedor no está corriendo, consume prácticamente nada
+- **Integración nativa**: logging unificado con macOS, Keychain para credenciales de registry, compatibilidad con Xcode y Swift Package Manager
+
+## Container machine: el WSL de Apple
+
+La novedad estrella de v1.0.0 es **container machine**, una característica que permite gestionar entornos Linux persistentes que se sienten como una extensión nativa de macOS. The Register lo describió como "un WSL-ish thing to call their own" para desarrolladores Mac, y la comparación no es casual.
+
+Container machine combina lo mejor de ambos mundos: la velocidad y ligereza de un contenedor con la persistencia de una máquina virtual. Puedes instalar herramientas, configurar el entorno y volver a él días después sin perder el estado. La integración con el host es profunda: montaje de directorios, acceso a la red, y una CLI que se siente parte del sistema.
+
+## Comparativa honesta con Docker Desktop
+
+| Aspecto | Docker Desktop | Apple Container v1.0 |
+|---------|----------------|----------------------|
+| Soporte Intel Mac | Sí | No (solo Apple Silicon) |
+| Modelo de aislamiento | VM compartida | Micro-VM por contenedor |
+| Memoria idle | Alta (VM siempre encendida) | Cercana a cero |
+| Velocidad startup | Segundos | Sub-segundo |
+| OCI compatibility | Completa | Completa |
+| Docker Compose | Nativo y maduro | No soportado nativamente |
+| DevContainers VS Code | Completo | Parcial |
+| GUI | Sí | Solo CLI |
+| Licencia | Restricciones comerciales | Apache 2.0 (gratis) |
+| Lenguaje | Go | Swift |
+
+## Lo que funciona bien
+
+Para workflows de contenedor simple —desarrollo local de servicios individuales, pruebas de imágenes, builds de Docker— Apple Container es ya una alternativa excelente. La experiencia es más rápida, más ligera y completamente gratuita sin restricciones de equipo.
+
+La adopción lo confirma: 38K+ estrellas en GitHub en el momento del lanzamiento v1.0, una señal clara de que el dolor con Docker Desktop era real y extendido.
+
+## Lo que todavía falta
+
+Apple Container no es hoy un reemplazo drop-in completo de Docker Desktop. Los dos gaps más significativos son:
+
+**Docker Compose**: no hay soporte nativo. Existen bridges de terceros no oficiales, pero para equipos que dependen profundamente de docker-compose.yml para orquestar multi-contenedor, Docker sigue siendo necesario.
+
+**DevContainers**: el soporte en VS Code es parcial. Hay problemas con networking y scripts de setup que hacen que la experiencia no sea todavía equivalente a la de Docker Desktop.
+
+Además, hay una limitación técnica importante: la memoria asignada a una container machine no se libera de vuelta al host durante el uso. Si la VM crece en memoria, esa memoria queda asignada hasta que reinicias la VM. Es un detalle que importa en entornos con recursos limitados.
+
+## Requisitos y disponibilidad
+
+Apple Container requiere macOS 26 (Tahoe) y solo funciona en Apple Silicon. Los Macs Intel no son soportados, una decisión que Apple justifica por la dependencia en las capacidades de virtualización del hardware M-series.
+
+El proyecto está disponible en GitHub bajo licencia Apache 2.0, completamente open source y libre para uso personal y comercial sin paywalls de características.
+
+## ¿Deberías cambiar hoy?
+
+La respuesta depende de tu workflow:
+
+- **Sí, si**: desarrollas servicios individuales, haces builds de imágenes, quieres algo más ligero que Docker Desktop y no dependes de Compose o DevContainers
+- **No, si**: tu equipo depende de docker-compose.yml para orquestación, usas DevContainers de VS Code extensivamente, o necesitas soporte para Intel Mac
+
+Apple Container representa la mejora más significativa en la experiencia de contenedores en macOS en años. La arquitectura de un-contenedor-una-VM es genuinamente novedosa en este espacio, y las ventajas de rendimiento y seguridad sobre Docker Desktop en Apple Silicon son reales.
+
+No es todavía un reemplazo universal. Pero para el desarrollador individual en Apple Silicon que quiere algo más rápido, más ligero y más libre que Docker Desktop, Apple Container v1.0 es ya una opción seria. La pregunta no es si eventualmente desplazará a Docker en Mac, es cuánto tardará.`,
+    image: appleContainer,
+    category: "devops",
+    tags: ["Apple", "Docker", "Container", "DevOps", "macOS", "Swift"],
+    author: authors.dax,
+    publishedAt: "2026-06-19T12:00:00Z",
+    readingMinutes: 8,
+    views: 2500,
+    likes: 180,
+    featured: true,
+    trending: true,
+  },
   {
     slug: "apple-siri-ai-wwdc-2026",
     title: "Apple reinventa Siri con IA generativa en WWDC 2026",
