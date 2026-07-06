@@ -72,7 +72,8 @@ export const news: NewsArticle[] = [
   {
     slug: "rust-20-mayor-cambio-lenguaje-establecimiento",
     title: "Rust 2.0: el mayor cambio en el lenguaje desde su establecimiento",
-    excerpt: "Rust 2.0 introduce cambios breaking en el modelo de ownership y async, prometiendo mejor ergonomía sin sacrificar seguridad de memoria.",
+    excerpt:
+      "Rust 2.0 introduce cambios breaking en el modelo de ownership y async, prometiendo mejor ergonomía sin sacrificar seguridad de memoria.",
     content: `El equipo de Rust ha anunciado Rust 2.0, y quienes lleven un tiempo siguiendo el lenguaje sabrán que esto no es poca cosa. Desde que Rust alcanzó la estabilidad en 2021, la filosofía del proyecto había sido casi religiosa respecto a la compatibilidad hacia atrás: nada de romper código existente, nunca. Rust 2.0, lanzada el 6 de julio de 2026, rompe con esa tradición de forma deliberada, introduciendo cambios que afectan directamente al modelo de ownership y al sistema async con el objetivo declarado de hacer el lenguaje más accesible sin renunciar a su seña de identidad: la seguridad de memoria sin garbage collector.
 
 Como era de esperar, el anuncio no ha dejado indiferente a nadie. En los foros y en las redes donde se congrega la comunidad de Rust, el debate se ha polarizado rápidamente entre quienes ven esta actualización como el empujón que el lenguaje necesitaba para atraer a más desarrolladores, y quienes temen que el coste de migrar proyectos grandes acabe siendo mayor que el beneficio.
@@ -115,7 +116,8 @@ En el fondo, Rust 2.0 es una apuesta clara del equipo del lenguaje: que la ergon
   {
     slug: "vercel-ai-sdk-5-streaming-estructurado-rag-nativo",
     title: "Vercel AI SDK 5.0: streaming estructurado y RAG nativo",
-    excerpt: "Vercel lanza AI SDK 5.0 con streaming de objetos estructurados, integración RAG out-of-the-box y soporte para 12 modelos.",
+    excerpt:
+      "Vercel lanza AI SDK 5.0 con streaming de objetos estructurados, integración RAG out-of-the-box y soporte para 12 modelos.",
     content: `Vercel ha lanzado AI SDK 5.0, y si has trabajado con las versiones anteriores del SDK, la primera sensación al probarlo es de alivio. Anunciada el 6 de julio de 2026, esta versión ataca directamente los puntos de dolor que cualquier desarrollador que haya construido aplicaciones con IA conoce bien: el streaming de datos estructurados era torpe, montar RAG requería coser piezas de varios proveedores a mano, y cambiar de modelo implicaba reescribir buena parte de la lógica de integración.
 
 El cambio más llamativo no es una sola función, sino el efecto acumulado de todas ellas: un workflow de agentes con RAG que antes te podía costar quinientas líneas de código ahora se escribe, con AI SDK 5.0, en menos de cincuenta.
@@ -158,7 +160,8 @@ Para la mayoría de proyectos, sí. Las mejoras en ergonomía y la simplificaci�
   {
     slug: "fin-kubernetes-orquestadores-serverless-2026",
     title: "El fin de Kubernetes?: los nuevos orquestadores serverless",
-    excerpt: "AWS App Runner, Google Cloud Run y Azure Container Apps están desplazando Kubernetes para workloads de producción.",
+    excerpt:
+      "AWS App Runner, Google Cloud Run y Azure Container Apps están desplazando Kubernetes para workloads de producción.",
     content: `Kubernetes lleva casi una década siendo la respuesta automática a cualquier pregunta sobre cómo desplegar contenedores en producción. Pero en 2026 está pasando algo curioso: una nueva generación de orquestadores serverless —AWS App Runner, Google Cloud Run, Azure Container Apps— está quitándole terreno a K8s en un número creciente de equipos, y no precisamente porque Kubernetes haya empezado a fallar.
 
 La razón es mucho más prosaica: para una buena parte de los workloads que corren hoy en producción, Kubernetes es sencillamente más herramienta de la que se necesita. Los orquestadores serverless cubren ese mismo terreno con una fracción de la complejidad operacional, y eso está cambiando cómo muchos equipos toman esta decisión.
@@ -205,7 +208,8 @@ Kubernetes no se está muriendo. Simplemente está volviendo a ocupar el lugar q
   {
     slug: "stripe-atlas-2-incorporacion-startups-10-minutos",
     title: "Stripe lanza Atlas 2.0: incorporación de startups en 10 minutos",
-    excerpt: "Stripe Atlas 2.0 automatiza completamente la incorporación de empresas en Delaware con banca integrada, tax filing y equity management.",
+    excerpt:
+      "Stripe Atlas 2.0 automatiza completamente la incorporación de empresas en Delaware con banca integrada, tax filing y equity management.",
     content: `Stripe ha lanzado Atlas 2.0, y quien haya pasado alguna vez por el proceso de incorporar una empresa en Delaware sabe exactamente por qué esto importa. Anunciado el 5 de julio de 2026, Atlas 2.0 es una reescritura completa del servicio de incorporación de Stripe que promete convertir un trámite que solía tomar semanas —coordinando abogados, registered agents, el propio estado de Delaware y el IRS por separado— en un proceso de unos diez minutos, hecho enteramente desde una sola pantalla.
 
 Lo que hace especial a esta versión no es solo la velocidad, sino que por primera vez todo el flujo queda integrado de punta a punta: incorporación, banca, declaración de impuestos y gestión de equity funcionan como un solo sistema en lugar de cuatro proveedores distintos que había que coordinar a mano.
@@ -246,7 +250,8 @@ Si estás incorporando tu primera empresa estadounidense, si eres un founder int
   {
     slug: "opentelemetry-2-estandar-observabilidad-obligatorio",
     title: "OpenTelemetry 2.0: el estándar de observabilidad se vuelve obligatorio",
-    excerpt: "La CNCF anuncia OpenTelemetry 2.0 con breaking changes en la API de tracing y soporte nativo para eBPF.",
+    excerpt:
+      "La CNCF anuncia OpenTelemetry 2.0 con breaking changes en la API de tracing y soporte nativo para eBPF.",
     content: `La CNCF ha anunciado OpenTelemetry 2.0, y aunque el nombre suene a una actualización técnica más dentro del mundo de la observabilidad, lo que hay detrás tiene calado para prácticamente cualquier equipo que opere en la nube. Anunciado el 4 de julio de 2026, OpenTelemetry 2.0 trae cambios importantes en la API de tracing, soporte nativo para eBPF, y una arquitectura de collector repensada desde la base.
 
 Pero lo que realmente ha hecho saltar la noticia a las portadas técnicas no son esas mejoras, sino una decisión conjunta de los tres grandes proveedores cloud: AWS, Google Cloud y Microsoft Azure han anunciado que OpenTelemetry 2.0 será obligatorio en todos sus servicios managed a partir de 2027.
@@ -289,7 +294,8 @@ Como la fecha límite es 2027, no hay urgencia por migrar mañana mismo. Pero em
   {
     slug: "llama-4-meta-1t-parametros-open-source",
     title: "LLaMA 4: Meta lanza el primer modelo de 1T parámetros open source",
-    excerpt: "Meta anuncia LLaMA 4 con 1T parámetros en arquitectura MoE, entrenado en 100T tokens. Supera a GPT-5 en benchmarks de reasoning.",
+    excerpt:
+      "Meta anuncia LLaMA 4 con 1T parámetros en arquitectura MoE, entrenado en 100T tokens. Supera a GPT-5 en benchmarks de reasoning.",
     content: `Meta ha anunciado LLaMA 4, y la cifra que encabeza cualquier titular sobre el modelo —un billón de parámetros— solo cuenta parte de la historia. Anunciado el 4 de julio de 2026, LLaMA 4 es el primer modelo de esa escala disponible como open source, construido con una arquitectura Mixture-of-Experts que mantiene esos 1T parámetros totales pero activa solo 100B de ellos por token, entrenado sobre 100 billones de tokens de datos.
 
 Lo que de verdad ha sorprendido al sector no es tanto el tamaño como el rendimiento: LLaMA 4 supera a GPT-5 en varios benchmarks de reasoning, y lo hace bajo una licencia —Llama Community— que permite uso comercial sin las restricciones que suelen acompañar a los modelos de este calibre.
@@ -332,7 +338,8 @@ Que un modelo de un billón de parámetros esté disponible abiertamente dice mu
   {
     slug: "zero-trust-architecture-vpns-muriendo-2026",
     title: "Zero-trust architecture: por qué VPNs están muriendo en 2026",
-    excerpt: "El modelo de seguridad perimetral está obsoleto. Este artículo explica la arquitectura zero-trust y por qué empresas como Google han eliminado VPNs.",
+    excerpt:
+      "El modelo de seguridad perimetral está obsoleto. Este artículo explica la arquitectura zero-trust y por qué empresas como Google han eliminado VPNs.",
     content: `El modelo de seguridad perimetral —esa idea de que la red interna es "confiable" y todo lo que queda fuera no lo es— está muriendo, y no de forma silenciosa. En 2026, compañías como Google, Microsoft y Apple han eliminado las VPNs por completo de su infraestructura interna, sustituyéndolas por arquitecturas zero-trust. No es una moda pasajera: es la respuesta lógica a un mundo donde el trabajo remoto, la computación en la nube y las amenazas modernas han dejado obsoleta la metáfora del castillo con murallas. Las VPNs se diseñaron para proteger un perímetro que, sencillamente, ya no existe; y no pueden defenderte de amenazas que ya están dentro de las murallas.
 
 ## La idea detrás de zero-trust
@@ -379,7 +386,8 @@ La respuesta a si merece la pena migrar es, casi siempre, sí. Si tu organizaci�
   {
     slug: "react-server-components-estado-adopcion-2026",
     title: "React Server Components: el estado de la adopción en 2026",
-    excerpt: "Dos años después de su lanzamiento, React Server Components han sido adoptados por el 67% de empresas enterprise.",
+    excerpt:
+      "Dos años después de su lanzamiento, React Server Components han sido adoptados por el 67% de empresas enterprise.",
     content: `React Server Components se lanzaron en diciembre de 2024 como la evolución más importante de React desde la llegada de los hooks. Dos años después, en 2026, la adopción ya ha madurado lo suficiente como para tener datos fiables: según la encuesta anual de la React Foundation, el 67% de las empresas enterprise usan RSC en producción. Pero esa cifra global esconde una realidad más matizada, porque la adopción no ha sido ni mucho menos uniforme. Algunos equipos han encontrado en RSC una mejora dramática de performance y experiencia de desarrollo, mientras otros siguen peleando con la curva de aprendizaje y cayendo en los mismos anti-patrones una y otra vez.
 
 ## Qué aportan realmente los Server Components
@@ -433,7 +441,8 @@ El 67% de adopción enterprise en 2026 deja bastante claro que el patrón funcio
   {
     slug: "crisis-funding-2026-startups-sobreviviendo-sin-vc",
     title: "La crisis de funding en 2026: cómo startups están sobreviviendo sin VC",
-    excerpt: "Con VC funding en mínimos históricos, startups están pivotando a modelos de bootstrapping y revenue-first.",
+    excerpt:
+      "Con VC funding en mínimos históricos, startups están pivotando a modelos de bootstrapping y revenue-first.",
     content: `El mercado de venture capital en 2026 está en su punto más bajo en mucho tiempo. Después del boom desmedido de 2021-2022 y la corrección dolorosa que vino entre 2023 y 2025, este año ha traído algo parecido a un nuevo normal: menos operaciones, valoraciones sensiblemente más bajas, y procesos de due diligence que se alargan muchísimo más que antes.
 
 Pero que el funding escasee no significa que las startups estén desapareciendo. Significa que están adaptándose, y muchas lo están haciendo pasando de un modelo pensado para depender del próximo round a otro construido alrededor de generar ingresos desde el primer día.
@@ -482,7 +491,8 @@ El mercado de venture capital eventualmente se recuperará, como siempre ha pasa
   {
     slug: "pgvector-2-postgresql-vector-database-produccion",
     title: "pgvector 2.0: PostgreSQL como vector database de producción",
-    excerpt: "pgvector 2.0 introduce índices HNSW mejorados, soporte para multimodal y benchmarking que compite con Pinecone y Milvus.",
+    excerpt:
+      "pgvector 2.0 introduce índices HNSW mejorados, soporte para multimodal y benchmarking que compite con Pinecone y Milvus.",
     content: `pgvector 2.0 ha llegado con mejoras suficientes como para que muchos equipos se planteen en serio prescindir de un vector database managed como Pinecone o Milvus. Anunciado el 2 de julio de 2026, esta versión trae índices HNSW mejorados, soporte multimodal, y un rendimiento que por fin permite comparar de tarifa a tarifa con las soluciones enterprise, sin quedar en ridículo.
 
 Para cualquier equipo que ya use PostgreSQL como base de datos principal, pgvector 2.0 puede significar simplemente no tener que añadir una pieza más a la infraestructura: menos sistemas que mantener, menos vendor lock-in, y una factura considerablemente más baja.
