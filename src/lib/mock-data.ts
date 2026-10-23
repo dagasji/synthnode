@@ -70,6 +70,86 @@ const authors = {
 
 export const news: NewsArticle[] = [
   {
+    slug: "php2shell-rce-critico-nucleo-php-descubierto-ia",
+    title: "PHP2Shell: el bug que llevaba 10 años escondido en PHP y que una IA ha sacado a la luz",
+    excerpt:
+      "Dos fallos críticos en el núcleo de PHP permiten ejecutar código en tu servidor sin que el atacante tenga que autenticarse. Te contamos cómo se encontraron, cómo se filtraron y qué puedes hacer hoy mismo.",
+    content: `Si tienes un servidor con PHP, **deja lo que estás haciendo y actualiza**. Lo decimos ya y sin rodeos porque el 21 de octubre se publicaron dos vulnerabilidades críticas que permiten a cualquiera, sin usuario ni contraseña, ejecutar código en tu máquina. Se las conoce como **PHP2Shell**, y la cosa tiene miga: llevaban más de diez años en el código.
+
+Para ponerlo en perspectiva: PHP mueve cerca del **70% de la web**. WordPress, Drupal, Joomla, MediaWiki... todos corren sobre él.
+
+## Qué falla exactamente
+
+Son dos CVEs (CVE-2026-109618 y CVE-2026-109619, ambos con CVSS 9.2) con el mismo problema de fondo: cuando una petición termina de mala manera, PHP deja su memoria interna hecha un desastre, y la siguiente petición que atiende ese mismo worker hereda el estropicio.
+
+- **CVE-2026-109618 (corrupción por falta de memoria):** si una petición choca con el \`memory_limit\` en el peor momento posible, PHP deja datos a medio inicializar y luego se los cree. En Apache con mod_php se puede disparar **antes de que se ejecute una sola línea de tu aplicación**, y con la configuración por defecto.
+- **CVE-2026-109619 (estado global obsoleto):** un error fatal en el momento justo deja punteros apuntando a memoria de una petición anterior que ya se liberó. Resultado: use-after-free, caída del worker y, en manos expertas, ejecución remota de código.
+
+Y lo más incómodo: **no importa qué aplicación tengas encima**. Los investigadores lo demostraron contra WordPress, Drupal y Joomla, pero un simple "Hello World" en una versión vulnerable también cae. Además, el equipo de Wiz consiguió leer contraseñas, tokens y claves de API de la memoria del proceso, al estilo Heartbleed. Afecta a mod_php (el peor caso), PHP-FPM, php-cgi, FrankenPHP y LiteSpeed.
+
+## La historia de cómo apareció
+
+Aquí es donde se pone interesante, porque esto tiene dos actos.
+
+**Acto 1: la pista que nadie pudo seguir (2024).** PHP pasó su primera auditoría de seguridad externa en años, financiada por la Sovereign Tech Agency y ejecutada por Quarkslab. Arreglando uno de los hallazgos, un desarrollador del core olió que algo raro pasaba con la memoria. Alguien teorizó un exploit, pero nadie encontró cómo llevarlo a la práctica, y había asuntos más urgentes en la mesa.
+
+El problema es que arreglarlo bien era un dolor de cabeza: cada solución rompía compatibilidad, abría la puerta a ataques de denegación de servicio o exigía tocar cientos de extensiones de terceros. El equipo de seguridad decide por consenso, así que se bloqueó. Durante meses el trabajo se paraba y se reanudaba. La propia PHP Foundation lo reconoce sin maquillaje: fue **un fallo estructural** de proceso y de recursos.
+
+**Acto 2: entra la IA (agosto de 2026).** Wiz Research, junto a Calif y OpenAI, tiró de ese hilo apoyándose en modelos de IA de última generación. Mira el ritmo:
+
+- **19 de agosto:** primer hallazgo.
+- **20 de agosto:** RCE sin autenticación confirmado contra Drupal.
+- **21 de agosto:** lo mismo contra WordPress.
+- **24 de agosto:** lo reportan al equipo de seguridad de PHP.
+- **21 de septiembre:** PHP acusa recibo y se pone con el parche.
+
+Pásalo por tu cabeza un momento: el bug llevaba una década ahí. Lo que ha cambiado no es el fallo, sino que encadenar errores de memoria y adaptar el exploit a cada versión era un trabajo de meses para un equipo de élite. Con IA, **una sola persona lo hizo en una semana**.
+
+## Y entonces se filtró todo
+
+La divulgación coordinada iba como un reloj... hasta 48 horas antes del lanzamiento.
+
+El martes 20 de octubre, sobre las 15:00 UTC, los dos CVEs empezaron a circular por foros y redes, con la hora de publicación y el CVSS (10.0, cuando en realidad es 9.2) equivocados. PHP reaccionó adelantando el pre-anuncio y moviendo el release de un día para otro.
+
+Pero la noche no acabó ahí:
+
+- Calif, una de las firmas que reportó los fallos, **publicó por error un vídeo** con su prueba de concepto funcionando contra varios objetivos. Lo borraron, pero las copias ya corrían por redes.
+- A las 07:41 UTC del día 21, más de seis horas antes del lanzamiento oficial, **Chainguard rompió el embargo** y publicó imágenes ya parcheadas. Cualquiera podía comparar el binario y averiguar qué se había arreglado.
+
+## Qué hacer ahora mismo
+
+La respuesta oficial es clara: **actualizar es la única mitigación fiable**. No hay un apaño de configuración que lo cubra todo.
+
+- **Pasa a PHP 8.5.12, 8.4.27, 8.3.36 u 8.2.35.** Las distros y los vendors LTS recibieron el parche por adelantado, así que los paquetes y las imágenes oficiales ya deberían estar disponibles.
+- **¿Usas PHP 8.1 o anterior?** El proyecto no va a sacar parche. O contratas backports a un proveedor comercial, o toca migrar.
+
+Si de verdad no puedes actualizar hoy, hay mitigaciones parciales que reducen el riesgo (no lo eliminan):
+
+- \`memory_limit = -1\` fijado con \`php_admin_value\` en el pool FPM o en Apache, y comprobando que nadie lo vuelva a limitar. Ojo: no lo sustituyas por \`RLIMIT_AS\` o \`RLIMIT_DATA\`, porque pueden provocar justo el fallo que quieres evitar.
+- \`session.upload_progress.enabled = 0\` y reinicio de todos los workers. Tiene que ir en el php.ini o en la config del pool: \`ini_set()\` y \`.user.ini\` llegan tarde.
+- En PHP 8.5, \`fatal_error_backtraces = 0\`.
+- Un \`post_max_size\` bajo (8M si no subes archivos, 32M si sí) y límites de tamaño, campos y partes multipart en el proxy.
+- Arreglar los errores fatales y timeouts que un atacante pueda provocar.
+
+Y date prisa. Según VulnCheck ya existe un exploit funcional contra PHP 8.4.10–8.4.26 con ASLR activado y \`display_errors = off\`, que es la configuración recomendada para producción. GitHub se ha llenado de PoCs (casi todos falsos), pero al menos uno logró saltarse ASLR en x86-64. ASLR ayuda, pero no es un escudo.
+
+## Lo que nos deja
+
+PHP2Shell es probablemente el primer gran caso de un bug que "nadie iba a poder explotar" y que la IA ha convertido en explotable. Y ojo, porque esa misma capacidad la tiene también el otro bando.
+
+La parte buena: el parche llegó, y PHP ha admitido sus errores de proceso y se compromete a cambiarlos. La parte inquietante: si esto llevaba diez años dormido en uno de los pilares de internet, ¿cuántos más hay esperando a que alguien (o algo) los despierte?`,
+    image: "/news/php2shell-rce.jpg",
+    category: "security",
+    tags: ["PHP", "PHP2Shell", "RCE", "CVE", "Vulnerabilidades"],
+    author: authors.dax,
+    publishedAt: "2026-10-23T07:00:00Z",
+    readingMinutes: 8,
+    views: 5100,
+    likes: 390,
+    featured: true,
+    trending: true,
+  },
+  {
     slug: "anthropic-nuevo-modelo-ipo-gpt6-astra",
     title: "Anthropic sopesa lanzar un nuevo modelo antes de su IPO para frenar a GPT-6 Astra",
     excerpt:
